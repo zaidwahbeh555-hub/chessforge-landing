@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChessForge — The chess coach that knows your weaknesses</title>
+<meta name="description" content="ChessForge watches you play, learns the mistakes you repeat, and coaches you through every move — live, before you blunder. Not after.">
+
+<meta property="og:title" content="ChessForge — the coach that knows your weaknesses">
+<meta property="og:description" content="Live AI chess coaching, built from your own mistakes. Stop losing for the same reasons.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chessforge.org">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300d4ff'>&#9822;</text></svg>">
+</head>
+<body>
+
+<!-- ░░ NAV ░░ -->
+<header class="nav" id="nav">
+  <a href="#top" class="brand" aria-label="ChessForge home">
+    <span class="brand-hex">⬡</span><span class="brand-serif">Chess</span><span class="brand-bold">Forge</span>
+  </a>
+  <nav class="nav-links" id="navLinks">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://app.chessforge.org" class="nav-cta">Open app →</a>
+  </nav>
+  <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span></button>
+</header>
+
+<main id="top">
+
+<!-- ░░ HERO ░░ -->
+<section class="hero">
+  <div class="hero-grain" aria-hidden="true"></div>
+
+  <!-- oversized screenprint knight, runs off the right edge -->
+  <div class="hero-knight" aria-hidden="true">
+    <span class="knight-ghost">♞</span>
+    <span class="knight-main">♞</span>
+  </div>
+
+  <div class="hero-inner">
+    <p class="eyebrow reveal">Live AI chess coaching</p>
+
+    <h1 class="hero-h1">
+      <span class="reveal d1">The chess coach</span>
+      <span class="reveal d2">that knows your</span>
+      <span class="reveal d3 word-underline">
+        weaknesses
+        <svg class="scribble" viewBox="0 0 340 34" fill="none" aria-hidden="true">
+          <path d="M6 22 C 70 6, 130 30, 196 15 C 250 3, 300 12, 334 24" stroke="#00d4ff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </h1>
+
+    <div class="hero-tail">
+      <p class="hero-sub reveal d4">
+        ChessForge watches you play, learns the mistakes you repeat, and
+        coaches you through every move — <em>live, before you blunder.</em>
+        Not after.
+      </p>
+      <div class="hero-cta reveal d5">
+        <a href="https://app.chessforge.org" class="btn btn-primary">Start playing free →</a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+      <p class="hero-note reveal d6">No download. No credit card. First game analysed free.</p>
+    </div>
+  </div>
+
+  <!-- interactive coach board demo, overlapping the headline column -->
+  <figure class="hero-demo reveal d5" aria-label="ChessForge coach demo">
+    <div class="demo-window">
+      <div class="demo-topbar">
+        <span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-dot"></span>
+        <span class="demo-title">Play &amp; Coach</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-board" id="demoBoard"></div>
+        <svg class="demo-arrow" id="demoArrow" viewBox="0 0 100 100" aria-hidden="true">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z" fill="#00d4ff"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="demo-coach" id="demoCoach">
+          <div class="demo-coach-avatar">♛</div>
+          <div class="demo-coach-text" id="demoCoachText">Watching your position…</div>
+        </div>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<!-- ░░ PROBLEM ░░ -->
+<section class="problem" id="problem">
+  <span class="ghost-number" aria-hidden="true">1400</span>
+  <div class="problem-inner">
+    <p class="eyebrow reveal">The problem</p>
+    <h2 class="big-serif reveal">
+      You keep losing to the same&nbsp;mistakes — and nobody ever told you <em>which&nbsp;ones.</em>
+    </h2>
+    <div class="problem-cols">
+      <p class="reveal">
+        Every chess site hands a 900 and a 1900 the exact same puzzles. Generic
+        lessons. Generic openings. A rating graph that goes up and down and never
+        explains <strong>why.</strong>
+      </p>
+      <p class="reveal">
+        So you plateau. You hang the same bishop. You rush the same queen out. You
+        lose the same won endgames — over and over — with no idea it's a
+        <em>pattern.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ HOW IT WORKS ░░ -->
+<section class="how" id="how">
+  <div class="how-head">
+    <p class="eyebrow reveal">How it works</p>
+    <h2 class="big-serif reveal">Three steps. Then a coach who actually knows you.</h2>
+  </div>
+
+  <ol class="steps">
+    <li class="step step-l reveal">
+      <span class="step-num">01</span>
+      <div class="step-body">
+        <h3>Analyse your games</h3>
+        <p>Paste a PGN from Chess.com or Lichess. Stockfish reviews every move at
+        depth 16 and flags exactly where — and how badly — it went wrong.</p>
+      </div>
+    </li>
+
+    <svg class="step-link" viewBox="0 0 200 90" aria-hidden="true">
+      <path d="M150 6 C 60 20, 40 55, 60 84" stroke="#3a3a46" stroke-width="2.5" stroke-linecap="round" fill="none" stroke-dasharray="2 10"/>
+    </svg>
+
+    <li class="step step-r reveal">
+      <span class="step-num">02</span>
+      <div class="step-body">
+        <h3>Get your Thinking Fingerprint</h3>
+        <p>Not just <em>what</em> you got wrong — <em>why.</em> Impulsive Mover.
+        Tunnel Vision. Queen Rusher. Your cognitive pattern, named and explained.
+        No other platform does this.</p>
+      </div>
+    </li>
+
+    <svg class="step-link flip" viewBox="0 0 200 90" aria-hidden="true">
+      <path d="M50 6 C 140 20, 160 55, 140 84" stroke="#3a3a46" stroke-width="2.5" stroke-linecap="round" fill="none" stroke-dasharray="2 10"/>
+    </svg>
+
+    <li class="step step-l reveal">
+      <span class="step-num">03</span>
+      <div class="step-body">
+        <h3>Play with your live coach</h3>
+        <p>Now play. A grandmaster-style coach sits beside you — drawing arrows,
+        asking questions, popping quizzes on critical moves, and stopping you
+        <em>before</em> the blunder instead of explaining it after.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- ░░ FEATURES ░░ -->
+<section class="features" id="features">
+  <div class="feat-head">
+    <p class="eyebrow reveal">What you get</p>
+    <h2 class="big-serif reveal">Built from <em>your</em> mistakes — not a textbook.</h2>
+  </div>
+
+  <!-- hero feature: live coach, oversized -->
+  <article class="feat-hero reveal">
+    <div class="feat-hero-copy">
+      <span class="feat-tag">The signature feature</span>
+      <h3>A coach who talks to you mid-game.</h3>
+      <p>Live eval bar. Arrows pointing at the threat. Socratic questions —
+      "what is your opponent threatening here?" — and forced MCQs on the moves
+      that decide the game. It knows your weakness profile, so the nudges are
+      about <em>you.</em></p>
+    </div>
+    <div class="feat-hero-art">
+      <div class="coachcard">
+        <div class="coachcard-head">
+          <div class="coachcard-avatar">♛</div>
+          <div>
+            <div class="coachcard-name">GM&nbsp;Forge</div>
+            <div class="coachcard-status">Critical moment</div>
+          </div>
+          <div class="coachcard-eval">+0.4</div>
+        </div>
+        <div class="coachcard-q">
+          <span class="q-tail"></span>
+          Before you move — what does <b>Nf6</b> attack now, and what did it leave loose?
+        </div>
+        <div class="coachcard-mcq">
+          <div class="mcq-row">A &nbsp; Take the knight</div>
+          <div class="mcq-row correct">B &nbsp; Defend e4 with d3 ✓</div>
+          <div class="mcq-row">C &nbsp; Trade queens</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- smaller features, offset staggered — not a tidy grid -->
+  <div class="feat-list">
+    <article class="feat-item reveal off-a">
+      <div class="feat-ic">🧩</div>
+      <h4>Puzzles from your blunders</h4>
+      <p>Every mistake you make becomes a puzzle. You don't drill random
+      positions — you re-fight the exact ones you lost.</p>
+    </article>
+
+    <article class="feat-item reveal off-b">
+      <div class="feat-ic">🎯</div>
+      <h4>Personal MCQ lessons</h4>
+      <p>Interactive questions built around your weakest patterns, with instant
+      right/wrong feedback and the reasoning behind it.</p>
+    </article>
+
+    <article class="feat-item reveal off-c">
+      <div class="feat-ic">🧠</div>
+      <h4>Pattern detection</h4>
+      <p>Hanging pieces, king-safety lapses, early queens, missed tactics —
+      counted, ranked, and tracked as you improve.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ░░ PRICING ░░ -->
+<section class="pricing" id="pricing">
+  <div class="price-head">
+    <p class="eyebrow reveal">Pricing</p>
+    <h2 class="big-serif reveal">Start free. Go Pro when you're hooked.</h2>
+  </div>
+
+  <div class="price-layout">
+    <!-- free: understated, small -->
+    <article class="plan plan-free reveal">
+      <h3 class="plan-name">Free</h3>
+      <div class="plan-price"><span class="plan-amt">$0</span><span class="plan-per">forever</span></div>
+      <ul class="plan-list">
+        <li>1 game analysis / day</li>
+        <li>Thinking Fingerprint</li>
+        <li>Play &amp; Coach (basic)</li>
+        <li>Puzzles from your games</li>
+      </ul>
+      <a href="https://app.chessforge.org" class="btn btn-ghost btn-block">Start free →</a>
+    </article>
+
+    <!-- pro: oversized, dominant -->
+    <article class="plan plan-pro reveal">
+      <span class="plan-badge">🎉 Founding Member price</span>
+      <h3 class="plan-name">Pro</h3>
+      <div class="plan-price">
+        <span class="plan-strike">$19</span>
+        <span class="plan-amt">$9</span>
+        <span class="plan-per">/ month</span>
+      </div>
+      <ul class="plan-list plan-list-pro">
+        <li><b>Unlimited</b> game analysis</li>
+        <li>Full live coach — arrows, questions, MCQs</li>
+        <li>Personal interactive lessons</li>
+        <li>Infinite weakness-targeted puzzles</li>
+        <li>Deeper pattern &amp; progress tracking</li>
+      </ul>
+      <a href="https://app.chessforge.org" class="btn btn-primary btn-block">Get Pro →</a>
+      <p class="plan-fine">Cancel anytime, one click. No lock-in.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ░░ TESTIMONIALS (placeholder slots) ░░ -->
+<section class="proof" id="proof">
+  <div class="proof-head">
+    <span class="quote-mark" aria-hidden="true">“</span>
+    <h2 class="big-serif reveal">The wall where the reviews will go.</h2>
+    <p class="reveal proof-sub">Fresh out of the forge. Be one of the first to
+    leave your mark — these slots are waiting for you.</p>
+  </div>
+  <div class="proof-slots">
+    <blockquote class="slot reveal">
+      <p>“Your review here.”</p>
+      <footer>— a future ChessForge player</footer>
+    </blockquote>
+    <blockquote class="slot reveal off-b">
+      <p>“…and here.”</p>
+      <footer>— maybe you?</footer>
+    </blockquote>
+    <blockquote class="slot reveal off-c">
+      <p>“One more slot, saved.”</p>
+      <footer>— coming soon</footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ░░ FAQ ░░ -->
+<section class="faq" id="faq">
+  <div class="faq-head">
+    <p class="eyebrow reveal">Questions</p>
+    <h2 class="big-serif reveal">The short answers.</h2>
+  </div>
+  <div class="faq-list">
+    <details class="faq-item reveal">
+      <summary>What is ChessForge?<span class="faq-plus"></span></summary>
+      <p>An AI chess-improvement tool that analyses your real games, tells you the
+      specific mistakes you repeat and <em>why</em> you make them, then coaches you
+      through live games against a calibrated bot — pointing things out before you
+      go wrong.</p>
+    </details>
+    <details class="faq-item reveal">
+      <summary>Do I need to be good at chess?<span class="faq-plus"></span></summary>
+      <p>No. ChessForge meets you where you are — the bot calibrates to your level
+      and the coaching is tuned to <em>your</em> weaknesses, whether you're 600 or
+      1900. Beginners get the most out of it, honestly.</p>
+    </details>
+    <details class="faq-item reveal">
+      <summary>Can I cancel anytime?<span class="faq-plus"></span></summary>
+      <p>Yes — one click through the Stripe billing portal, no emails, no
+      hoops. You keep Pro until the end of the period you already paid for.</p>
+    </details>
+    <details class="faq-item reveal">
+      <summary>How is this different from Chess.com analysis?<span class="faq-plus"></span></summary>
+      <p>Chess.com tells you a move was a blunder — after the game. ChessForge finds
+      the <em>pattern</em> behind your blunders, names your thinking style, builds
+      puzzles and lessons from your own losses, and then coaches you <em>during</em>
+      the game so the mistake never happens. Personalised, not generic.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ░░ CLOSING CTA ░░ -->
+<section class="closer">
+  <div class="closer-inner reveal">
+    <h2 class="big-serif">Stop losing for the same reasons.</h2>
+    <a href="https://app.chessforge.org" class="btn btn-primary btn-lg">Start playing free →</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ░░ FOOTER ░░ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-hex">⬡</span>ChessForge</div>
+      <p class="footer-tag">The only chess platform that knows <em>your</em> weaknesses and coaches you through every move — in real time.</p>
+    </div>
+    <div class="footer-links">
+      <div>
+        <h5>Product</h5>
+        <a href="https://app.chessforge.org">Open app</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div>
+        <h5>More</h5>
+        <a href="#faq">FAQ</a>
+        <a href="mailto:hello@chessforge.org">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-wordmark" aria-hidden="true">ChessForge</div>
+  <div class="footer-bottom">
+    <span>© <span id="year">2026</span> ChessForge. Built by a solo founder.</span>
+    <span>Made for players who are tired of guessing.</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
