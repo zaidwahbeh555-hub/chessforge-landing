@@ -50,111 +50,118 @@
   }
 
   /* ── Coach board demo ────────────────────────────────────────────── */
-  // A small tactical position. Black just played ...Ng4 hitting f2/e4-ish;
-  // coach points at the defensive resource. Purely illustrative.
+  /* ── Interactive hero puzzle: back-rank mate (White to move, Rd8#) ── */
   var boardEl = document.getElementById('demoBoard');
-  var arrowEl = document.getElementById('demoArrow');
   var coachTextEl = document.getElementById('demoCoachText');
 
-  // rank 8 (top) → rank 1 (bottom); '' = empty
-  var POSITION = [
-    ['br','','bb','bq','bk','bb','','br'],
-    ['bp','bp','bp','','','bp','bp','bp'],
-    ['','','bn','bp','','bn','',''],
-    ['','','','','bp','','',''],
-    ['','','bl','','bp','bl','n4',''], // decorative-ish middlegame cluster
-    ['','','wn','','','wn','',''],
-    ['wp','wp','wp','wp','','wp','wp','wp'],
-    ['wr','','wb','wq','wk','wb','','wr']
-  ];
-  // Clean the fantasy tokens ('bl','n4','wl') to valid or empty so it still reads as chess
-  var GLYPH = {
-    wp:'♙', wn:'♘', wb:'♗', wr:'♖', wq:'♕', wk:'♔',
-    bp:'♟', bn:'♞', bb:'♝', br:'♜', bq:'♛', bk:'♚'
+  // App-matching Staunton SVG pieces
+  var FB_BASE = '<path d="M9.5 42.5 L35.5 42.5 L35.5 39.5 Q35.5 37.5 33 37.5 L12 37.5 Q9.5 37.5 9.5 39.5 Z"/><path d="M12.5 37.5 L32.5 37.5 L31 32 L14 32 Z"/>';
+  var FB = {
+    k:'<rect x="21" y="4" width="3" height="8" rx="1"/><rect x="18.5" y="6.5" width="8" height="3" rx="1"/><path d="M22.5 12 C16 12 13 18 17 24 Q22.5 20 28 24 C32 18 29 12 22.5 12 Z"/><path d="M15 24 Q22.5 20 30 24 L29 32 L16 32 Z"/>'+FB_BASE,
+    q:'<circle cx="10" cy="13" r="2.6"/><circle cx="17.5" cy="9.5" r="2.6"/><circle cx="27.5" cy="9.5" r="2.6"/><circle cx="35" cy="13" r="2.6"/><circle cx="22.5" cy="8" r="2.6"/><path d="M10 14 L13.5 27 L31.5 27 L35 14 L29 20 L25.5 12 L22.5 19 L19.5 12 L16 20 Z"/><path d="M13.5 27 L31.5 27 L30 32 L15 32 Z"/>'+FB_BASE,
+    b:'<circle cx="22.5" cy="6" r="2.6"/><path d="M22.5 9 C29 13 30 21 24 27 L21 27 C15 21 16 13 22.5 9 Z"/><rect x="20.5" y="15" width="4" height="1.8" rx=".6"/><rect x="21.6" y="13.9" width="1.8" height="4" rx=".6"/><path d="M17 27 L28 27 L29.5 32 L15.5 32 Z"/>'+FB_BASE,
+    n:'<path d="M13 42 C12 33 14 28 18 25 C13.5 24 12 19 15 15 C17 12 15 11 14.5 8 L18 10 C20 7 25 7 28 11 C31.5 15.5 32 24 31 30 C30.5 34 31 38 31 42 Z"/><circle class="fb-eye" cx="17.5" cy="17" r="1.5"/>',
+    r:'<path d="M12 9 L12 15 L33 15 L33 9 L28.5 9 L28.5 11.5 L25 11.5 L25 9 L20 9 L20 11.5 L16.5 11.5 L16.5 9 Z"/><path d="M14.5 15 L30.5 15 L29 20 L16 20 Z"/><path d="M16 20 L29 20 L30.5 32 L14.5 32 Z"/>'+FB_BASE,
+    p:'<circle cx="22.5" cy="11" r="5.2"/><path d="M18 17 L27 17 L26 20 L19 20 Z"/><path d="M17.5 32 Q16 24 22.5 20 Q29 24 27.5 32 Z"/>'+FB_BASE
   };
+  function pieceSVG(code){ return '<svg class="dp '+code[0]+'" viewBox="0 0 45 45">'+FB[code[1]]+'</svg>'; }
 
-  function buildBoard() {
-    if (!boardEl) return;
+  // 6k1/5ppp/8/8/8/8/5PPP/R5RK w — two rooks, but only Ra8 is mate (g-rook blocked by g2)
+  var START = [
+    ['','','','','','','bk',''],
+    ['','','','','','bp','bp','bp'],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','wp','wp','wp'],
+    ['wr','','','','','','wr','wk']
+  ];
+  var POSITION = START.map(function(r){ return r.slice(); });
+  var SOL = { to:[0,0] };            // a8 — only the a-file rook reaches the back rank
+  var selected = null, solved = false;
+
+  function say(t){ if(coachTextEl) coachTextEl.innerHTML = t; }
+
+  function render(){
+    if(!boardEl) return;
+    boardEl.innerHTML = '';
     var frag = document.createDocumentFragment();
-    for (var r = 0; r < 8; r++) {
-      for (var f = 0; f < 8; f++) {
-        var sq = document.createElement('div');
-        var isLight = (r + f) % 2 === 0;
-        sq.className = 'sq ' + (isLight ? 'light' : 'dark');
-        var code = POSITION[r][f];
-        if (GLYPH[code]) {
-          sq.textContent = GLYPH[code];
-          sq.classList.add(code[0] === 'w' ? 'pc-w' : 'pc-b');
-        }
-        // mark a "hot" square (a hanging piece) — f-file, rank shown as hot
-        if (r === 2 && f === 5) sq.classList.add('hot'); // black knight on f6-ish
-        sq.dataset.rc = r + '-' + f;
-        frag.appendChild(sq);
-      }
-    }
+    for(var r=0;r<8;r++){ for(var f=0;f<8;f++){
+      var sq = document.createElement('div');
+      sq.className = 'sq ' + (((r+f)%2===0) ? 'light' : 'dark');
+      sq.dataset.rc = r+'-'+f;
+      var code = POSITION[r][f];
+      if(code) sq.innerHTML = pieceSVG(code);
+      if(selected && selected[0]===r && selected[1]===f) sq.classList.add('sel');
+      if(solved && r===0 && f===6) sq.classList.add('mate');
+      frag.appendChild(sq);
+    }}
     boardEl.appendChild(frag);
   }
 
-  // draw an arrow between two [row,col] cells using 0-100 coords
-  function centre(rc) {
-    return { x: rc[1] * 12.5 + 6.25, y: rc[0] * 12.5 + 6.25 };
-  }
-  function drawArrow(from, to) {
-    if (!arrowEl) return;
-    var a = centre(from), b = centre(to);
-    // shorten toward target so head clears the piece
-    var dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy) || 1;
-    var tx = b.x - (dx / len) * 6, ty = b.y - (dy / len) * 6;
-    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
-    line.setAttribute('x2', tx); line.setAttribute('y2', ty);
-    line.setAttribute('marker-end', 'url(#ah)');
-    arrowEl.appendChild(line);
-  }
-
-  var CUES = [
-    { text: 'Watching your position…', arrow: null },
-    { text: '⚠️ Your knight on <b>f6</b> looks loose — count the attackers first.', arrow: [[5,5],[2,5]], hot: [2,5] },
-    { text: 'Before you move — what is your opponent actually threatening?', arrow: null },
-    { text: '💡 There is one clearly best move here. Checks, captures, threats — in that order.', arrow: [[5,2],[3,3]] }
-  ];
-
-  var step = 0;
-  function cycle() {
-    if (!coachTextEl) return;
-    var cue = CUES[step % CUES.length];
-    coachTextEl.innerHTML = cue.text;
-    // reset arrows
-    if (arrowEl) {
-      arrowEl.classList.remove('show');
-      while (arrowEl.querySelector('line')) arrowEl.removeChild(arrowEl.querySelector('line'));
-    }
-    // reset hot squares
-    boardEl && boardEl.querySelectorAll('.hot').forEach(function (s) { s.classList.remove('hot'); });
-    if (cue.hot) {
-      var hs = boardEl && boardEl.querySelector('[data-rc="' + cue.hot[0] + '-' + cue.hot[1] + '"]');
-      if (hs) hs.classList.add('hot');
-    }
-    if (cue.arrow) {
-      drawArrow(cue.arrow[0], cue.arrow[1]);
-      requestAnimationFrame(function () { arrowEl && arrowEl.classList.add('show'); });
-    }
-    step++;
-  }
-
-  if (boardEl) {
-    buildBoard();
-    // only animate the coach loop when the demo is on screen
-    var demoVisible = true;
-    if ('IntersectionObserver' in window) {
-      var demoWrap = document.querySelector('.hero-demo');
-      if (demoWrap) {
-        new IntersectionObserver(function (ents) {
-          demoVisible = ents[0].isIntersecting;
-        }, { threshold: 0.2 }).observe(demoWrap);
+  function rookMoves(r,f){
+    var color = POSITION[r][f][0], out = [];
+    [[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){
+      var rr=r+d[0], ff=f+d[1];
+      while(rr>=0&&rr<8&&ff>=0&&ff<8){
+        var occ = POSITION[rr][ff];
+        if(!occ){ out.push([rr,ff]); }
+        else { if(occ[0]!==color) out.push([rr,ff]); break; }
+        rr+=d[0]; ff+=d[1];
       }
+    });
+    return out;
+  }
+  function showDots(moves){
+    moves.forEach(function(m){
+      var el = boardEl.querySelector('[data-rc="'+m[0]+'-'+m[1]+'"]');
+      if(!el) return;
+      var d = document.createElement('div');
+      d.className = POSITION[m[0]][m[1]] ? 'dp-ring' : 'dp-dot';
+      el.appendChild(d);
+    });
+  }
+  function shake(){ boardEl.classList.remove('shk'); void boardEl.offsetWidth; boardEl.classList.add('shk'); }
+
+  function onSquare(r,f){
+    if(solved || !boardEl) return;
+    var code = POSITION[r][f];
+    if(selected){
+      var moves = rookMoves(selected[0], selected[1]);
+      var isTarget = moves.some(function(m){ return m[0]===r && m[1]===f; });
+      if(isTarget){
+        if(r===SOL.to[0] && f===SOL.to[1]){
+          POSITION[r][f] = POSITION[selected[0]][selected[1]];
+          POSITION[selected[0]][selected[1]] = '';
+          selected = null; solved = true; render();
+          say('✔ <b>Ra8 — checkmate!</b> The a-rook swings across; the g-rook was stuck behind its own pawn. This is what your coach spots for you <em>before</em> it matters.');
+          boardEl.classList.add('win');
+          return;
+        }
+        selected = null; render();
+        say('Not that square — the other rook can\'t get there. Think <b>back rank</b>, a-file. Try again.');
+        shake();
+        return;
+      }
+      selected = null; render();
     }
-    setTimeout(cycle, 900);
-    setInterval(function () { if (demoVisible) cycle(); }, 3200);
+    if(code === 'wr'){
+      selected = [r,f]; render(); showDots(rookMoves(r,f));
+      say('Good. Now — which square ends it? Look hard at the <b>back rank</b>.');
+    } else if(code && code[0]==='w'){
+      say('Use a <b>rook</b> — that\'s your mating piece here.');
+    }
+  }
+
+  if(boardEl){
+    render();
+    say('White to move. Two rooks — but only <b>one</b> reaches the back rank. Black never made luft. Find the mate.');
+    boardEl.addEventListener('click', function(e){
+      var cell = e.target.closest ? e.target.closest('.sq') : null;
+      if(!cell) return;
+      var rc = cell.dataset.rc.split('-');
+      onSquare(+rc[0], +rc[1]);
+    });
   }
 })();
