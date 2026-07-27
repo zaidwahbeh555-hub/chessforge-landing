@@ -3,379 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChessForge — The chess coach that knows your weaknesses</title>
-<meta name="description" content="ChessForge watches you play, learns the mistakes you repeat, and coaches you through every move — live, before you blunder. Not after.">
-
-<meta property="og:title" content="ChessForge — the coach that knows your weaknesses">
-<meta property="og:description" content="Live AI chess coaching, built from your own mistakes. Stop losing for the same reasons.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://chessforge.org">
-
+<title>ChessForge — a grandmaster, sitting beside you</title>
+<meta name="description" content="GM Forge watches every move you play, points at what you are missing, and turns your real mistakes into drills that stop the pattern happening again.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.fontshare.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300d4ff'>&#9822;</text></svg>">
+<link rel="stylesheet" href="style.css?v=f1">
 </head>
 <body>
+<nav class="nav">
+  <a class="wordmark" href="#top">Chess<strong>Forge</strong></a>
+  <div class="nav-mid">
+    <a href="#coaching">Coaching</a><a href="#training">Training</a><a href="#pricing">Pricing</a>
+  </div>
+  <a class="btn btn-primary btn-sm" href="https://app.chessforge.org">Open the app</a>
+</nav>
 
-<!-- ░░ NAV ░░ -->
-<header class="nav" id="nav">
-  <a href="#top" class="brand" aria-label="ChessForge home">
-    <span class="brand-hex">⬡</span><span class="brand-serif">Chess</span><span class="brand-bold">Forge</span>
-  </a>
-  <nav class="nav-links" id="navLinks">
-    <a href="#how">How it works</a>
-    <a href="#features">Features</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-    <a href="https://app.chessforge.org" class="nav-cta">Open app →</a>
-  </nav>
-  <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span></button>
+<header class="hero" id="top">
+  <div class="hero-copy">
+    <h1>A grandmaster,<br><em>sitting beside you.</em></h1>
+    <p class="lede">GM Forge watches every move you play, points at what you are missing, and asks the question you should have asked yourself.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://app.chessforge.org">Play your first coached game</a>
+      <span class="cta-note">No credit card. Works in the browser.</span>
+    </div>
+  </div>
+  <div class="hero-art"><svg viewBox="0 0 680 420" width="100%" role="img"><title>GM Forge pointing at d3</title><desc>The arm extends from GM Forge across the board and the fingertip lands on the d3 square.</desc><defs><symbol id="p-bK" viewBox="0 0 45 45"><g fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="21.3" y="4" width="2.4" height="8.4" rx="1"/><rect x="18.4" y="6.6" width="8.2" height="2.4" rx="1"/><path d="M22.5 12.4 C17.2 12.4 15.6 16.4 17.4 19.2 C13.4 20.4 12.8 26 16.4 28.6 L28.6 28.6 C32.2 26 31.6 20.4 27.6 19.2 C29.4 16.4 27.8 12.4 22.5 12.4 Z"/><path d="M16.4 28.6 L28.6 28.6 Q31 33 30 35.8 L15 35.8 Q14 33 16.4 28.6 Z"/><path d="M11.5 39.5 Q11.5 36 15 35.6 L30 35.6 Q33.5 36 33.5 39.5 Q33.5 42.6 30.3 42.6 L14.7 42.6 Q11.5 42.6 11.5 39.5 Z"/></g><g fill="#f4f4f4" stroke="#f4f4f4" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"></g></symbol><symbol id="p-bN" viewBox="0 0 45 45"><g fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M13 42 C12.5 34 13.5 29 17.5 26 C12.5 25.5 11 20 14 15.5 C15.5 13.3 15 11.5 14.5 8.5 L18.5 11 C20.5 7.8 25.5 7.5 29 11.5 C32.5 16 33 25 31.5 31 C31 33.5 31.5 39 31.5 42 Z"/><path d="M10.5 41.5 Q9.4 41.5 9.4 43 Q9.4 44.3 10.9 44.3 L34.1 44.3 Q35.6 44.3 35.6 43 Q35.6 41.5 34.5 41.5 Z"/></g><g fill="#f4f4f4" stroke="#f4f4f4" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"><circle cx="17.4" cy="16" r="1.3"/><path d="M27.4 12.2 C29.8 16 30.3 23 29.3 29" fill="none"/></g></symbol><symbol id="p-bP" viewBox="0 0 45 45"><g fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><circle cx="22.5" cy="10.5" r="4.6"/><path d="M18.4 15.2 Q17.4 19 16 24 Q14.8 29.5 14.2 33 L30.8 33 Q30.2 29.5 29 24 Q27.6 19 26.6 15.2 Z"/><path d="M13.5 39.8 Q13.5 36.8 16.3 36.5 L28.7 36.5 Q31.5 36.8 31.5 39.8 Q31.5 42.5 28.8 42.5 L16.2 42.5 Q13.5 42.5 13.5 39.8 Z"/></g><g fill="#f4f4f4" stroke="#f4f4f4" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"></g></symbol><symbol id="p-wK" viewBox="0 0 45 45"><g fill="#f8f8f8" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="21.3" y="4" width="2.4" height="8.4" rx="1"/><rect x="18.4" y="6.6" width="8.2" height="2.4" rx="1"/><path d="M22.5 12.4 C17.2 12.4 15.6 16.4 17.4 19.2 C13.4 20.4 12.8 26 16.4 28.6 L28.6 28.6 C32.2 26 31.6 20.4 27.6 19.2 C29.4 16.4 27.8 12.4 22.5 12.4 Z"/><path d="M16.4 28.6 L28.6 28.6 Q31 33 30 35.8 L15 35.8 Q14 33 16.4 28.6 Z"/><path d="M11.5 39.5 Q11.5 36 15 35.6 L30 35.6 Q33.5 36 33.5 39.5 Q33.5 42.6 30.3 42.6 L14.7 42.6 Q11.5 42.6 11.5 39.5 Z"/></g><g fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"></g></symbol><symbol id="p-wQ" viewBox="0 0 45 45"><g fill="#f8f8f8" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M9 20.5 L11 9.5 L16.6 17 L22.5 8 L28.4 17 L34 9.5 L36 20.5 Z"/><circle cx="9" cy="8.4" r="2.1"/><circle cx="16.6" cy="6.6" r="2.1"/><circle cx="22.5" cy="5.6" r="2.3"/><circle cx="28.4" cy="6.6" r="2.1"/><circle cx="36" cy="8.4" r="2.1"/><path d="M10.6 20.5 L34.4 20.5 L33.2 24 L11.8 24 Z"/><path d="M11.8 24 L33.2 24 Q35 30 31.5 35.6 L13.5 35.6 Q10 30 11.8 24 Z"/><path d="M11.5 39.5 Q11.5 36 15 35.6 L30 35.6 Q33.5 36 33.5 39.5 Q33.5 42.6 30.3 42.6 L14.7 42.6 Q11.5 42.6 11.5 39.5 Z"/></g><g fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"></g></symbol><symbol id="p-wR" viewBox="0 0 45 45"><g fill="#f8f8f8" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M12 8.5 L12 14 L33 14 L33 8.5 L28.5 8.5 L28.5 10.8 L25 10.8 L25 8.5 L20 8.5 L20 10.8 L16.5 10.8 L16.5 8.5 Z"/><path d="M14 14 L31 14 L29.4 18.5 L15.6 18.5 Z"/><path d="M15.6 18.5 L29.4 18.5 Q31 27 31 32 L14 32 Q14 27 15.6 18.5 Z"/><path d="M12.5 32 L32.5 32 Q34.5 33 34.5 35.6 L10.5 35.6 Q10.5 33 12.5 32 Z"/></g><g fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M17 20 L28 20" fill="none"/><path d="M16.4 24 L28.6 24" fill="none"/></g></symbol></defs><ellipse cx="520" cy="300" rx="210" ry="170" fill="#7C5CFF" opacity="0.07"/><rect x="40" y="64" width="34" height="34" fill="#f0d9b5"/><rect x="74" y="64" width="34" height="34" fill="#b58863"/><rect x="108" y="64" width="34" height="34" fill="#f0d9b5"/><rect x="142" y="64" width="34" height="34" fill="#b58863"/><rect x="176" y="64" width="34" height="34" fill="#f0d9b5"/><rect x="210" y="64" width="34" height="34" fill="#b58863"/><rect x="244" y="64" width="34" height="34" fill="#f0d9b5"/><rect x="278" y="64" width="34" height="34" fill="#b58863"/><rect x="40" y="98" width="34" height="34" fill="#b58863"/><rect x="74" y="98" width="34" height="34" fill="#f0d9b5"/><rect x="108" y="98" width="34" height="34" fill="#b58863"/><rect x="142" y="98" width="34" height="34" fill="#f0d9b5"/><rect x="176" y="98" width="34" height="34" fill="#b58863"/><rect x="210" y="98" width="34" height="34" fill="#f0d9b5"/><rect x="244" y="98" width="34" height="34" fill="#b58863"/><rect x="278" y="98" width="34" height="34" fill="#f0d9b5"/><rect x="40" y="132" width="34" height="34" fill="#f0d9b5"/><rect x="74" y="132" width="34" height="34" fill="#b58863"/><rect x="108" y="132" width="34" height="34" fill="#f0d9b5"/><rect x="142" y="132" width="34" height="34" fill="#b58863"/><rect x="176" y="132" width="34" height="34" fill="#f0d9b5"/><rect x="210" y="132" width="34" height="34" fill="#b58863"/><rect x="244" y="132" width="34" height="34" fill="#f0d9b5"/><rect x="278" y="132" width="34" height="34" fill="#b58863"/><rect x="40" y="166" width="34" height="34" fill="#b58863"/><rect x="74" y="166" width="34" height="34" fill="#f0d9b5"/><rect x="108" y="166" width="34" height="34" fill="#b58863"/><rect x="142" y="166" width="34" height="34" fill="#f0d9b5"/><rect x="176" y="166" width="34" height="34" fill="#b58863"/><rect x="210" y="166" width="34" height="34" fill="#f0d9b5"/><rect x="244" y="166" width="34" height="34" fill="#b58863"/><rect x="278" y="166" width="34" height="34" fill="#f0d9b5"/><rect x="40" y="200" width="34" height="34" fill="#f0d9b5"/><rect x="74" y="200" width="34" height="34" fill="#b58863"/><rect x="108" y="200" width="34" height="34" fill="#f0d9b5"/><rect x="142" y="200" width="34" height="34" fill="#b58863"/><rect x="176" y="200" width="34" height="34" fill="#f0d9b5"/><rect x="210" y="200" width="34" height="34" fill="#b58863"/><rect x="244" y="200" width="34" height="34" fill="#f0d9b5"/><rect x="278" y="200" width="34" height="34" fill="#b58863"/><rect x="40" y="234" width="34" height="34" fill="#b58863"/><rect x="74" y="234" width="34" height="34" fill="#f0d9b5"/><rect x="108" y="234" width="34" height="34" fill="#b58863"/><rect x="142" y="234" width="34" height="34" fill="#f0d9b5"/><rect x="176" y="234" width="34" height="34" fill="#b58863"/><rect x="210" y="234" width="34" height="34" fill="#f0d9b5"/><rect x="244" y="234" width="34" height="34" fill="#b58863"/><rect x="278" y="234" width="34" height="34" fill="#f0d9b5"/><rect x="40" y="268" width="34" height="34" fill="#f0d9b5"/><rect x="74" y="268" width="34" height="34" fill="#b58863"/><rect x="108" y="268" width="34" height="34" fill="#f0d9b5"/><rect x="142" y="268" width="34" height="34" fill="#b58863"/><rect x="176" y="268" width="34" height="34" fill="#f0d9b5"/><rect x="210" y="268" width="34" height="34" fill="#b58863"/><rect x="244" y="268" width="34" height="34" fill="#f0d9b5"/><rect x="278" y="268" width="34" height="34" fill="#b58863"/><rect x="40" y="302" width="34" height="34" fill="#b58863"/><rect x="74" y="302" width="34" height="34" fill="#f0d9b5"/><rect x="108" y="302" width="34" height="34" fill="#b58863"/><rect x="142" y="302" width="34" height="34" fill="#f0d9b5"/><rect x="176" y="302" width="34" height="34" fill="#b58863"/><rect x="210" y="302" width="34" height="34" fill="#f0d9b5"/><rect x="244" y="302" width="34" height="34" fill="#b58863"/><rect x="278" y="302" width="34" height="34" fill="#f0d9b5"/><svg x="144" y="236" width="30" height="30" viewBox="0 0 45 45"><use href="#p-bN"/></svg><svg x="76" y="270" width="30" height="30" viewBox="0 0 45 45"><use href="#p-wQ"/></svg><svg x="212" y="270" width="30" height="30" viewBox="0 0 45 45"><use href="#p-wR"/></svg><svg x="246" y="304" width="30" height="30" viewBox="0 0 45 45"><use href="#p-wK"/></svg><svg x="246" y="66" width="30" height="30" viewBox="0 0 45 45"><use href="#p-bK"/></svg><svg x="42" y="100" width="30" height="30" viewBox="0 0 45 45"><use href="#p-bP"/></svg><svg x="280" y="100" width="30" height="30" viewBox="0 0 45 45"><use href="#p-bP"/></svg><rect x="143" y="235" width="32" height="32" fill="none" stroke="#22E5FF" stroke-width="2.4"/><g transform="translate(496,132) scale(0.72)"><path d="M8 220 C8 158 52 138 100 138 C148 138 192 158 192 220 Z" fill="#243044"/><path d="M82 140 L100 138 L118 140 L109 168 L91 168 Z" fill="#0f1520"/><path d="M95 146 L105 146 L112 200 L100 212 L88 200 Z" fill="#3b7fd4"/><rect x="87" y="120" width="26" height="30" rx="11" fill="#e0a878"/><ellipse cx="100" cy="88" rx="44" ry="48" fill="#eab387"/><circle cx="57" cy="90" r="8.5" fill="#e0a878"/><circle cx="143" cy="90" r="8.5" fill="#e0a878"/><path d="M56 84 C54 42 84 30 100 30 C116 30 146 42 144 84 C140 66 130 58 118 56 C122 62 122 70 120 74 C114 58 96 54 84 58 C82 66 82 72 84 76 C74 66 62 68 56 84 Z" fill="#2a2018"/><g class="forge-brow" stroke="#2a2018" stroke-width="4.4" fill="none" stroke-linecap="round"><path d="M74 72 Q84 79 94 82"/><path d="M106 82 Q116 79 126 72"/></g><g class="forge-eyes"><ellipse cx="84" cy="91" rx="7.2" ry="8" fill="#fff"/><circle cx="85" cy="92" r="3.4" fill="#20242c"/><ellipse cx="116" cy="91" rx="7.2" ry="8" fill="#fff"/><circle cx="115" cy="92" r="3.4" fill="#20242c"/></g><path d="M100 95 L96 106 L104 106 Z" fill="#dd9a68"/><g class="forge-mouth" stroke="#b5673c" stroke-width="4.2" fill="none" stroke-linecap="round"><path d="M87 120 Q100 111 113 120"/></g><path d="M56 88 C54 52 146 52 144 88" stroke="#0f1520" stroke-width="6" fill="none"/><rect x="50" y="84" width="13" height="22" rx="6" fill="#0f1520"/><rect x="137" y="84" width="13" height="22" rx="6" fill="#0f1520"/><path d="M63 106 Q80 124 92 118" stroke="#0f1520" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="92" cy="118" r="5.5" fill="#3b7fd4"/><circle id="forge-shoulder" cx="158" cy="176" r="4" opacity="0"/></g><path d="M609.8 258.7 Q394.2 190.0 176.4 251.3" fill="none" stroke="#151a24" stroke-width="17" stroke-linecap="round"/><path d="M609.8 258.7 Q394.2 190.0 176.4 251.3" fill="none" stroke="#243044" stroke-width="14" stroke-linecap="round"/><g transform="translate(159.0,251.0) rotate(164.3) scale(0.62)"><g id="forge-hand-art"><g fill="#151a24" stroke="#151a24" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"><rect x="-46" y="-7" width="26" height="22" rx="9"/><rect x="-26" y="-3.6" width="26" height="7.2" rx="3.6"/><path d="M-30 -5.4 L-21.5 -1.8"/></g><g fill="#eab387" stroke="none"><rect x="-46" y="-7" width="26" height="22" rx="9"/><rect x="-26" y="-3.6" width="26" height="7.2" rx="3.6"/></g><path d="M-30 -5.4 L-21.5 -1.8" stroke="#e0a878" stroke-width="7.2" stroke-linecap="round" fill="none"/><path d="M-41 9.5 Q-33 12 -25 9.5" stroke="#c98a5f" stroke-width="1.7" fill="none" stroke-linecap="round"/></g></g><circle cx="159.0" cy="251.0" r="2.2" fill="#22E5FF"/><text x="40" y="34" fill="#F2F4FF" font-size="14" font-family="sans-serif">His knight on <tspan fill="#22E5FF" font-weight="700">d3</tspan> forks your queen and rook.</text><text x="40" y="358" fill="#5A5E80" font-size="11" font-family="sans-serif">arm: shoulder(610,259) to wrist(176,251) · fingertip lands exactly on d3 centre (159,251)</text></svg></div>
 </header>
 
-<main id="top">
-
-<!-- ░░ HERO ░░ -->
-<section class="hero">
-  <div class="hero-grain" aria-hidden="true"></div>
-
-  <!-- oversized screenprint knight, runs off the right edge -->
-  <div class="hero-knight" aria-hidden="true">
-    <span class="knight-ghost">♞</span>
-    <span class="knight-main">♞</span>
-  </div>
-
-  <div class="hero-inner">
-    <p class="eyebrow reveal">Live AI chess coaching</p>
-
-    <h1 class="hero-h1">
-      <span class="reveal d1">The chess coach</span>
-      <span class="reveal d2">that knows your</span>
-      <span class="reveal d3 word-underline">
-        weaknesses
-        <svg class="scribble" viewBox="0 0 340 34" fill="none" aria-hidden="true">
-          <path d="M6 22 C 70 6, 130 30, 196 15 C 250 3, 300 12, 334 24" stroke="#00d4ff" stroke-width="6" stroke-linecap="round"/>
-        </svg>
-      </span>
-    </h1>
-
-    <div class="hero-tail">
-      <p class="hero-sub reveal d4">
-        ChessForge watches you play, learns the mistakes you repeat, and
-        coaches you through every move — <em>live, before you blunder.</em>
-        Not after.
-      </p>
-      <div class="hero-cta reveal d5">
-        <a href="https://app.chessforge.org" class="btn btn-primary">Start playing free →</a>
-        <a href="#how" class="btn btn-ghost">See how it works</a>
-      </div>
-      <p class="hero-note reveal d6">No download. No credit card. First game analysed free.</p>
-    </div>
-  </div>
-
-  <!-- interactive coach board demo, overlapping the headline column -->
-  <figure class="hero-demo reveal d5" aria-label="ChessForge coach demo">
-    <div class="demo-window">
-      <div class="demo-topbar">
-        <span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-dot"></span>
-        <span class="demo-title">Play &amp; Coach</span>
-      </div>
-      <div class="demo-body">
-        <div class="demo-board" id="demoBoard"></div>
-        <svg class="demo-arrow" id="demoArrow" viewBox="0 0 100 100" aria-hidden="true">
-          <defs>
-            <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-              <path d="M0 0 L10 5 L0 10 z" fill="#00d4ff"/>
-            </marker>
-          </defs>
-        </svg>
-        <div class="demo-coach" id="demoCoach">
-          <div class="demo-coach-avatar">♛</div>
-          <div class="demo-coach-text" id="demoCoachText">Watching your position…</div>
-        </div>
-      </div>
-    </div>
-  </figure>
-</section>
-
-<!-- ░░ PROBLEM ░░ -->
-<section class="problem" id="problem">
-  <span class="ghost-number" aria-hidden="true">1400</span>
-  <div class="problem-inner">
-    <p class="eyebrow reveal">The problem</p>
-    <h2 class="big-serif reveal">
-      You keep losing to the same&nbsp;mistakes — and nobody ever told you <em>which&nbsp;ones.</em>
-    </h2>
-    <div class="problem-cols">
-      <p class="reveal">
-        Every chess site hands a 900 and a 1900 the exact same puzzles. Generic
-        lessons. Generic openings. A rating graph that goes up and down and never
-        explains <strong>why.</strong>
-      </p>
-      <p class="reveal">
-        So you plateau. You hang the same bishop. You rush the same queen out. You
-        lose the same won endgames — over and over — with no idea it's a
-        <em>pattern.</em>
-      </p>
-    </div>
+<section class="band">
+  <div class="band-inner">
+    <p class="kicker">The problem</p>
+    <h2 class="editorial">You already know you are making the same mistakes. You just cannot see them while they are happening.</h2>
+    <p class="body">Post-game analysis tells you what went wrong after the result is decided. By then the position is cold, the tension is gone, and the lesson does not attach to anything. The mistake repeats next game.</p>
   </div>
 </section>
 
-<!-- ░░ HOW IT WORKS ░░ -->
-<section class="how" id="how">
-  <div class="how-head">
-    <p class="eyebrow reveal">How it works</p>
-    <h2 class="big-serif reveal">Three steps. Then a coach who actually knows you.</h2>
+<section class="split" id="coaching">
+  <div>
+    <p class="kicker">Live coaching</p>
+    <h2>He interrupts <em>before</em> the blunder, not after.</h2>
+    <p class="body">When the position turns critical, GM Forge stops the game. His arm extends across the board and his finger lands on the exact square that matters. Then he asks — and the board stays locked until you answer.</p>
+    <p class="body">Every move he names comes straight out of the engine's own lines for that exact position. He cannot invent a move, and he stays quiet when nothing is happening.</p>
   </div>
-
-  <ol class="steps">
-    <li class="step step-l reveal">
-      <span class="step-num">01</span>
-      <div class="step-body">
-        <h3>Analyse your games</h3>
-        <p>Paste a PGN from Chess.com or Lichess. Stockfish reviews every move at
-        depth 16 and flags exactly where — and how badly — it went wrong.</p>
-      </div>
-    </li>
-
-    <svg class="step-link" viewBox="0 0 200 90" aria-hidden="true">
-      <path d="M150 6 C 60 20, 40 55, 60 84" stroke="#3a3a46" stroke-width="2.5" stroke-linecap="round" fill="none" stroke-dasharray="2 10"/>
-    </svg>
-
-    <li class="step step-r reveal">
-      <span class="step-num">02</span>
-      <div class="step-body">
-        <h3>Get your Thinking Fingerprint</h3>
-        <p>Not just <em>what</em> you got wrong — <em>why.</em> Impulsive Mover.
-        Tunnel Vision. Queen Rusher. Your cognitive pattern, named and explained.
-        No other platform does this.</p>
-      </div>
-    </li>
-
-    <svg class="step-link flip" viewBox="0 0 200 90" aria-hidden="true">
-      <path d="M50 6 C 140 20, 160 55, 140 84" stroke="#3a3a46" stroke-width="2.5" stroke-linecap="round" fill="none" stroke-dasharray="2 10"/>
-    </svg>
-
-    <li class="step step-l reveal">
-      <span class="step-num">03</span>
-      <div class="step-body">
-        <h3>Play with your live coach</h3>
-        <p>Now play. A grandmaster-style coach sits beside you — drawing arrows,
-        asking questions, popping quizzes on critical moves, and stopping you
-        <em>before</em> the blunder instead of explaining it after.</p>
-      </div>
-    </li>
-  </ol>
-</section>
-
-<!-- ░░ FEATURES ░░ -->
-<section class="features" id="features">
-  <div class="feat-head">
-    <p class="eyebrow reveal">What you get</p>
-    <h2 class="big-serif reveal">Built from <em>your</em> mistakes — not a textbook.</h2>
-  </div>
-
-  <!-- hero feature: live coach, oversized -->
-  <article class="feat-hero reveal">
-    <div class="feat-hero-copy">
-      <span class="feat-tag">The signature feature</span>
-      <h3>A coach who talks to you mid-game.</h3>
-      <p>Live eval bar. Arrows pointing at the threat. Socratic questions —
-      "what is your opponent threatening here?" — and forced MCQs on the moves
-      that decide the game. It knows your weakness profile, so the nudges are
-      about <em>you.</em></p>
-    </div>
-    <div class="feat-hero-art">
-      <div class="coachcard">
-        <div class="coachcard-head">
-          <div class="coachcard-avatar">♛</div>
-          <div>
-            <div class="coachcard-name">GM&nbsp;Forge</div>
-            <div class="coachcard-status">Critical moment</div>
-          </div>
-          <div class="coachcard-eval">+0.4</div>
-        </div>
-        <div class="coachcard-q">
-          <span class="q-tail"></span>
-          Before you move — what does <b>Nf6</b> attack now, and what did it leave loose?
-        </div>
-        <div class="coachcard-mcq">
-          <div class="mcq-row">A &nbsp; Take the knight</div>
-          <div class="mcq-row correct">B &nbsp; Defend e4 with d3 ✓</div>
-          <div class="mcq-row">C &nbsp; Trade queens</div>
-        </div>
-      </div>
-    </div>
-  </article>
-
-  <!-- smaller features, offset staggered — not a tidy grid -->
-  <div class="feat-list">
-    <article class="feat-item reveal off-a">
-      <div class="feat-ic">🧩</div>
-      <h4>Puzzles from your blunders</h4>
-      <p>Every mistake you make becomes a puzzle. You don't drill random
-      positions — you re-fight the exact ones you lost.</p>
-    </article>
-
-    <article class="feat-item reveal off-b">
-      <div class="feat-ic">🎯</div>
-      <h4>Personal MCQ lessons</h4>
-      <p>Interactive questions built around your weakest patterns, with instant
-      right/wrong feedback and the reasoning behind it.</p>
-    </article>
-
-    <article class="feat-item reveal off-c">
-      <div class="feat-ic">🧠</div>
-      <h4>Pattern detection</h4>
-      <p>Hanging pieces, king-safety lapses, early queens, missed tactics —
-      counted, ranked, and tracked as you improve.</p>
-    </article>
+  <div class="moment-card">
+    <div class="moment-top"><span class="moment-tag">Opponent fork</span><span class="eval-chip">&minus;0.4</span></div>
+    <blockquote>His knight on <b>d3</b> forks your queen and rook. You cannot save both &mdash; so this is not about saving. Which loss keeps your initiative?</blockquote>
+    <div class="opt"><span>A</span>Move the queen, give up the exchange</div>
+    <div class="opt opt-sel"><span>B</span>Counter-attack with tempo first<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4.8 12.6 9.6 17.4 19.2 6.8"/></svg></div>
+    <div class="opt"><span>C</span>Defend the rook</div>
   </div>
 </section>
 
-<!-- ░░ PRICING ░░ -->
+<section class="band alt" id="training">
+  <div class="band-inner">
+    <p class="kicker">Training that rewires</p>
+    <h2 class="editorial">Your mistakes become the curriculum.</h2>
+    <p class="body">Every blunder you make is classified, stored, and turned into a drill built from your own games. Then the drill comes back on a schedule designed around how memory actually works.</p>
+    <div class="sci-grid">
+      <div class="sci"><h4>Spaced repetition</h4><p>Patterns return at widening intervals, timed to arrive just before you would forget. It feels harder than re-reading. That difficulty is the mechanism.</p></div>
+      <div class="sci"><h4>Confidence-rated correction</h4><p>We ask how sure you are before showing the answer. Mistakes you were confident about correct hardest and stick longest.</p></div>
+      <div class="sci"><h4>Retrieval, not recognition</h4><p>You play the move on a real board rather than picking it from a list. Recognising an answer is not the same as finding it.</p></div>
+      <div class="sci"><h4>Interleaving</h4><p>Once a pattern is half-learned we mix it with others, so you first have to work out which problem you are facing — the real over-the-board skill.</p></div>
+    </div>
+    <p class="cite">Built on the forgetting curve (Ebbinghaus), desirable difficulties (Bjork), learning from errors (Metcalfe), and retrieval practice (Karpicke &amp; Roediger).</p>
+  </div>
+</section>
+
+<section class="split rev">
+  <div>
+    <p class="kicker">Adaptive opponent</p>
+    <h2>The bot meets you where you actually are.</h2>
+    <p class="body">Your first game calibrates. From then on the engine plays at a level tuned to how you really play, not to a number you typed in — strong enough to punish the mistakes you make, not so strong that nothing is learnable.</p>
+  </div>
+  <div>
+    <p class="kicker">How it works</p>
+    <ol class="steps">
+      <li><b>Play.</b> Start a game in the browser.</li>
+      <li><b>Get coached live.</b> He stops you at the moments that matter.</li>
+      <li><b>Your mistakes become drills.</b> Built from your own positions.</li>
+      <li><b>The pattern stops happening.</b> That is the whole product.</li>
+    </ol>
+  </div>
+</section>
+
 <section class="pricing" id="pricing">
-  <div class="price-head">
-    <p class="eyebrow reveal">Pricing</p>
-    <h2 class="big-serif reveal">Start free. Go Pro when you're hooked.</h2>
-  </div>
-
-  <div class="price-layout">
-    <!-- free: understated, small -->
-    <article class="plan plan-free reveal">
-      <h3 class="plan-name">Free</h3>
-      <div class="plan-price"><span class="plan-amt">$0</span><span class="plan-per">forever</span></div>
-      <ul class="plan-list">
-        <li>1 game analysis / day</li>
-        <li>Thinking Fingerprint</li>
-        <li>Play &amp; Coach (basic)</li>
-        <li>Puzzles from your games</li>
-      </ul>
-      <a href="https://app.chessforge.org" class="btn btn-ghost btn-block">Start free →</a>
-    </article>
-
-    <!-- pro: oversized, dominant -->
-    <article class="plan plan-pro reveal">
-      <span class="plan-badge">🎉 Founding Member price</span>
-      <h3 class="plan-name">Pro</h3>
-      <div class="plan-price">
-        <span class="plan-strike">$19</span>
-        <span class="plan-amt">$9</span>
-        <span class="plan-per">/ month</span>
-      </div>
-      <ul class="plan-list plan-list-pro">
-        <li><b>Unlimited</b> game analysis</li>
-        <li>Full live coach — arrows, questions, MCQs</li>
-        <li>Personal interactive lessons</li>
-        <li>Infinite weakness-targeted puzzles</li>
-        <li>Deeper pattern &amp; progress tracking</li>
-      </ul>
-      <a href="https://app.chessforge.org" class="btn btn-primary btn-block">Get Pro →</a>
-      <p class="plan-fine">Cancel anytime, one click. No lock-in.</p>
-    </article>
-  </div>
+  <p class="kicker">Founding Member</p>
+  <h2>Everything, while it is being built.</h2>
+  <div class="price"><span class="was">$19</span><span class="now">$9</span><span class="per">/month</span></div>
+  <ul class="plan">
+    <li>Unlimited coached games</li><li>Live pointing and blocking questions</li>
+    <li>Drills built from your own mistakes</li><li>Spaced-repetition scheduling and streaks</li>
+    <li>The founding price, locked for as long as you stay subscribed</li>
+  </ul>
+  <a class="btn btn-primary" href="https://app.chessforge.org">Start playing</a>
 </section>
 
-<!-- ░░ TESTIMONIALS (placeholder slots) ░░ -->
-<section class="proof" id="proof">
-  <div class="proof-head">
-    <span class="quote-mark" aria-hidden="true">“</span>
-    <h2 class="big-serif reveal">The wall where the reviews will go.</h2>
-    <p class="reveal proof-sub">Fresh out of the forge. Be one of the first to
-    leave your mark — these slots are waiting for you.</p>
-  </div>
-  <div class="proof-slots">
-    <blockquote class="slot reveal">
-      <p>“Your review here.”</p>
-      <footer>— a future ChessForge player</footer>
-    </blockquote>
-    <blockquote class="slot reveal off-b">
-      <p>“…and here.”</p>
-      <footer>— maybe you?</footer>
-    </blockquote>
-    <blockquote class="slot reveal off-c">
-      <p>“One more slot, saved.”</p>
-      <footer>— coming soon</footer>
-    </blockquote>
-  </div>
-</section>
-
-<!-- ░░ FAQ ░░ -->
-<section class="faq" id="faq">
-  <div class="faq-head">
-    <p class="eyebrow reveal">Questions</p>
-    <h2 class="big-serif reveal">The short answers.</h2>
-  </div>
-  <div class="faq-list">
-    <details class="faq-item reveal">
-      <summary>What is ChessForge?<span class="faq-plus"></span></summary>
-      <p>An AI chess-improvement tool that analyses your real games, tells you the
-      specific mistakes you repeat and <em>why</em> you make them, then coaches you
-      through live games against a calibrated bot — pointing things out before you
-      go wrong.</p>
-    </details>
-    <details class="faq-item reveal">
-      <summary>Do I need to be good at chess?<span class="faq-plus"></span></summary>
-      <p>No. ChessForge meets you where you are — the bot calibrates to your level
-      and the coaching is tuned to <em>your</em> weaknesses, whether you're 600 or
-      1900. Beginners get the most out of it, honestly.</p>
-    </details>
-    <details class="faq-item reveal">
-      <summary>Can I cancel anytime?<span class="faq-plus"></span></summary>
-      <p>Yes — one click through the Stripe billing portal, no emails, no
-      hoops. You keep Pro until the end of the period you already paid for.</p>
-    </details>
-    <details class="faq-item reveal">
-      <summary>How is this different from Chess.com analysis?<span class="faq-plus"></span></summary>
-      <p>Chess.com tells you a move was a blunder — after the game. ChessForge finds
-      the <em>pattern</em> behind your blunders, names your thinking style, builds
-      puzzles and lessons from your own losses, and then coaches you <em>during</em>
-      the game so the mistake never happens. Personalised, not generic.</p>
-    </details>
-  </div>
-</section>
-
-<!-- ░░ CLOSING CTA ░░ -->
-<section class="closer">
-  <div class="closer-inner reveal">
-    <h2 class="big-serif">Stop losing for the same reasons.</h2>
-    <a href="https://app.chessforge.org" class="btn btn-primary btn-lg">Start playing free →</a>
-  </div>
-</section>
-
-</main>
-
-<!-- ░░ FOOTER ░░ -->
-<footer class="footer">
-  <div class="footer-top">
-    <div class="footer-col">
-      <div class="footer-brand"><span class="brand-hex">⬡</span>ChessForge</div>
-      <p class="footer-tag">The only chess platform that knows <em>your</em> weaknesses and coaches you through every move — in real time.</p>
-    </div>
-    <div class="footer-links">
-      <div>
-        <h5>Product</h5>
-        <a href="https://app.chessforge.org">Open app</a>
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
-      </div>
-      <div>
-        <h5>More</h5>
-        <a href="#faq">FAQ</a>
-        <a href="mailto:hello@chessforge.org">Contact</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-wordmark" aria-hidden="true">ChessForge</div>
-  <div class="footer-bottom">
-    <span>© <span id="year">2026</span> ChessForge. Built by a solo founder.</span>
-    <span>Made for players who are tired of guessing.</span>
+<footer class="foot">
+  <div class="foot-in">
+    <span>&copy; 2026 ChessForge. All rights reserved.</span>
+    <span class="foot-links">
+      <a href="#" data-open="terms">Terms of Service</a>
+      <a href="#" data-open="privacy">Privacy Policy</a>
+    </span>
   </div>
 </footer>
 
-<script src="script.js"></script>
+<div class="modal-backdrop" id="terms" role="dialog" aria-modal="true" aria-labelledby="terms-t" hidden>
+  <div class="modal">
+    <div class="modal-head"><h2 id="terms-t">Terms of Service</h2>
+      <button class="modal-x" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.4 6.4 17.6 17.6M17.6 6.4 6.4 17.6"/></svg>
+      </button></div>
+    <div class="modal-body"><h3>1. Acceptable use</h3><p>ChessForge is for personal chess study. Do not use the service to harass others, to attempt to breach or overload our systems, to scrape or resell our content, or to use engine analysis obtained here to cheat in rated games on any other platform. We may suspend accounts that do.</p><h3>2. Your account</h3><p>You are responsible for keeping your password secure and for activity under your account. Provide accurate information when you register. You must be old enough to form a binding contract in your jurisdiction, or have a parent or guardian agree on your behalf.</p><h3>3. Subscriptions and cancellation</h3><p>Paid plans renew automatically each billing period until cancelled. You can cancel at any time from your account settings; access continues to the end of the period you have already paid for. We do not provide pro-rated refunds for partial periods except where required by law.</p><h3>4. Disclaimer of warranties</h3><p>The service is provided on an "as is" and "as available" basis. Coaching output is generated automatically from engine analysis and is intended for study. We do not warrant that the service will be uninterrupted, error-free, or that any particular improvement in playing strength will result.</p><h3>5. Limitation of liability</h3><p>To the maximum extent permitted by law, ChessForge is not liable for indirect, incidental, or consequential damages, or for loss of data or profits. Our total liability for any claim is limited to the amount you paid us in the twelve months before the claim.</p><h3>6. Changes to these terms</h3><p>We may update these terms as the product changes. If a change is material we will give notice in the app or by email before it takes effect. Continuing to use the service after that means you accept the updated terms.</p><h3>7. Contact</h3><p>Questions about these terms: zaidwahbeh555@gmail.com</p>
+      <p class="modal-note">This is a general template provided for convenience and is not legal advice. Last updated 27 July 2026.</p>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop" id="privacy" role="dialog" aria-modal="true" aria-labelledby="privacy-t" hidden>
+  <div class="modal">
+    <div class="modal-head"><h2 id="privacy-t">Privacy Policy</h2>
+      <button class="modal-x" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.4 6.4 17.6 17.6M17.6 6.4 6.4 17.6"/></svg>
+      </button></div>
+    <div class="modal-body"><h3>What we collect</h3><p>Account details you give us (email address and username), the chess data you generate (games played in the app, moves, mistakes detected, drill results, streaks and progress), and basic usage and device information such as pages visited and browser type.</p><h3>How we use it</h3><p>To run the service: to analyse your games, build your weakness profile, schedule your drills, and keep your progress and streak. We use aggregate, non-identifying usage data to understand which features help people improve. We do not sell your personal data.</p><h3>Payments</h3><p>Card payments are processed by Stripe. We never see or store your full card number. Stripe processes your payment details under its own privacy policy.</p><h3>Cookies and local storage</h3><p>We use a session cookie to keep you signed in, and browser local storage to remember interface preferences such as your theme. We do not use third-party advertising cookies.</p><h3>Data retention</h3><p>We keep your account and chess data for as long as your account is open. If you close your account we delete or anonymise your personal data within 30 days, except where we must keep records for legal or accounting reasons.</p><h3>Deletion and access requests</h3><p>You can ask for a copy of your data or ask us to delete it by emailing zaidwahbeh555@gmail.com. We will respond within 30 days.</p><h3>Contact</h3><p>Privacy questions: zaidwahbeh555@gmail.com</p>
+      <p class="modal-note">This is a general template provided for convenience and is not legal advice. Last updated 27 July 2026.</p>
+    </div>
+  </div>
+</div>
+<script src="script.js?v=f1"></script>
 </body>
 </html>
