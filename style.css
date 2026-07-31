@@ -428,3 +428,10 @@ em{font-style:italic}
   .footer-top{flex-direction:column;gap:2rem}
   .footer-links{gap:3rem}
 }
+
+/* Struck-through items on the Free plan: what you do not get, stated plainly.
+   The contrast is the argument, so these stay legible rather than faded out. */
+.plan-list .plan-off{color:#8a8f9c;position:relative;padding-left:1.15em}
+.plan-list .plan-off::before{content:"\00d7";position:absolute;left:0;color:#e5484d;font-weight:700}
+.plan-free .plan-list li{padding-left:1.15em;position:relative}
+.plan-free .plan-list li:not(.plan-off)::before{content:"\2713";position:absolute;left:0;color:#6b7280}
