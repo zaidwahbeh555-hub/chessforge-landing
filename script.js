@@ -49,119 +49,186 @@
     reveals.forEach(function (el) { el.classList.add('in'); });
   }
 
-  /* ── Coach board demo ────────────────────────────────────────────── */
-  /* ── Interactive hero puzzle: back-rank mate (White to move, Rd8#) ── */
-  var boardEl = document.getElementById('demoBoard');
-  var coachTextEl = document.getElementById('demoCoachText');
+})();
 
-  // App-matching Staunton SVG pieces
-  var FB_BASE = '<path d="M9.5 42.5 L35.5 42.5 L35.5 39.5 Q35.5 37.5 33 37.5 L12 37.5 Q9.5 37.5 9.5 39.5 Z"/><path d="M12.5 37.5 L32.5 37.5 L31 32 L14 32 Z"/>';
-  var FB = {
-    k:'<rect x="21" y="4" width="3" height="8" rx="1"/><rect x="18.5" y="6.5" width="8" height="3" rx="1"/><path d="M22.5 12 C16 12 13 18 17 24 Q22.5 20 28 24 C32 18 29 12 22.5 12 Z"/><path d="M15 24 Q22.5 20 30 24 L29 32 L16 32 Z"/>'+FB_BASE,
-    q:'<circle cx="10" cy="13" r="2.6"/><circle cx="17.5" cy="9.5" r="2.6"/><circle cx="27.5" cy="9.5" r="2.6"/><circle cx="35" cy="13" r="2.6"/><circle cx="22.5" cy="8" r="2.6"/><path d="M10 14 L13.5 27 L31.5 27 L35 14 L29 20 L25.5 12 L22.5 19 L19.5 12 L16 20 Z"/><path d="M13.5 27 L31.5 27 L30 32 L15 32 Z"/>'+FB_BASE,
-    b:'<circle cx="22.5" cy="6" r="2.6"/><path d="M22.5 9 C29 13 30 21 24 27 L21 27 C15 21 16 13 22.5 9 Z"/><rect x="20.5" y="15" width="4" height="1.8" rx=".6"/><rect x="21.6" y="13.9" width="1.8" height="4" rx=".6"/><path d="M17 27 L28 27 L29.5 32 L15.5 32 Z"/>'+FB_BASE,
-    n:'<path d="M13 42 C12 33 14 28 18 25 C13.5 24 12 19 15 15 C17 12 15 11 14.5 8 L18 10 C20 7 25 7 28 11 C31.5 15.5 32 24 31 30 C30.5 34 31 38 31 42 Z"/><circle class="fb-eye" cx="17.5" cy="17" r="1.5"/>',
-    r:'<path d="M12 9 L12 15 L33 15 L33 9 L28.5 9 L28.5 11.5 L25 11.5 L25 9 L20 9 L20 11.5 L16.5 11.5 L16.5 9 Z"/><path d="M14.5 15 L30.5 15 L29 20 L16 20 Z"/><path d="M16 20 L29 20 L30.5 32 L14.5 32 Z"/>'+FB_BASE,
-    p:'<circle cx="22.5" cy="11" r="5.2"/><path d="M18 17 L27 17 L26 20 L19 20 Z"/><path d="M17.5 32 Q16 24 22.5 20 Q29 24 27.5 32 Z"/>'+FB_BASE
-  };
-  function pieceSVG(code){ return '<svg class="dp '+code[0]+'" viewBox="0 0 45 45">'+FB[code[1]]+'</svg>'; }
 
-  // 6k1/5ppp/8/8/8/8/5PPP/R5RK w — two rooks, but only Ra8 is mate (g-rook blocked by g2)
-  var START = [
-    ['','','','','','','bk',''],
-    ['','','','','','bp','bp','bp'],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['','','','','','wp','wp','wp'],
-    ['wr','','','','','','wr','wk']
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO DEMO — GM Forge walking through a real position
+   The markup for this existed but nothing ever drove it, so the hero showed an
+   empty board reading "Watching your position…" forever.
+
+   The position is the Scholar's Mate setup after 1.e4 e5 2.Bc4 Nc6 3.Qf3.
+   Every number below was checked against Stockfish before being written down:
+   f7 really is attacked twice and defended once, ...a6 and ...Bc5 really are
+   mated by Qxf7#, and Qf6 really is the engine's first choice.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function(){
+  var board = document.getElementById('demoBoard');
+  if(!board) return;
+
+  var PIECES = 'pieces/';   // vendored so the hero survives the app being down
+  var FEN = 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR';
+  var FILES = 'abcdefgh';
+  var cells = {};
+
+  function draw(){
+    var rows = FEN.split('/'), html = '';
+    for(var r = 0; r < 8; r++){
+      var file = 0;
+      for(var k = 0; k < rows[r].length; k++){
+        var ch = rows[r][k];
+        if(/\d/.test(ch)){
+          for(var e = 0; e < +ch; e++){ html += sq(file, r, null); file++; }
+        } else {
+          html += sq(file, r, (ch === ch.toUpperCase() ? 'w' : 'b') + ch.toUpperCase());
+          file++;
+        }
+      }
+    }
+    board.innerHTML = html;
+    board.querySelectorAll('[data-sq]').forEach(function(el){ cells[el.dataset.sq] = el; });
+  }
+  function sq(file, rank, code){
+    var name = FILES[file] + (8 - rank);
+    var light = (file + rank) % 2 === 0;
+    return '<div class="dsq ' + (light ? 'l' : 'd') + '" data-sq="' + name + '">'
+      + (code ? '<img alt="" loading="lazy" src="' + PIECES + code + '.svg">' : '')
+      + '</div>';
+  }
+  draw();
+
+  /* The walk-through. Same shape as the one in the app: see what changed, count
+     it, decide whether anything is loose, then choose. */
+  var STEPS = [
+    {kind:'note', title:'They played Qf3. What changed?',
+     body:'It attacked your pawn on f7, which is now hit 2 times and defended 1 — '
+        + 'and the only thing defending it is your king. Go through it properly.',
+     mark:['f7','f3','c4']},
+    {kind:'count', title:'Start by counting.',
+     body:'Before anything else: what is attacked, and is it defended enough?',
+     rows:[{p:'pawn f7', a:2, d:1, loose:true}, {p:'pawn e5', a:0, d:1, loose:false}],
+     mark:['f7']},
+    {kind:'yesno', title:'Is anything of yours actually loose?',
+     body:'Loose means attacked more times than it is defended.',
+     answer:true,
+     yes:'Correct — f7 is attacked twice and defended once. And if the queen takes it, '
+       + 'the bishop on c4 covers the escape square. That is mate, not a lost pawn.',
+     no:'Look again at f7 — two attackers, one defender, and the defender is your king.',
+     mark:['f7']},
+    {kind:'mcq', title:'So what do you play?',
+     body:'Something of yours is hanging. Defend it, move it, or make a bigger threat.',
+     options:['a6', 'Qf6', 'Bc5'], answer:1,
+     right:'Yes — Qf6. It defends f7 a second time and offers the trade. The engine likes it best.',
+     wrong:'That one gets mated: Qxf7#. Look at what is defending f7 before you develop.',
+     mark:['f7']}
   ];
-  var POSITION = START.map(function(r){ return r.slice(); });
-  var SOL = { to:[0,0] };            // a8 — only the a-file rook reaches the back rank
-  var selected = null, solved = false;
 
-  function say(t){ if(coachTextEl) coachTextEl.innerHTML = t; }
+  var i = 0, answered = false, tries = 0;
+  var $ = function(id){ return document.getElementById(id); };
+  function el(id){ return $(id); }
+
+  function markSquares(list){
+    Object.keys(cells).forEach(function(k){ cells[k].classList.remove('mark','hot'); });
+    (list || []).forEach(function(s, n){
+      if(cells[s]) cells[s].classList.add(n === 0 ? 'hot' : 'mark');
+    });
+  }
 
   function render(){
-    if(!boardEl) return;
-    boardEl.innerHTML = '';
-    var frag = document.createDocumentFragment();
-    for(var r=0;r<8;r++){ for(var f=0;f<8;f++){
-      var sq = document.createElement('div');
-      sq.className = 'sq ' + (((r+f)%2===0) ? 'light' : 'dark');
-      sq.dataset.rc = r+'-'+f;
-      var code = POSITION[r][f];
-      if(code) sq.innerHTML = pieceSVG(code);
-      if(selected && selected[0]===r && selected[1]===f) sq.classList.add('sel');
-      if(solved && r===0 && f===6) sq.classList.add('mate');
-      frag.appendChild(sq);
-    }}
-    boardEl.appendChild(frag);
-  }
+    var s = STEPS[i];
+    answered = false; tries = 0;
+    el('demoStep').textContent = (i + 1) + ' of ' + STEPS.length;
+    el('demoTitle').textContent = s.title;
+    el('demoBody').textContent = s.body;
+    el('demoFb').className = 'demo-fb hidden';
+    el('demoFb').textContent = '';
+    el('demoNext').className = 'demo-next hidden';
+    markSquares(s.mark);
 
-  function rookMoves(r,f){
-    var color = POSITION[r][f][0], out = [];
-    [[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){
-      var rr=r+d[0], ff=f+d[1];
-      while(rr>=0&&rr<8&&ff>=0&&ff<8){
-        var occ = POSITION[rr][ff];
-        if(!occ){ out.push([rr,ff]); }
-        else { if(occ[0]!==color) out.push([rr,ff]); break; }
-        rr+=d[0]; ff+=d[1];
-      }
-    });
-    return out;
-  }
-  function showDots(moves){
-    moves.forEach(function(m){
-      var el = boardEl.querySelector('[data-rc="'+m[0]+'-'+m[1]+'"]');
-      if(!el) return;
-      var d = document.createElement('div');
-      d.className = POSITION[m[0]][m[1]] ? 'dp-ring' : 'dp-dot';
-      el.appendChild(d);
-    });
-  }
-  function shake(){ boardEl.classList.remove('shk'); void boardEl.offsetWidth; boardEl.classList.add('shk'); }
+    var rows = el('demoRows');
+    if(s.kind === 'count'){
+      rows.innerHTML = s.rows.map(function(r){
+        return '<div class="drow' + (r.loose ? ' loose' : '') + '">'
+          + '<span>' + r.p + '</span><span>' + r.a + ' attacking</span>'
+          + '<span>' + r.d + ' defending</span>'
+          + (r.loose ? '<span class="dtag">loose</span>' : '') + '</div>';
+      }).join('');
+      rows.className = 'demo-rows';
+    } else { rows.innerHTML = ''; rows.className = 'demo-rows hidden'; }
 
-  function onSquare(r,f){
-    if(solved || !boardEl) return;
-    var code = POSITION[r][f];
-    if(selected){
-      var moves = rookMoves(selected[0], selected[1]);
-      var isTarget = moves.some(function(m){ return m[0]===r && m[1]===f; });
-      if(isTarget){
-        if(r===SOL.to[0] && f===SOL.to[1]){
-          POSITION[r][f] = POSITION[selected[0]][selected[1]];
-          POSITION[selected[0]][selected[1]] = '';
-          selected = null; solved = true; render();
-          say('✔ <b>Ra8 — checkmate!</b> The a-rook swings across; the g-rook was stuck behind its own pawn. This is what your coach spots for you <em>before</em> it matters.');
-          boardEl.classList.add('win');
-          return;
-        }
-        selected = null; render();
-        say('Not that square — the other rook can\'t get there. Think <b>back rank</b>, a-file. Try again.');
-        shake();
-        return;
-      }
-      selected = null; render();
-    }
-    if(code === 'wr'){
-      selected = [r,f]; render(); showDots(rookMoves(r,f));
-      say('Good. Now — which square ends it? Look hard at the <b>back rank</b>.');
-    } else if(code && code[0]==='w'){
-      say('Use a <b>rook</b> — that\'s your mating piece here.');
+    var opts = el('demoOpts');
+    if(s.kind === 'yesno'){
+      opts.innerHTML = '<button class="dopt" data-v="1">Yes</button>'
+                     + '<button class="dopt" data-v="0">No</button>';
+      wire(opts, function(v){
+        var ok = (v === '1') === s.answer;
+        tries++;
+        var done = mark(opts, v, s.answer ? '1' : '0', ok);
+        say(ok ? s.yes : s.no, ok, done);
+      });
+    } else if(s.kind === 'mcq'){
+      opts.innerHTML = s.options.map(function(o, n){
+        return '<button class="dopt" data-v="' + n + '">' + o + '</button>';
+      }).join('');
+      wire(opts, function(v){
+        var ok = (+v === s.answer);
+        tries++;
+        var done = mark(opts, v, String(s.answer), ok);
+        say(ok ? s.right : s.wrong, ok, done);
+      });
+    } else {
+      opts.innerHTML = '';
+      el('demoNext').textContent = 'Next';
+      el('demoNext').className = 'demo-next';
     }
   }
 
-  if(boardEl){
+  function wire(box, cb){
+    box.querySelectorAll('.dopt').forEach(function(b){
+      b.addEventListener('click', function(){
+        if(answered) return;
+        cb(b.dataset.v);
+      });
+    });
+  }
+  // A wrong answer explains and lets them go again -- it does not reveal the
+  // right one and lock the card. Locking on the first click meant anyone who
+  // guessed wrong never got to read why the real move works, which is the
+  // whole point of the demo. Two misses and it shows them.
+  function mark(box, chosen, correct, ok){
+    var give = ok || tries >= 2;
+    box.querySelectorAll('.dopt').forEach(function(b){
+      if(b.dataset.v === chosen){ b.classList.add(ok ? 'right' : 'wrong'); b.disabled = true; }
+      if(give){ b.disabled = true; if(b.dataset.v === correct) b.classList.add('right'); }
+    });
+    answered = give;
+    return give;
+  }
+  function say(text, ok, done){
+    var fb = el('demoFb');
+    fb.textContent = text;
+    fb.className = 'demo-fb ' + (ok ? 'ok' : 'no');
+    var n = el('demoNext');
+    n.textContent = (i < STEPS.length - 1) ? 'Next' : 'Try it on your own game →';
+    n.className = done ? 'demo-next' : 'demo-next hidden';
+  }
+
+  function open(){
+    i = 0;
+    el('demoCard').classList.remove('hidden');
+    el('demoAsk').classList.add('hidden');
     render();
-    say('White to move. Two rooks — but only <b>one</b> reaches the back rank. Black never made luft. Find the mate.');
-    boardEl.addEventListener('click', function(e){
-      var cell = e.target.closest ? e.target.closest('.sq') : null;
-      if(!cell) return;
-      var rc = cell.dataset.rc.split('-');
-      onSquare(+rc[0], +rc[1]);
-    });
   }
+  function close(){
+    el('demoCard').classList.add('hidden');
+    el('demoAsk').classList.remove('hidden');
+    markSquares([]);
+  }
+
+  el('demoAsk').addEventListener('click', open);
+  el('demoClose').addEventListener('click', close);
+  el('demoNext').addEventListener('click', function(){
+    if(i < STEPS.length - 1){ i++; render(); }
+    else { window.location.href = 'https://app.chessforge.org'; }
+  });
 })();
