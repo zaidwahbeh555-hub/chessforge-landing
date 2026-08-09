@@ -384,7 +384,6 @@ em{font-style:italic}
 .reveal.in{opacity:1;transform:none}
 .d1{transition-delay:.05s}.d2{transition-delay:.13s}.d3{transition-delay:.21s}
 .d4{transition-delay:.32s}.d5{transition-delay:.42s}.d6{transition-delay:.52s}
-.d7{transition-delay:.62s}
 
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
@@ -524,13 +523,16 @@ em{font-style:italic}
 /* Who the product is for. Stated in the hero on purpose: someone who has never
    played will not get value here, and someone strong will find it beneath them.
    Saying so up front is cheaper than a refund. */
-.hero-for{display:flex;flex-wrap:wrap;align-items:baseline;gap:.55rem .7rem;
-  margin-top:1.35rem;padding:.85rem 1rem;border-radius:12px;
+/* No .reveal on this one. It is a qualifier -- the reader needs it before they
+   decide to click, so it cannot be gated behind scrolling into view and then a
+   1.2s fade. It paints with the page. */
+.hero-for{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;
+  margin-top:1rem;padding:.5rem .7rem;border-radius:999px;
   background:rgba(0,212,255,.055);border:1px solid rgba(0,212,255,.20);
-  max-width:36rem}
-.hero-for-tag{flex:0 0 auto;padding:.24rem .6rem;border-radius:999px;
+  width:fit-content;max-width:100%}
+.hero-for-tag{flex:0 0 auto;padding:.2rem .55rem;border-radius:999px;
   background:rgba(0,212,255,.15);border:1px solid rgba(0,212,255,.32);
   color:#7fe4ff;font-size:.7rem;font-weight:700;letter-spacing:.06em;
   text-transform:uppercase;white-space:nowrap}
-.hero-for-txt{flex:1 1 14rem;font-size:.86rem;line-height:1.6;color:var(--ink-dim)}
-@media(max-width:640px){.hero-for{max-width:none}}
+.hero-for-txt{font-size:.82rem;line-height:1.5;color:var(--ink-dim)}
+@media(max-width:640px){.hero-for{border-radius:12px}}
