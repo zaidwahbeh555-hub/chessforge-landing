@@ -57,17 +57,21 @@
    The markup for this existed but nothing ever drove it, so the hero showed an
    empty board reading "Watching your position…" forever.
 
-   The position is the Scholar's Mate setup after 1.e4 e5 2.Bc4 Nc6 3.Qf3.
+   The Scholar's Mate idea, mirrored so the visitor is WHITE and therefore
+   sitting at the bottom of the board where they expect to be. Facing the
+   position from the black side, upside down, is not how anyone reads a board.
+
    Every number below was checked against Stockfish before being written down:
-   f7 really is attacked twice and defended once, ...a6 and ...Bc5 really are
-   mated by Qxf7#, and Qf6 really is the engine's first choice.
+   f2 really is attacked twice (Bc5, Qf6) and defended once, and only by the
+   king; a3, Bd3 and Nd5 really are all mated by ...Qxf2#; and Qf3 really is
+   the engine's first choice at depth 20.
    ═══════════════════════════════════════════════════════════════════════════ */
 (function(){
   var board = document.getElementById('demoBoard');
   if(!board) return;
 
   var PIECES = 'pieces/';   // vendored so the hero survives the app being down
-  var FEN = 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR';
+  var FEN = 'rnb1k1nr/pppp1ppp/5q2/2b1p3/4P3/2N5/PPPP1PPP/R1BQKBNR';
   var FILES = 'abcdefgh';
   var cells = {};
 
@@ -100,27 +104,27 @@
   /* The walk-through. Same shape as the one in the app: see what changed, count
      it, decide whether anything is loose, then choose. */
   var STEPS = [
-    {kind:'note', title:'They played Qf3. What changed?',
-     body:'It attacked your pawn on f7, which is now hit 2 times and defended 1 — '
+    {kind:'note', title:'They just played Qf6. What changed?',
+     body:'It attacked your pawn on f2, which is now hit 2 times and defended 1 — '
         + 'and the only thing defending it is your king. Go through it properly.',
-     mark:['f7','f3','c4']},
+     mark:['f2','f6','c5']},
     {kind:'count', title:'Start by counting.',
      body:'Before anything else: what is attacked, and is it defended enough?',
-     rows:[{p:'pawn f7', a:2, d:1, loose:true}, {p:'pawn e5', a:0, d:1, loose:false}],
-     mark:['f7']},
+     rows:[{p:'pawn f2', a:2, d:1, loose:true}, {p:'pawn e4', a:0, d:1, loose:false}],
+     mark:['f2']},
     {kind:'yesno', title:'Is anything of yours actually loose?',
      body:'Loose means attacked more times than it is defended.',
      answer:true,
-     yes:'Correct — f7 is attacked twice and defended once. And if the queen takes it, '
-       + 'the bishop on c4 covers the escape square. That is mate, not a lost pawn.',
-     no:'Look again at f7 — two attackers, one defender, and the defender is your king.',
-     mark:['f7']},
+     yes:'Correct — f2 is attacked twice and defended once. And if the queen takes it, '
+       + 'the bishop on c5 covers the escape square. That is mate, not a lost pawn.',
+     no:'Look again at f2 — two attackers, one defender, and the defender is your king.',
+     mark:['f2']},
     {kind:'mcq', title:'So what do you play?',
      body:'Something of yours is hanging. Defend it, move it, or make a bigger threat.',
-     options:['a6', 'Qf6', 'Bc5'], answer:1,
-     right:'Yes — Qf6. It defends f7 a second time and offers the trade. The engine likes it best.',
-     wrong:'That one gets mated: Qxf7#. Look at what is defending f7 before you develop.',
-     mark:['f7']}
+     options:['a3', 'Qf3', 'Bd3'], answer:1,
+     right:'Yes — Qf3. It defends f2 a second time and offers the trade. The engine likes it best.',
+     wrong:'That one gets mated: ...Qxf2#. Look at what is defending f2 before you develop.',
+     mark:['f2']}
   ];
 
   var i = 0, answered = false, tries = 0;

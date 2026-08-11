@@ -132,8 +132,8 @@ em{font-style:italic}
 
 /* interactive coach demo — overlaps hero, tucked top-right */
 .hero-demo{
-  position:absolute;z-index:3;top:clamp(6rem,15vh,9rem);right:var(--edge);
-  width:min(340px,40vw);
+  position:absolute;z-index:3;top:clamp(5rem,12vh,8rem);right:var(--edge);
+  width:min(600px,48vw);
 }
 .demo-window{
   background:var(--panel);border:1px solid var(--line);border-radius:8px;
@@ -441,7 +441,10 @@ em{font-style:italic}
    Board colours are the app's own defaults so the demo and the product look
    like one thing.
    ═══════════════════════════════════════════════════════════════════════════ */
-.demo-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+/* The board takes the larger share. It was the smaller one, and at a 340px
+   window that worked out to a 142px board -- too small to read a position on,
+   which is the entire point of putting it in the hero. */
+.demo-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
   gap:16px;padding:16px;align-items:start}
 .demo-boardwrap{position:relative;min-width:0}
 .demo-board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
@@ -462,9 +465,9 @@ em{font-style:italic}
 .demo-side{display:flex;flex-direction:column;gap:12px;min-width:0}
 .demo-ask{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
   padding:14px 16px;border:none;border-radius:12px;cursor:pointer;
-  font-family:inherit;font-size:14px;font-weight:700;color:#0D0D14;
-  background:linear-gradient(135deg,#5B6CFF 0%,#7C8BFF 100%);
-  box-shadow:0 10px 26px -10px rgba(91,108,255,.8);
+  font-family:inherit;font-size:14px;font-weight:700;color:#04141a;
+  background:var(--cyan);
+  box-shadow:0 10px 26px -10px rgba(0,212,255,.7);
   transition:transform .12s cubic-bezier(.32,.72,0,1),filter .12s}
 .demo-ask:hover{transform:translateY(-1px);filter:brightness(1.06)}
 .demo-ask.hidden{display:none}

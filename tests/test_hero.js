@@ -58,14 +58,14 @@ els['demoAsk']._click({});
 check('the ask button opens the card', !els['demoCard']._c.has('hidden'));
 check('it starts at step 1 of 4', els['demoStep'].textContent==='1 of 4', els['demoStep'].textContent);
 check('step 1 names the move that changed things',
-      /Qf3/.test(els['demoTitle'].textContent), els['demoTitle'].textContent);
+      /Qf6/.test(els['demoTitle'].textContent), els['demoTitle'].textContent);
 check('the squares it talks about are marked on the board',
-      cellStore['f7'] && cellStore['f7']._c.has('hot'));
+      cellStore['f2'] && cellStore['f2']._c.has('hot'));
 
 els['demoNext']._click({});
 check('step 2 is the count', /count/i.test(els['demoTitle'].textContent), els['demoTitle'].textContent);
 check('the count table is shown', /attacking/.test(els['demoRows'].innerHTML));
-check('f7 is flagged loose', /loose/.test(els['demoRows'].innerHTML));
+check('f2 is flagged loose', /loose/.test(els['demoRows'].innerHTML));
 
 els['demoNext']._click({});
 check('step 3 asks yes/no', els['demoOpts'].innerHTML.includes('Yes'));
@@ -78,14 +78,29 @@ check('the right answer explains why it is mate',
       /mate/.test(els['demoFb'].textContent), els['demoFb'].textContent.slice(0,60));
 
 els['demoNext']._click({});
-check('step 4 is the move choice', els['demoOpts'].innerHTML.includes('Qf6'));
+check('step 4 is the move choice', els['demoOpts'].innerHTML.includes('Qf3'));
 opts=els['demoOpts'].querySelectorAll('.dopt');
 opts.find(o=>o.dataset.v==='0')._click();          // a6 -> mated
 check('a losing move is called out as mate',
-      /Qxf7#/.test(els['demoFb'].textContent), els['demoFb'].textContent.slice(0,50));
+      /Qxf2#/.test(els['demoFb'].textContent), els['demoFb'].textContent.slice(0,50));
 opts.find(o=>o.dataset.v==='1')._click();          // Qf6
 check('the engine move is confirmed',
-      /Qf6/.test(els['demoFb'].textContent), els['demoFb'].textContent.slice(0,50));
+      /Qf3/.test(els['demoFb'].textContent), els['demoFb'].textContent.slice(0,50));
+
+// ── the visitor plays White, and White sits at the bottom ──────────────────
+// Reading a position upside down from the black side is not how anyone looks
+// at a board, and the demo asks them to find a move in it.
+{
+  const order = [...html.matchAll(/data-sq="([a-h][1-8])"/g)].map(m=>m[1]);
+  check('rank 8 is drawn first, rank 1 last', order[0]==='a8' && order[order.length-1]==='h1',
+        order[0] + ' ... ' + order[order.length-1]);
+  const wk = /data-sq="e1"[^>]*><img[^>]*src="pieces\/wK\.svg"/.test(html);
+  check('the white king is on the bottom rank', wk);
+  const rowOf = sq => order.indexOf(sq);
+  check('White is nearer the viewer than Black', rowOf('e1') > rowOf('e8'));
+  check('it is White to move, so the visitor is the one deciding',
+      /var FEN = '[^']*\/R1BQKBNR'/.test(src));
+}
 
 // ── every square the script names exists ────────────────────────────────────
 const named=[...src.matchAll(/mark:\[([^\]]*)\]/g)].flatMap(m=>m[1].match(/[a-h][1-8]/g)||[]);
