@@ -450,7 +450,7 @@ em{font-style:italic}
 /* The board takes the larger share. It was the smaller one, and at a 340px
    window that worked out to a 142px board -- too small to read a position on,
    which is the entire point of putting it in the hero. */
-.demo-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+.demo-body{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
   gap:16px;padding:16px;align-items:start}
 .demo-boardwrap{position:relative;min-width:0}
 .demo-board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
@@ -562,7 +562,7 @@ em{font-style:italic}
 @media (min-width:1201px){
   .hero{
     display:grid;
-    grid-template-columns:minmax(0,1fr) min(34rem,40vw);
+    grid-template-columns:minmax(0,1fr) min(30rem,34vw);
     align-items:center;
     column-gap:clamp(1.5rem,3vw,3rem);
     padding-top:clamp(6rem,12vh,9rem);
@@ -574,10 +574,15 @@ em{font-style:italic}
     position:static;top:auto;right:auto;
     width:100%;justify-self:end;
   }
-  /* 9vw was sized for a full-width hero. In half the width it would run past
-     the column and force a horizontal scrollbar. */
-  .hero-h1{font-size:clamp(2.8rem,5.2vw,5rem)}
+  /* 9vw was sized for a full-width hero and would run past this column; 5.2vw
+     was an over-correction that made the headline small. The ceiling here is
+     arithmetic, not taste: the longest line, "that knows your", needs about
+     6.9em, so the type can be as large as the column width divided by 6.9.
+     At 1440 that allows 112px and this asks for 107. */
+  .hero-h1{font-size:clamp(2.9rem,7.4vw,7rem)}
   /* The subhead was pushed right to sit off-centre under a full-width heading.
-     In a column that narrow it just eats the line length. */
-  .hero-tail{margin-left:0;max-width:none}
+     In a column this narrow that just eats the line length. Capped at 38rem so
+     the measure stays readable rather than running the full column. */
+  .hero-tail{margin-left:0;max-width:38rem}
+  .hero-sub{font-size:1.3rem}
 }

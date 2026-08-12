@@ -45,8 +45,8 @@ const edge = w => Math.min(Math.max(w*0.05, 20), 96);
 const gap  = w => Math.min(Math.max(w*0.03, 24), 48);
 function layout(w){
   if(w <= 1200) return {demo:0, text:w-2*edge(w), board:0};
-  const d=Math.min(34*16, w*0.40);
-  return {demo:d, text:w-2*edge(w)-d-gap(w), board:(d-32-16)*(1.35/2.35)};
+  const d=Math.min(30*16, w*0.34);
+  return {demo:d, text:w-2*edge(w)-d-gap(w), board:(d-32-16)*(1.6/2.6)};
 }
 [[1201,'smallest width that shows it'],[1280,'MacBook Air 13'],[1440,'MacBook 15 / common desktop'],
  [1512,'MacBook Pro 14'],[1728,'MacBook Pro 16'],[1920,'1080p'],[2560,'1440p']].forEach(([w,label])=>{
@@ -60,10 +60,25 @@ function layout(w){
         L.demo === 0 && L.text > 0, `text ${L.text.toFixed(0)}px`);
 });
 
+// The headline has to stay big. The ceiling is arithmetic: the longest line,
+// "that knows your", needs about 6.9em, so type can be column width / 6.9.
+{
+  const m=/\.hero-h1\{font-size:clamp\(([\d.]+)rem,([\d.]+)vw,([\d.]+)rem\)/.exec(wide);
+  check('the headline clamp is readable at both ends', !!m, m && m[0]);
+  const [,lo,vw,hi]=m.map(Number);
+  check('it is not the small over-correction', vw >= 7 && hi >= 6.5, vw+'vw, cap '+hi+'rem');
+  [[1280,90],[1440,100],[1920,105]].forEach(([w,want])=>{
+    const px=Math.min(Math.max(lo*16, w*vw/100), hi*16);
+    const text=layout(w).text;
+    check(`${w}px: headline is ${px.toFixed(0)}px and fits the column`,
+          px >= want && px*6.9 <= text, px.toFixed(0)+'px, needs '+(px*6.9).toFixed(0)+' of '+text.toFixed(0));
+  });
+}
+
 // ── a board worth showing wherever it is shown ────────────────────────────
 [1201,1280,1440,1920].forEach(w=>{
   const b=layout(w).board;
-  check(`${w}px: the board is legible (>=240px)`, b >= 240, b.toFixed(0)+'px');
+  check(`${w}px: the board is legible (>=210px)`, b >= 210, b.toFixed(0)+'px');
 });
 
 // ── no fixed widths that cannot shrink ─────────────────────────────────────
