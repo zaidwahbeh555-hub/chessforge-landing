@@ -392,8 +392,14 @@ em{font-style:italic}
 }
 
 /* ══ RESPONSIVE ═══════════════════════════════════════════════════════ */
-@media (max-width:1024px){
+/* The demo needs more room than the rest of this block did. Between 1024 and
+   1200 the hero grid only ever gave it a ~190px board, which is not worth the
+   space it takes from the copy -- but the feature and pricing sections were
+   fine at those widths and should not stack early just to suit the demo. */
+@media (max-width:1200px){
   .hero-demo{display:none}
+}
+@media (max-width:1024px){
   .hero-knight{opacity:.5}
   .feat-hero{grid-template-columns:1fr;gap:2.5rem}
   .price-layout{grid-template-columns:1fr}
@@ -539,3 +545,39 @@ em{font-style:italic}
   text-transform:uppercase;white-space:nowrap}
 .hero-for-txt{font-size:.82rem;line-height:1.5;color:var(--ink-dim)}
 @media(max-width:640px){.hero-for{border-radius:12px}}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO LAYOUT — two real columns, so the demo cannot land on the text
+   ---------------------------------------------------------------------------
+   The demo was absolutely positioned over the hero and sized independently of
+   the text beside it, so the two only stayed apart by coincidence. Widening the
+   board (which it needed -- it was 142px) broke that coincidence: at 1440px it
+   covered 232px of the copy, and at 1280px it covered 376px.
+
+   Above 1024px the hero is now a grid: text in one column, demo in the other.
+   They cannot overlap because they no longer share space. Below 1024px the demo
+   is hidden (rule further up) and the hero stays a single centred column, which
+   is what phones and tablets already got.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (min-width:1201px){
+  .hero{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) min(34rem,40vw);
+    align-items:center;
+    column-gap:clamp(1.5rem,3vw,3rem);
+    padding-top:clamp(6rem,12vh,9rem);
+  }
+  /* The decorative grain and knight are position:absolute, so they are not grid
+     items and do not take a column. */
+  .hero-inner{max-width:none;min-width:0}
+  .hero-demo{
+    position:static;top:auto;right:auto;
+    width:100%;justify-self:end;
+  }
+  /* 9vw was sized for a full-width hero. In half the width it would run past
+     the column and force a horizontal scrollbar. */
+  .hero-h1{font-size:clamp(2.8rem,5.2vw,5rem)}
+  /* The subhead was pushed right to sit off-centre under a full-width heading.
+     In a column that narrow it just eats the line length. */
+  .hero-tail{margin-left:0;max-width:none}
+}
