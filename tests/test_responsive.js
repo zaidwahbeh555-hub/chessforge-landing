@@ -20,14 +20,26 @@ check('above 1200 the hero is a grid', /\.hero\{[\s\S]*?display:grid/.test(wide)
 check('with a column for the text and one for the demo',
       /grid-template-columns:minmax\(0,1fr\) min\(/.test(wide), (wide.match(/grid-template-columns:[^;]*/)||[])[0]);
 check('the demo stops being an overlay', /\.hero-demo\{[\s\S]*?position:static/.test(wide));
-check('it is nudged up from centre, not relocated to the top',
+check('it is lifted from centre, not relocated to the top',
       /\.hero-demo\{[\s\S]*?align-self:center/.test(wide) &&
-      /\.hero-demo\{[\s\S]*?margin-top:clamp\(-/.test(wide),
-      (wide.match(/margin-top:clamp\([^)]*\)/)||[])[0]);
+      /\.hero-demo\{[\s\S]*?transform:translateY\(clamp\(-/.test(wide),
+      (wide.match(/transform:translateY\(clamp\([^)]*\)\)/)||[])[0]);
+// A negative margin on a centre-aligned grid item only moves it half the value,
+// because centring splits the free space either side of the margin box. That is
+// why the first attempt looked like nothing had happened.
+check('the lift is a transform, so it moves the full amount',
+      !/\.hero-demo\{[\s\S]*?margin-top:clamp\(-/.test(wide));
 {
-  const m=/margin-top:clamp\(-([\d.]+)rem,-([\d.]+)vh,-([\d.]+)rem\)/.exec(wide);
-  check('the nudge is small enough to stay a nudge', m && +m[1] <= 4,
-        m ? ('at most ' + m[1] + 'rem up') : 'no clamp');
+  const m=/transform:translateY\(clamp\(-([\d.]+)rem,-([\d.]+)vh,-([\d.]+)rem\)\)/.exec(wide);
+  check('the lift is visible at a normal window height', !!m && +m[2] >= 6,
+        m ? m[2]+'vh' : 'none');
+  if(m){
+    [800,900,1050].forEach(vh=>{
+      const px=Math.min(Math.max(+m[1]*16, vh*+m[2]/100), +m[3]*16);
+      check(`${vh}px tall: lifted ${px.toFixed(0)}px above centre`, px >= 55,
+            px.toFixed(0)+'px');
+    });
+  }
 }
 check('and the text column is allowed to shrink', /minmax\(0,1fr\)/.test(wide));
 check('the heading is resized for half the width',

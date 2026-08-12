@@ -575,10 +575,14 @@ em{font-style:italic}
     width:100%;justify-self:end;
     /* The demo is roughly square; the text column is much taller, so centring
        it against that column parks it lower than it looks like it should sit.
-       Nudged up from centre rather than aligned to the top -- top alignment
-       moved it about 90px, which is a relocation, not a nudge. */
+
+       Nudged with a transform, not a negative margin. Centred alignment splits
+       free space either side of the item's margin box, so a -36px top margin
+       only lifted it 18px -- half of what it asked for, and small enough to
+       look like nothing had changed. A transform moves exactly what it says
+       and takes no space from the layout, so nothing below it shifts. */
     align-self:center;
-    margin-top:clamp(-3rem,-4vh,-1.5rem);
+    transform:translateY(clamp(-7rem,-9vh,-3.5rem));
   }
   /* 9vw was sized for a full-width hero and would run past this column; 5.2vw
      was an over-correction that made the headline small. The ceiling here is
