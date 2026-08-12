@@ -20,6 +20,15 @@ check('above 1200 the hero is a grid', /\.hero\{[\s\S]*?display:grid/.test(wide)
 check('with a column for the text and one for the demo',
       /grid-template-columns:minmax\(0,1fr\) min\(/.test(wide), (wide.match(/grid-template-columns:[^;]*/)||[])[0]);
 check('the demo stops being an overlay', /\.hero-demo\{[\s\S]*?position:static/.test(wide));
+check('it is nudged up from centre, not relocated to the top',
+      /\.hero-demo\{[\s\S]*?align-self:center/.test(wide) &&
+      /\.hero-demo\{[\s\S]*?margin-top:clamp\(-/.test(wide),
+      (wide.match(/margin-top:clamp\([^)]*\)/)||[])[0]);
+{
+  const m=/margin-top:clamp\(-([\d.]+)rem,-([\d.]+)vh,-([\d.]+)rem\)/.exec(wide);
+  check('the nudge is small enough to stay a nudge', m && +m[1] <= 4,
+        m ? ('at most ' + m[1] + 'rem up') : 'no clamp');
+}
 check('and the text column is allowed to shrink', /minmax\(0,1fr\)/.test(wide));
 check('the heading is resized for half the width',
       /\.hero-h1\{font-size:clamp\(/.test(wide), (wide.match(/\.hero-h1\{[^}]*/)||[])[0]);

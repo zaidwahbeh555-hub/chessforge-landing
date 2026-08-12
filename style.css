@@ -573,6 +573,12 @@ em{font-style:italic}
   .hero-demo{
     position:static;top:auto;right:auto;
     width:100%;justify-self:end;
+    /* The demo is roughly square; the text column is much taller, so centring
+       it against that column parks it lower than it looks like it should sit.
+       Nudged up from centre rather than aligned to the top -- top alignment
+       moved it about 90px, which is a relocation, not a nudge. */
+    align-self:center;
+    margin-top:clamp(-3rem,-4vh,-1.5rem);
   }
   /* 9vw was sized for a full-width hero and would run past this column; 5.2vw
      was an over-correction that made the headline small. The ceiling here is
