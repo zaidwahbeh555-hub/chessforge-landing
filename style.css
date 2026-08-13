@@ -589,8 +589,15 @@ em{font-style:italic}
        nothing: from the centre, 1.14 grows about 34px each way, into the 43px
        column gap on the left and the page's edge padding on the right. */
     align-self:center;
-    transform-origin:center center;
-    transform:translateY(clamp(-8.5rem,-11vh,-4.5rem)) scale(1.14);
+    /* The origin is off-centre on purpose. Growing from the middle splits the
+       extra width evenly, and the left side is the tight one -- it runs into
+       the column gap and then into the headline. To the right there is only
+       the page's own edge padding, which is empty. At 35% the growth goes
+       about a third left and two thirds right, which is what lets this be 1.22
+       instead of the 1.176 a centred origin would cap it at. Checked against
+       the real --edge and column-gap clamps from 1201 to 3440. */
+    transform-origin:35% center;
+    transform:translateY(clamp(-9.5rem,-12vh,-5rem)) scale(1.22);
   }
   /* 9vw was sized for a full-width hero and would run past this column; 5.2vw
      was an over-correction that made the headline small. The ceiling here is

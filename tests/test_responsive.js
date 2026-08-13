@@ -129,29 +129,42 @@ check('the demo column is untouched, so the headline is too',
       'widening it would force the h1 to shrink at 1201-1440');
 check('the headline rule is unchanged',
       /\.hero-h1\{font-size:clamp\(2\.9rem,7\.4vw,7rem\)\}/.test(wide));
-check('the demo is scaled up instead', /scale\(1\.14\)/.test(wide));
-check('from its centre, so it grows into the gutter on both sides',
-      /transform-origin:center center/.test(wide));
-check('and it sits higher than it did', /translateY\(clamp\(-8\.5rem,-11vh,-4\.5rem\)\)/.test(wide),
-      'was clamp(-7rem,-9vh,-3.5rem)');
+check('the demo is scaled up instead', /scale\(1\.22\)/.test(wide));
+check('from an off-centre origin, so most of the growth goes right',
+      /transform-origin:35% center/.test(wide),
+      'left runs into the headline; right is only empty page padding');
+check('and it sits higher than it did', /translateY\(clamp\(-9\.5rem,-12vh,-5rem\)\)/.test(wide),
+      'started at clamp(-7rem,-9vh,-3.5rem)');
 
 // Growing from the centre must never reach the text column.
-let overlap = [];
-for(const w of [1201, 1280, 1366, 1440, 1600, 1920, 2560]){
-  const col  = Math.min(30*16, 0.34*w);
-  const grow = (col*1.14 - col) / 2;
-  const gap  = Math.max(24, Math.min(0.03*w, 48));
-  if(grow > gap) overlap.push(w + 'px: grows ' + grow.toFixed(0) + ' into a ' + gap.toFixed(0) + 'px gap');
+// 35% of the growth goes left into the column gap, 65% right into --edge.
+// Both have to hold: too far left and it covers the headline, too far right and
+// it is clipped, because .hero is overflow:hidden.
+const ORIGIN = 0.35, SCALE = 1.22;
+let overlap = [], clipped = [];
+for(const w of [1201, 1280, 1366, 1440, 1600, 1920, 2560, 3440]){
+  const col   = Math.min(30*16, 0.34*w);
+  const extra = col*SCALE - col;
+  const gap   = Math.max(24, Math.min(0.03*w, 48));
+  const edge  = Math.max(20, Math.min(0.05*w, 96));
+  if(extra*ORIGIN > gap)
+    overlap.push(w + 'px: ' + (extra*ORIGIN).toFixed(0) + ' left into a ' + gap.toFixed(0) + 'px gap');
+  if(extra*(1-ORIGIN) > edge)
+    clipped.push(w + 'px: ' + (extra*(1-ORIGIN)).toFixed(0) + ' right into a ' + edge.toFixed(0) + 'px edge');
 }
 check('the scaled demo never reaches the text column at any width',
       !overlap.length, overlap.join('; '));
+check('and is never clipped by the page edge either',
+      !clipped.length, clipped.join('; '));
 
 // And the lift must not carry it up under the nav.
+// The hero's own top padding is clamp(7rem,14vh,11rem); the lift has to stay
+// inside it or the demo climbs up under the nav.
 let tooHigh = [];
-for(const h of [720, 800, 900, 1080, 1440, 1600]){
-  const lift = Math.max(4.5*16, Math.min(0.11*h, 8.5*16));
-  const pad  = Math.max(6*16,   Math.min(0.12*h, 9*16));
-  if(lift >= pad) tooHigh.push(h + 'px tall');
+for(const h of [720, 800, 900, 1080, 1200, 1440, 1600]){
+  const lift = Math.max(5*16, Math.min(0.12*h, 9.5*16));
+  const pad  = Math.max(7*16, Math.min(0.14*h, 11*16));
+  if(lift >= pad) tooHigh.push(h + 'px tall: lifts ' + lift.toFixed(0) + ' into ' + pad.toFixed(0));
 }
 check('and never lifts past the hero padding at any height',
       !tooHigh.length, tooHigh.join('; '));
