@@ -163,14 +163,26 @@ check('with an arrow pointing at the button', /class="demo-hint"[\s\S]{0,320}<sv
 check('it is decorative to screen readers', /class="demo-hint" id="demoHint" aria-hidden="true"/.test(html));
 check('it is absolutely positioned, so it costs the layout nothing',
       /\.demo-hint\{[\s\S]{0,120}position:absolute/.test(css));
-check('its anchor is the button column',
-      /\.demo-side\{[^}]*position:relative\}/.test(css));
+check('its anchor is the button itself, not the column',
+      /\.demo-askwrap\{position:relative; display:block\}/.test(css),
+      'anchored to the column it sat at the bottom pointing at nothing');
+check('and the markup wraps the two together',
+      /<span class="demo-askwrap">[\s\S]{0,600}id="demoAsk"/.test(html));
+check('it is centred on the button vertically',
+      /\.demo-hint\{[\s\S]{0,200}top:50%; transform:translateY\(-50%\)/.test(css));
+check('the nudge keeps that centring instead of dropping it',
+      /@keyframes demoNudge\{[\s\S]{0,140}translate\(-5px,-50%\)/.test(css));
+check('the arrow points right, at the button beside it',
+      /d="M3 6c10 -3 22 1 33 11"/.test(html), 'shaft ends at the tip, x=36 of 40');
+check('with a head at that tip', /M36 17L27\.1 15\.5/.test(html) && /M36 17L32\.9 8\.6/.test(html));
+check('and it turns to point down when it moves above the button',
+      /@media \(max-width:1200px\)\{[\s\S]{0,300}\.demo-hint svg\{transform:rotate\(52deg\)\}/.test(css));
 check('it cannot swallow the click it is pointing at',
       /\.demo-hint\{[\s\S]{0,220}pointer-events:none/.test(css));
 check('it leaves once the demo is opened', /hint\.classList\.add\('gone'\)/.test(js));
 check('and there is a rule that hides it', /\.demo-hint\.gone\{/.test(css));
 check('it moves to above the button where there is no room beside it',
-      /@media \(max-width:1200px\)\{[\s\S]{0,200}\.demo-hint\{right:auto/.test(css));
+      /@media \(max-width:1200px\)\{[\s\S]{0,300}\.demo-hint\{\s*\n?\s*right:auto/.test(css));
 check('reduced motion stops it nudging',
       /@media\(prefers-reduced-motion:reduce\)\{\.demo-hint\{animation:none\}\}/.test(css));
 

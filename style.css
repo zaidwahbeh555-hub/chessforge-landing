@@ -608,9 +608,14 @@ em{font-style:italic}
 /* "press me" — the demo is interactive and nothing said so, so most visitors
    scrolled past a working walk-through. Absolutely positioned, so it costs the
    layout nothing, and it leaves as soon as the demo is opened. */
+/* The wrapper exists so the hint can be positioned against the BUTTON. Anchored
+   to .demo-side it sat at the bottom of a tall column, pointing down and to the
+   right at empty space while the button was up at the top. */
+.demo-askwrap{position:relative; display:block}
 .demo-hint{
-  position:absolute; right:100%; bottom:.15rem; margin-right:.5rem;
-  display:flex; align-items:center; gap:.35rem;
+  position:absolute; right:100%; top:50%; transform:translateY(-50%);
+  margin-right:.55rem;
+  display:flex; align-items:center; gap:.4rem;
   color:var(--accent, #22E5FF); pointer-events:none; white-space:nowrap;
   animation:demoNudge 1.9s cubic-bezier(.32,.72,0,1) infinite;
 }
@@ -618,15 +623,28 @@ em{font-style:italic}
   font-style:normal; font-size:.78rem; font-weight:700;
   letter-spacing:.06em; text-transform:uppercase;
 }
-.demo-hint svg{width:34px;height:22px;flex:none;transform:translateY(2px)}
+/* The tip of the arrow is the right-hand edge of the box, so the box sitting
+   flush against the button is the arrow touching the button. */
+.demo-hint svg{width:32px;height:21px;flex:none}
 @keyframes demoNudge{
-  0%,100%{transform:translateX(0)}
-  50%    {transform:translateX(-5px)}
+  0%,100%{transform:translate(0,-50%)}
+  50%    {transform:translate(-5px,-50%)}
 }
 .demo-hint.gone{opacity:0;visibility:hidden;transition:opacity .2s}
 @media(prefers-reduced-motion:reduce){.demo-hint{animation:none}}
 /* On narrow screens the ask button is full width and there is no room beside
    it, so the hint sits above instead of off the left edge. */
+/* No room beside the button on narrow screens, so it goes above it -- and the
+   arrow has to turn to match, or it points sideways at nothing. */
 @media (max-width:1200px){
-  .demo-hint{right:auto; left:0; bottom:calc(100% + .3rem); margin-right:0}
+  .demo-hint{
+    right:auto; left:.2rem; top:auto; bottom:calc(100% + .25rem);
+    margin-right:0; transform:none;
+    animation-name:demoNudgeDown;
+  }
+  .demo-hint svg{transform:rotate(52deg)}
+}
+@keyframes demoNudgeDown{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-4px)}
 }

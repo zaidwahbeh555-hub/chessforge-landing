@@ -96,19 +96,25 @@
         </div>
         <div class="demo-side">
           <!-- Nothing told anyone the demo was interactive, so most people
-               scrolled straight past a working walk-through. -->
-          <span class="demo-hint" id="demoHint" aria-hidden="true">
-            <em>press me</em>
-            <svg viewBox="0 0 52 34" fill="none" stroke="currentColor" stroke-width="2.2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 4c10 14 24 22 44 24"/>
-              <path d="M38 30l9 -2 -4 -8"/>
-            </svg>
+               scrolled straight past a working walk-through. The hint is
+               wrapped with the button so it can be positioned against the
+               button itself -- anchored to the column instead, it sat at the
+               bottom of a tall column pointing down and right at nothing. -->
+          <span class="demo-askwrap">
+            <span class="demo-hint" id="demoHint" aria-hidden="true">
+              <em>press me</em>
+              <svg viewBox="0 0 40 26" fill="none" stroke="currentColor" stroke-width="2.2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6c10 -3 22 1 33 11"/>
+                <path d="M36 17L27.1 15.5"/>
+                <path d="M36 17L32.9 8.6"/>
+              </svg>
+            </span>
+            <button class="demo-ask" id="demoAsk" type="button">
+              <span class="demo-bulb" aria-hidden="true"></span>
+              I don't know what to do here
+            </button>
           </span>
-          <button class="demo-ask" id="demoAsk" type="button">
-            <span class="demo-bulb" aria-hidden="true"></span>
-            I don't know what to do here
-          </button>
           <div class="demo-card hidden" id="demoCard">
             <div class="demo-card-head">
               <span class="demo-step" id="demoStep"></span>
