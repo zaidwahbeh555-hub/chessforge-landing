@@ -95,6 +95,16 @@
           <div class="demo-board" id="demoBoard"></div>
         </div>
         <div class="demo-side">
+          <!-- Nothing told anyone the demo was interactive, so most people
+               scrolled straight past a working walk-through. -->
+          <span class="demo-hint" id="demoHint" aria-hidden="true">
+            <em>press me</em>
+            <svg viewBox="0 0 52 34" fill="none" stroke="currentColor" stroke-width="2.2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 4c10 14 24 22 44 24"/>
+              <path d="M38 30l9 -2 -4 -8"/>
+            </svg>
+          </span>
           <button class="demo-ask" id="demoAsk" type="button">
             <span class="demo-bulb" aria-hidden="true"></span>
             I don't know what to do here

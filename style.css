@@ -468,7 +468,7 @@ em{font-style:italic}
   50%    {box-shadow:inset 0 0 0 4px rgba(91,108,255,.4)}
 }
 
-.demo-side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.demo-side{display:flex;flex-direction:column;gap:12px;min-width:0;position:relative}
 .demo-ask{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
   padding:14px 16px;border:none;border-radius:12px;cursor:pointer;
   font-family:inherit;font-size:14px;font-weight:700;color:#04141a;
@@ -582,7 +582,15 @@ em{font-style:italic}
        look like nothing had changed. A transform moves exactly what it says
        and takes no space from the layout, so nothing below it shifts. */
     align-self:center;
-    transform:translateY(clamp(-7rem,-9vh,-3.5rem));
+    /* Bigger and higher, both with a transform. Widening the column instead
+       would take the width out of the text column, and the headline is already
+       at its ceiling there -- the longest line needs 6.9em, which at 1440
+       allows 96px against the 107px it asks for. Scaling costs the layout
+       nothing: from the centre, 1.14 grows about 34px each way, into the 43px
+       column gap on the left and the page's edge padding on the right. */
+    align-self:center;
+    transform-origin:center center;
+    transform:translateY(clamp(-8.5rem,-11vh,-4.5rem)) scale(1.14);
   }
   /* 9vw was sized for a full-width hero and would run past this column; 5.2vw
      was an over-correction that made the headline small. The ceiling here is
@@ -595,4 +603,30 @@ em{font-style:italic}
      the measure stays readable rather than running the full column. */
   .hero-tail{margin-left:0;max-width:38rem}
   .hero-sub{font-size:1.3rem}
+}
+
+/* "press me" — the demo is interactive and nothing said so, so most visitors
+   scrolled past a working walk-through. Absolutely positioned, so it costs the
+   layout nothing, and it leaves as soon as the demo is opened. */
+.demo-hint{
+  position:absolute; right:100%; bottom:.15rem; margin-right:.5rem;
+  display:flex; align-items:center; gap:.35rem;
+  color:var(--accent, #22E5FF); pointer-events:none; white-space:nowrap;
+  animation:demoNudge 1.9s cubic-bezier(.32,.72,0,1) infinite;
+}
+.demo-hint em{
+  font-style:normal; font-size:.78rem; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase;
+}
+.demo-hint svg{width:34px;height:22px;flex:none;transform:translateY(2px)}
+@keyframes demoNudge{
+  0%,100%{transform:translateX(0)}
+  50%    {transform:translateX(-5px)}
+}
+.demo-hint.gone{opacity:0;visibility:hidden;transition:opacity .2s}
+@media(prefers-reduced-motion:reduce){.demo-hint{animation:none}}
+/* On narrow screens the ask button is full width and there is no room beside
+   it, so the hint sits above instead of off the left edge. */
+@media (max-width:1200px){
+  .demo-hint{right:auto; left:0; bottom:calc(100% + .3rem); margin-right:0}
 }

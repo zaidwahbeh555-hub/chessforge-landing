@@ -10,6 +10,7 @@
 const fs=require('fs');
 const css=fs.readFileSync('style.css','utf8');
 const html=fs.readFileSync('index.html','utf8');
+const js=fs.readFileSync('script.js','utf8');
 
 let pass=0,total=0;
 const check=(l,c,d)=>{total++; if(c)pass++; console.log(`  [${c?'PASS':'FAIL'}] ${l}${d?'  -> '+d:''}`);};
@@ -116,6 +117,62 @@ check('nothing carries an unshrinkable fixed width', fixed.length===0, fixed.joi
 // ── the demo still hides on the breakpoints that already existed ──────────
 check('mobile nav breakpoint untouched', /@media \(max-width:760px\)/.test(css));
 check('the demo body stacks on narrow windows', /@media \(max-width: 900px\)\{\s*\.demo-body\{grid-template-columns:1fr\}/.test(css));
+
+// ══ the demo: bigger and higher, without moving anything else ════════════
+// The ask was "make it bigger and more up, WITHOUT changing anything else, no
+// other sizes". So the size comes from a transform, not from the grid: widening
+// the demo column takes width out of the text column, and the headline is
+// already at its ceiling there -- its longest line needs about 6.9em, which at
+// 1440 allows 108px against the 107px it asks for.
+check('the demo column is untouched, so the headline is too',
+      /grid-template-columns:minmax\(0,1fr\) min\(30rem,34vw\)/.test(wide),
+      'widening it would force the h1 to shrink at 1201-1440');
+check('the headline rule is unchanged',
+      /\.hero-h1\{font-size:clamp\(2\.9rem,7\.4vw,7rem\)\}/.test(wide));
+check('the demo is scaled up instead', /scale\(1\.14\)/.test(wide));
+check('from its centre, so it grows into the gutter on both sides',
+      /transform-origin:center center/.test(wide));
+check('and it sits higher than it did', /translateY\(clamp\(-8\.5rem,-11vh,-4\.5rem\)\)/.test(wide),
+      'was clamp(-7rem,-9vh,-3.5rem)');
+
+// Growing from the centre must never reach the text column.
+let overlap = [];
+for(const w of [1201, 1280, 1366, 1440, 1600, 1920, 2560]){
+  const col  = Math.min(30*16, 0.34*w);
+  const grow = (col*1.14 - col) / 2;
+  const gap  = Math.max(24, Math.min(0.03*w, 48));
+  if(grow > gap) overlap.push(w + 'px: grows ' + grow.toFixed(0) + ' into a ' + gap.toFixed(0) + 'px gap');
+}
+check('the scaled demo never reaches the text column at any width',
+      !overlap.length, overlap.join('; '));
+
+// And the lift must not carry it up under the nav.
+let tooHigh = [];
+for(const h of [720, 800, 900, 1080, 1440, 1600]){
+  const lift = Math.max(4.5*16, Math.min(0.11*h, 8.5*16));
+  const pad  = Math.max(6*16,   Math.min(0.12*h, 9*16));
+  if(lift >= pad) tooHigh.push(h + 'px tall');
+}
+check('and never lifts past the hero padding at any height',
+      !tooHigh.length, tooHigh.join('; '));
+
+// ── the "press me" nudge ─────────────────────────────────────────────────
+check('there is a press-me hint', /id="demoHint"/.test(html));
+check('it says press me', /<em>press me<\/em>/.test(html));
+check('with an arrow pointing at the button', /class="demo-hint"[\s\S]{0,320}<svg/.test(html));
+check('it is decorative to screen readers', /class="demo-hint" id="demoHint" aria-hidden="true"/.test(html));
+check('it is absolutely positioned, so it costs the layout nothing',
+      /\.demo-hint\{[\s\S]{0,120}position:absolute/.test(css));
+check('its anchor is the button column',
+      /\.demo-side\{[^}]*position:relative\}/.test(css));
+check('it cannot swallow the click it is pointing at',
+      /\.demo-hint\{[\s\S]{0,220}pointer-events:none/.test(css));
+check('it leaves once the demo is opened', /hint\.classList\.add\('gone'\)/.test(js));
+check('and there is a rule that hides it', /\.demo-hint\.gone\{/.test(css));
+check('it moves to above the button where there is no room beside it',
+      /@media \(max-width:1200px\)\{[\s\S]{0,200}\.demo-hint\{right:auto/.test(css));
+check('reduced motion stops it nudging',
+      /@media\(prefers-reduced-motion:reduce\)\{\.demo-hint\{animation:none\}\}/.test(css));
 
 console.log(`\n  ${pass}/${total} passed`);
 process.exit(pass===total?0:1);

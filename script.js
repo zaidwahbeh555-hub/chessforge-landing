@@ -221,6 +221,8 @@
     i = 0;
     el('demoCard').classList.remove('hidden');
     el('demoAsk').classList.add('hidden');
+    // The nudge has done its job the moment it is pressed.
+    var hint = el('demoHint'); if(hint) hint.classList.add('gone');
     render();
   }
   function close(){
