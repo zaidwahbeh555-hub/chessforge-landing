@@ -73,7 +73,15 @@ em{font-style:italic}
   border-bottom-color:var(--line);padding-top:.8rem;padding-bottom:.8rem;
 }
 .brand{display:flex;align-items:baseline;gap:.05rem;font-size:1.3rem;letter-spacing:-.02em}
-.brand-hex{color:var(--cyan);margin-right:.35rem;font-size:1rem}
+/* The mark. It was the unicode character U+2B21, which renders as whatever
+   font on the machine happens to carry it -- a different shape per platform,
+   and not the shape in the favicon or in the app's top bar. It is the same
+   path as both of those now, and the glow is part of the mark. */
+.brand-hex{color:var(--cyan);margin-right:.4rem;display:inline-flex;align-items:center}
+.brand-mark{width:20px;height:20px;display:block;
+  filter:drop-shadow(0 0 5px rgba(0,212,255,.55)) drop-shadow(0 0 12px rgba(0,212,255,.22))}
+.footer-brand .brand-mark{width:17px;height:17px}
+@media(prefers-reduced-motion:reduce){.brand-mark{filter:none}}
 .brand-serif{font-family:var(--serif);font-weight:400;font-size:1.45rem}
 .brand-bold{font-family:var(--sans);font-weight:900}
 .nav-links{display:flex;align-items:center;gap:2rem}
