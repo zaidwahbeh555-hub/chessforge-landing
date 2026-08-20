@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="ChessForge">
-  <!-- ChessForge mark: one glowing hexagon ring. The single source of truth for
-       the logo: app favicon, landing favicon, both top bars, the footer.
-       Drawn with layered strokes rather than an SVG filter, because filter
+  <!-- ChessForge mark: one glowing hexagon ring, on nothing. The single source
+       of truth for the logo: app favicon, landing favicon, both top bars, the
+       footer. No plate behind it, so it sits on whatever the tab bar is.
+       The glow is layered strokes rather than an SVG filter, because filter
        support in favicon rendering is inconsistent across browsers, and a mark
        that loses its glow in the tab is not the same mark. -->
-  <rect width="100" height="100" rx="24" fill="#07070E"/>
   <g fill="none" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#22E5FF" stroke-width="21" opacity=".10"/>
-    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#22E5FF" stroke-width="15" opacity=".18"/>
-    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#22E5FF" stroke-width="8"/>
-    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#B4F4FF" stroke-width="2.6" opacity=".85"/>
+    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#22E5FF" stroke-width="24" opacity=".09"/>
+    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#22E5FF" stroke-width="17" opacity=".17"/>
+    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#22E5FF" stroke-width="11" opacity=".34"/>
+    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#22E5FF" stroke-width="7"/>
+    <path d="M50 20 L75.98 35 V65 L50 80 L24.02 65 V35 Z" stroke="#BDF6FF" stroke-width="2.4" opacity=".9"/>
   </g>
 </svg>

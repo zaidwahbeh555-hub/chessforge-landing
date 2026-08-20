@@ -58,7 +58,7 @@ check('and the favicon scale is the same shape',
 // They are deliberately NOT the same fraction of their box: the favicon sits on
 // a dark plate and needs padding around it, the inline icon fills its box.
 // What has to match is the shape, which the two checks above establish.
-check('the favicon leaves room around the mark for its plate',
+check('the favicon leaves room around the mark for its glow to fall off',
       r100[0]/100 > 0.24 && r100[0]/100 < 0.34,
       (100*r100[0]/100).toFixed(0) + ' of 100');
 check('and the inline mark fills its box',
@@ -92,7 +92,9 @@ check('it carries its glow in the file, not in CSS',
 check('and the reason is written down',
       /filter\s+support in favicon rendering is inconsistent/.test(icon),
       'the comment wraps, so the phrase spans a newline');
-check('it has a dark plate so it reads on a light tab bar', /rect width="100"/.test(icon));
+check('it has NO plate -- the mark sits on whatever the tab bar is',
+      !/<rect/.test(icon), 'transparent, by request');
+check('and it says so', /on nothing/.test(icon));
 
 // ── the app, if it is checked out beside this ─────────────────────────────
 const APP = path.resolve('..', 'nextmove-backend', 'nextmove-v2');
