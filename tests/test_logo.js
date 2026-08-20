@@ -105,8 +105,37 @@ if(!fs.existsSync(APP)){
   const appCss  = fs.readFileSync(path.join(APP,'static','css','style.css'),'utf8');
   const appIcon = fs.readFileSync(path.join(APP,'static','favicon.svg'),'utf8');
 
-  check('the app favicon is byte-identical to the landing one', appIcon === icon,
-        'one mark means one file');
+  // The two favicons are deliberately NOT identical any more. Same mark, same
+  // geometry; the app's is tinted halfway to its own accent so a tab belonging
+  // to the app is distinguishable from a tab belonging to the site.
+  const geom = (svg)=>[...svg.matchAll(/ d="([^"]+)"/g)].map(m=>m[1]);
+  check('the app favicon is the same mark, geometrically',
+        JSON.stringify([...new Set(geom(appIcon))]) === JSON.stringify([...new Set(geom(icon))]),
+        'same path, different tint');
+  // Strokes only: the comment names the landing cyan as the reference it was
+  // mixed from, so a plain includes() would find it in the prose.
+  const strokesOf = (svg)=>[...new Set([...svg.matchAll(/stroke="(#[0-9A-F]{6})"/g)].map(m=>m[1]))];
+  check('and it is tinted, not left cyan',
+        !strokesOf(appIcon).includes('#22E5FF'),
+        'app draws ' + strokesOf(appIcon).join(' ') + '; landing keeps ' + strokesOf(icon).join(' '));
+
+  // The app mark is simply the app's accent -- same hexagon, product colour, so
+  // the tab matches what it opens. It was briefly a midpoint between the two;
+  // the accent is the simpler answer and the one that actually belongs.
+  const stroke = (svg)=>{
+    const m = /stroke="(#[0-9A-F]{6})" stroke-width="7"/.exec(svg);
+    return m ? m[1] : null;
+  };
+  const ACCENT = '#5B6CFF';
+  check('the app mark is drawn in the app accent', stroke(appIcon) === ACCENT,
+        String(stroke(appIcon)));
+  check('and that really is the accent the app uses',
+        new RegExp('--accent:' + ACCENT).test(appCss),
+        'so the tab and the product cannot drift apart');
+  check('the landing keeps its own cyan', stroke(icon) === '#22E5FF', String(stroke(icon)));
+  check('the highlight is the same hue, lifted, not a foreign colour',
+        /stroke="#B7C8FF"/.test(appIcon), 'B7C8FF is 5B6CFF raised in OKLab');
+
   check('the app symbol uses the canonical path', appHtml.includes(PATH_24));
   // The sprite is one long line of many symbols, so a lazy match runs straight
   // past ic-logo into the next one. Cut the symbol out and count its paths.
