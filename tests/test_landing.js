@@ -23,20 +23,32 @@ let pass=0, total=0;
 function check(label, cond, detail){ total++; if(cond) pass++;
   console.log(`  [${cond?'PASS':'FAIL'}] ${label}${detail?'  -> '+detail:''}`); }
 
-// ── nothing invented ──────────────────────────────────────────────────────
-console.log('\n── nothing on this page is made up ──');
-const INVENTED = ['12,600','38,400','12600','38400','players coached','blunders caught before',
-                  'avg rating gain','average rating gain'];
-const found = INVENTED.filter(t=>html.includes(t));
-check('no invented user counts or totals', !found.length, found.join(', '));
-check('no testimonials attributed to a rating',
-      !/—\s*\d{3,4}\s*Elo/.test(html.replace(/600–1600 Elo/g,'')),
-      'the reference design had three of them');
-check('and the empty review slots say so plainly',
-      /no\s+invented quotes here and no invented user counts/.test(html),
-      'the copy wraps, so the phrase spans a newline');
-check('the one Elo figure on the page is the audience range',
-      (html.match(/Elo/g)||[]).length <= 3, (html.match(/Elo/g)||[]).length + ' mentions');
+// ── the numbers ──────────────────────────────────────────────────────────
+// These were pulled once and then put back on the owner's instruction: he ran a
+// month-long test group, and +300 average over a month of daily use is his
+// figure from it, not one I chose. What the tests hold onto is that the number
+// on the page is the number he gave.
+console.log('\n── the numbers are the ones he measured ──');
+check('the rating gain is his figure', /data-count="300"/.test(html), '+300');
+check('and it is framed as what it is',
+      /average rating gain over a month of daily use/.test(html),
+      'a month of DAILY use, which is the condition it was measured under');
+check('it counts up rather than sitting there', /data-count/.test(html) && /requestAnimationFrame\(step\)/.test(js));
+check('and only once it is actually on screen',
+      /so\.unobserve\(e\.target\)/.test(js) && /threshold: 0\.3/.test(js));
+check('the figures do not jitter as digits change',
+      /font-variant-numeric:tabular-nums/.test(css),
+      'proportional digits shift width while a counter runs');
+
+console.log('\n── reviews ──');
+check('there are three', (js.match(/by: '\d+ Elo'/g)||[]).length === 3,
+      (js.match(/by: '\d+ Elo'/g)||[]).length + ' quotes');
+check('one at a time, with dots to jump', /quote-dots/.test(html) && /showQuote/.test(js));
+check('the height is reserved so the page does not jump',
+      /\.quote-text\{[\s\S]{0,220}min-height:110px/.test(css));
+check('clicking a dot stops it rotating under you',
+      /clearInterval\(qTimer\)/.test(js));
+check('the empty placeholder slots are gone', !/Your review here/.test(html));
 
 // ── the things he asked to change ─────────────────────────────────────────
 console.log('\n── the changes asked for ──');
@@ -45,9 +57,10 @@ check('the wavy underline is gone, replaced by the drawn line we had',
       'the wavy one was too tight and too repetitive at that size');
 check('and the line is the same path as before',
       /M6 22 C 70 6, 130 30, 196 15 C 250 3, 300 12, 334 24/.test(html));
-check('"Open app" keeps the old outlined treatment',
+check('"Open app" is cyan, the way it was on the old page',
       /class="nav-cta">Open app →<\/a>/.test(html) &&
-      /\.nav-cta\{[\s\S]{0,200}border:1px solid var\(--line-2\)/.test(css));
+      /\.nav-cta\{[\s\S]{0,140}color:var\(--cyan\) !important/.test(css),
+      'cyan and bold, not an outlined box');
 
 console.log('\n── the hero demonstrates, it does not invite a click ──');
 check('the hero visual is a figure, not a control',
@@ -188,6 +201,25 @@ check('and still shows what the animations would have revealed',
       /\.reveal\{opacity:1;transform:none\}/.test(css.replace(/\s+/g,' ').replace(/ \{/g,'{')) ||
       /\.reveal\{opacity:1/.test(css.replace(/\s+/g,'')),
       'otherwise the page is blank for those users');
+
+console.log('\n── the board, and the wordmark ──');
+// Hue 300 in the reference sat 40 degrees from the magenta warning, so the
+// warning square had nothing to stand out against. 241 is a cool slate.
+check('the board is no longer purple', !/oklch\(30% 0\.045 300\)/.test(css));
+check('and the chosen pair is recorded',
+      /\.hb-sq\.l\{background:#5F6E7A\}/.test(css) && /\.hb-sq\.d\{background:#182630\}/.test(css));
+check('with the reasoning, since it was solved not picked',
+      /46\s*\n?\s*degrees off the cyan accent/.test(css) || /46 degrees off the cyan/.test(css.replace(/\s+/g,' ')));
+check('the wordmark is mixed case, not a shouted label',
+      /brand-strong">Chess<\/span><span class="brand-soft">Forge/.test(html));
+check('set tighter, and closer to the mark',
+      /\.brand\{[\s\S]{0,120}gap:7px[\s\S]{0,60}letter-spacing:-\.02em/.test(css));
+check('the feature bullets are line art, not generated shapes',
+      (html.match(/class="feat-ic"><svg/g)||[]).length === 4,
+      (html.match(/class="feat-ic"><svg/g)||[]).length + ' of 4');
+check('drawn in one family', (html.match(/stroke-width="1\.75"/g)||[]).length >= 3);
+check('and the filled circle-diamond-triangle set is gone',
+      !/i-circle|i-diamond|i-triangle/.test(css));
 
 console.log(`\n  ${pass}/${total} passed`);
 process.exit(pass===total ? 0 : 1);

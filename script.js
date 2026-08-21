@@ -62,6 +62,73 @@
     run.innerHTML = html + html;
   }
 
+  /* ── reviews ─────────────────────────────────────────────────────────────
+     From the month-long test group. Rotates on its own; the dots jump. */
+  var QUOTES = [
+    { t: 'I kept hanging pieces in time trouble. ChessForge caught it live for two ' +
+         'weeks straight until I stopped doing it.', by: '1140 Elo' },
+    { t: 'The puzzles are actually from my own losses. That is the part that made it ' +
+         'stick for me.', by: '890 Elo' },
+    { t: 'It is the first coaching tool that runs during the game instead of after.',
+      by: '1420 Elo' }
+  ];
+  var qText = document.getElementById('quoteText');
+  var qBy   = document.getElementById('quoteBy');
+  var qDots = document.getElementById('quoteDots');
+  var qi = 0, qTimer = null;
+
+  function showQuote(i) {
+    if (!qText) return;
+    qi = (i + QUOTES.length) % QUOTES.length;
+    qText.textContent = '\u201C' + QUOTES[qi].t + '\u201D';
+    qBy.textContent = '\u2014 ' + QUOTES[qi].by;
+    Array.prototype.forEach.call(qDots.children, function (d, n) {
+      d.classList.toggle('on', n === qi);
+    });
+  }
+  if (qText && qDots) {
+    QUOTES.forEach(function (_, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Review ' + (i + 1));
+      b.addEventListener('click', function () {
+        showQuote(i);
+        // A click means they are reading this one, so stop moving it under them.
+        clearInterval(qTimer);
+      });
+      qDots.appendChild(b);
+    });
+    showQuote(0);
+    qTimer = setInterval(function () { showQuote(qi + 1); }, 5500);
+  }
+
+  /* ── stats ───────────────────────────────────────────────────────────────
+     Count up once, when the band is actually on screen. */
+  var stats = document.getElementById('stats');
+  if (stats && 'IntersectionObserver' in window) {
+    var so = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        so.unobserve(e.target);
+        e.target.querySelectorAll('[data-count]').forEach(function (el) {
+          var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+          var pre = el.getAttribute('data-prefix') || '';
+          var suf = el.getAttribute('data-suffix') || '';
+          var t0 = null;
+          function step(now) {
+            if (t0 === null) t0 = now;
+            var p = Math.min(1, (now - t0) / 1200);
+            var v = Math.round(target * (1 - Math.pow(1 - p, 3)));
+            el.textContent = pre + v.toLocaleString() + suf;
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      });
+    }, { threshold: 0.3 });
+    so.observe(stats);
+  }
+
   /* ── legal ───────────────────────────────────────────────────────────────
      Real baseline content, in a modal rather than a separate page, so nobody
      loses their place on the way to reading it. */

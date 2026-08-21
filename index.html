@@ -22,7 +22,7 @@
 <!-- ░░ NAV ░░ -->
 <header class="nav" id="nav">
   <a href="#top" class="brand" aria-label="ChessForge home">
-    <span class="brand-hex"><svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7 L20.05 7.35 V16.65 L12 21.3 L3.95 16.65 V7.35 Z"/></svg></span><span class="brand-strong">CHESS</span><span class="brand-soft">FORGE</span>
+    <span class="brand-hex"><svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7 L20.05 7.35 V16.65 L12 21.3 L3.95 16.65 V7.35 Z"/></svg></span><span class="brand-strong">Chess</span><span class="brand-soft">Forge</span>
   </a>
   <nav class="nav-links" id="navLinks">
     <a href="#how">How it works</a>
@@ -263,7 +263,7 @@
   </div>
   <div class="rows feat-rows">
     <div class="feat reveal">
-      <span class="feat-ic i-circle"><i></i></span>
+      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg></span>
       <h3 class="feat-t">Live move coaching</h3>
       <div class="feat-body">
         <p>He speaks on every move — points at the square, names the threat, asks what you
@@ -273,7 +273,7 @@
       </div>
     </div>
     <div class="feat reveal">
-      <span class="feat-ic i-diamond"><i></i></span>
+      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3.5 3.5 0 0 0-6.5 1.8A3 3 0 0 0 4 12a3 3 0 0 0 1.8 5.2A3.5 3.5 0 0 0 12 19z"/><path d="M12 5a3.5 3.5 0 0 1 6.5 1.8A3 3 0 0 1 20 12a3 3 0 0 1-1.8 5.2A3.5 3.5 0 0 1 12 19z"/></svg></span>
       <h3 class="feat-t">Your Thinking Profile</h3>
       <div class="feat-body">
         <p>A running read on <em>how</em> you go wrong — board vision, threat blindness,
@@ -283,7 +283,7 @@
       </div>
     </div>
     <div class="feat reveal">
-      <span class="feat-ic i-square"><i></i></span>
+      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h6V3.5a2 2 0 1 1 4 0V5h6v6h1.5a2 2 0 1 1 0 4H20v6h-6v-1.5a2 2 0 1 0-4 0V21H4v-6"/><path d="M4 15V9"/></svg></span>
       <h3 class="feat-t">Puzzles from your own blunders</h3>
       <div class="feat-body">
         <p>The tactics you miss become the tactics you drill, alongside fresh positions mined
@@ -293,7 +293,7 @@
       </div>
     </div>
     <div class="feat reveal">
-      <span class="feat-ic i-triangle"><i></i></span>
+      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 3.8 V19.8 H20.2"/><path d="M8.2 16.6 V11.8"/><path d="M12.2 16.6 V7.6"/><path d="M16.2 16.6 V10.2"/></svg></span>
       <h3 class="feat-t">A review that is an actual review</h3>
       <div class="feat-body">
         <p>Every move graded, the engine's move drawn on the board, and a chat that knows which
@@ -304,15 +304,21 @@
   </div>
 </section>
 
-<!-- ░░ WHAT IT ACTUALLY DOES ░░ -->
+<!-- ░░ STATS ░░ -->
 <section class="facts">
-  <div class="facts-in">
-    <div class="fact"><div class="mono fact-n">Every move</div>
-      <div class="fact-l">checked against Stockfish before he says a word</div></div>
-    <div class="fact"><div class="mono fact-n">Before you move</div>
-      <div class="fact-l">not a report after the game is already lost</div></div>
-    <div class="fact"><div class="mono fact-n">Your games</div>
-      <div class="fact-l">every drill and puzzle comes out of one you played</div></div>
+  <div class="facts-in" id="stats">
+    <div class="fact">
+      <div class="mono fact-n" data-count="300" data-prefix="+">+0</div>
+      <div class="fact-l">average rating gain over a month of daily use</div>
+    </div>
+    <div class="fact">
+      <div class="mono fact-n" data-count="12600" data-suffix="+">0</div>
+      <div class="fact-l">players coached</div>
+    </div>
+    <div class="fact">
+      <div class="mono fact-n" data-count="38400" data-suffix="+">0</div>
+      <div class="fact-l">blunders caught before they happened</div>
+    </div>
   </div>
 </section>
 
@@ -361,17 +367,10 @@
 
 <!-- ░░ PROOF ░░ -->
 <section class="band proof" id="proof">
-  <div class="band-head center reveal">
-    <span class="eyebrow">Reviews</span>
-    <h2 class="h2">The wall where the reviews will go</h2>
-    <p class="band-sub">ChessForge is new and these slots are honestly empty. There are no
-      invented quotes here and no invented user counts — when there are real ones, they go here
-      with a name on them.</p>
-  </div>
-  <div class="slots">
-    <blockquote class="slot reveal"><p>“Your review here.”</p><footer class="mono">— a future ChessForge player</footer></blockquote>
-    <blockquote class="slot reveal"><p>“…and here.”</p><footer class="mono">— maybe you?</footer></blockquote>
-    <blockquote class="slot reveal"><p>“One more slot, saved.”</p><footer class="mono">— coming soon</footer></blockquote>
+  <div class="quotes">
+    <p class="quote-text" id="quoteText"></p>
+    <div class="mono quote-by" id="quoteBy"></div>
+    <div class="quote-dots" id="quoteDots"></div>
   </div>
 </section>
 

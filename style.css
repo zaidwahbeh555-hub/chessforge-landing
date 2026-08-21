@@ -81,21 +81,30 @@ img{max-width:100%;display:block}
   background:oklch(8% 0.008 280 / 0.85); backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
 }
-.brand{display:flex;align-items:center;gap:9px;font-size:15px;letter-spacing:.02em}
+/* Uppercase and letter-spaced, it read as a label rather than a name, and the
+   gap left the mark floating away from the word. Mixed case, tight tracking,
+   and the two halves separated by weight instead of by space. */
+.brand{display:flex;align-items:center;gap:7px;font-size:17px;letter-spacing:-.02em}
 .brand-hex{color:var(--cyan);display:inline-flex;align-items:center}
 .brand-mark{width:20px;height:20px;display:block;
   filter:drop-shadow(0 0 5px oklch(78% 0.16 195 / .55)) drop-shadow(0 0 12px oklch(78% 0.16 195 / .22))}
 .brand-strong{font-weight:800}
-.brand-soft{font-weight:400;color:var(--ink-3)}
+.brand-soft{font-weight:500}
+.brand-soft{font-weight:500;color:var(--ink-2)}
 .nav-links{display:flex;align-items:center;gap:clamp(16px,2.4vw,34px)}
 .nav-links a{color:var(--ink-2);font-size:13.5px;font-weight:500;transition:color .15s var(--ease)}
 .nav-links a:hover{color:var(--ink)}
+/* Cyan, and bold, the way it was on the old page. It is the one thing in the
+   bar anyone is looking for. */
 .nav-cta{
-  border:1px solid var(--line-2); color:var(--ink) !important;
-  padding:9px 16px; border-radius:5px; font-size:13px; font-weight:600;
+  color:var(--cyan) !important; font-weight:700; font-size:14px;
+  padding:9px 14px; border-radius:6px; border:1px solid transparent;
   transition:all .18s var(--ease);
 }
-.nav-cta:hover{border-color:var(--cyan);color:var(--cyan) !important}
+.nav-cta:hover{
+  color:var(--cyan-hi) !important; border-color:oklch(78% 0.16 195 / .35);
+  background:var(--cyan-dim);
+}
 .nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px}
 .nav-burger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px}
 
@@ -155,8 +164,19 @@ img{max-width:100%;display:block}
 .hb{display:grid;grid-template-columns:repeat(8,1fr);border-radius:6px;overflow:hidden;
   border:1px solid var(--line-2)}
 .hb-sq{aspect-ratio:1;position:relative;display:flex;align-items:center;justify-content:center}
-.hb-sq.l{background:oklch(30% 0.045 300)}
-.hb-sq.d{background:oklch(15% 0.03 300)}
+/* Solved against the actual piece art rather than picked by eye. The reference
+   used hue 300, which is only 40 degrees off the magenta warning -- so the
+   warning square had nothing to stand out against. Hue 241 is a cool slate: 46
+   degrees off the cyan accent, so it reads as the same family without echoing
+   it, and 99 off the magenta, so a warning is unmistakably foreign.
+
+   The black piece is what constrains the lightness. Its body is near-black and
+   its edge is mid-grey, so a square between the two fails against both at once:
+   the dark square has to be dark enough for the light edge to separate, and the
+   light square light enough for the dark body to. Every piece colour clears
+   3.24:1 on both shades by one or the other. */
+.hb-sq.l{background:#5F6E7A}
+.hb-sq.d{background:#182630}
 .hb-sq img{width:86%;height:86%;object-fit:contain}
 /* The square under discussion. It lights on the beat the finger arrives. */
 .hb-hot::after{
@@ -236,15 +256,14 @@ img{max-width:100%;display:block}
 
 /* ── features ──────────────────────────────────────────────────────────── */
 .feat{display:flex;align-items:flex-start;gap:20px;padding:26px 0;border-top:1px solid var(--line)}
-.feat-ic{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;
-  border:1px solid var(--cyan);margin-top:2px}
-.feat-ic i{display:block;background:var(--cyan)}
-.i-circle{border-radius:50%} .i-circle i{width:12px;height:12px;border-radius:50%}
-.i-diamond{border-radius:6px;transform:rotate(45deg);border-color:var(--magenta)}
-.i-diamond i{width:10px;height:10px;border-radius:2px;background:var(--magenta)}
-.i-square{border-radius:6px} .i-square i{width:12px;height:12px;border-radius:3px}
-.i-triangle{border-radius:50%;border-color:var(--magenta)}
-.i-triangle i{width:14px;height:14px;background:var(--magenta);clip-path:polygon(50% 15%,15% 85%,85% 85%)}
+/* Line art, from the old page: the filled circles, diamonds and triangles the
+   reference used read as generated decoration rather than as icons. */
+.feat-ic{
+  width:38px; height:38px; flex:none; display:flex; align-items:center;
+  justify-content:center; margin-top:1px; border-radius:10px;
+  border:1px solid var(--line-2); background:oklch(12% 0.014 280); color:var(--cyan);
+}
+.feat-ic svg{width:19px;height:19px;display:block}
 .feat-t{font-size:17px;font-weight:700;margin:0;color:var(--ink);width:210px;flex:none;padding-top:5px}
 .feat-body{min-width:0}
 .feat-body p{font-size:14.5px;line-height:1.65;color:var(--ink-2);margin:0}
@@ -256,7 +275,10 @@ img{max-width:100%;display:block}
 .facts{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
 .facts-in{max-width:960px;margin:0 auto;padding:56px var(--edge);
   display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center}
-.fact-n{font-size:clamp(18px,2.2vw,24px);font-weight:600;color:var(--cyan);letter-spacing:-.01em}
+.fact-n{font-size:clamp(28px,3.6vw,38px);font-weight:600;color:var(--cyan);
+  letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fact:nth-child(2) .fact-n{color:var(--ink)}
+.fact:nth-child(3) .fact-n{color:var(--magenta)}
 .fact-l{font-size:13px;color:var(--ink-3);margin-top:8px;line-height:1.5}
 
 /* ── pricing ───────────────────────────────────────────────────────────── */
@@ -302,11 +324,16 @@ img{max-width:100%;display:block}
 .plan-hero .plan-list b{font-weight:800}
 
 /* ── proof ─────────────────────────────────────────────────────────────── */
-.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.slot{border:1px dashed var(--line-2);border-radius:12px;padding:24px 20px;
-  background:oklch(10% 0.01 280);text-align:center}
-.slot p{font-size:15px;color:var(--ink-3);margin:0 0 12px}
-.slot footer{font-size:11.5px;color:oklch(45% 0.015 280)}
+/* One quote at a time, centred, with the height reserved so the page does not
+   jump when a longer one comes round. */
+.quotes{max-width:720px;margin:0 auto;text-align:center}
+.quote-text{font-size:clamp(18px,2.4vw,22px);line-height:1.5;font-weight:500;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 20px;min-height:110px;text-wrap:pretty}
+.quote-by{font-size:13px;color:var(--ink-3);margin-bottom:20px}
+.quote-dots{display:flex;justify-content:center;gap:8px}
+.quote-dots button{width:7px;height:7px;border-radius:50%;border:none;padding:0;
+  cursor:pointer;background:oklch(28% 0.02 280);transition:background .2s var(--ease)}
+.quote-dots button.on{background:var(--cyan)}
 
 /* ── faq ───────────────────────────────────────────────────────────────── */
 .faqs{max-width:700px}
