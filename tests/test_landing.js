@@ -207,14 +207,17 @@ console.log('\n── the board, and the wordmark ──');
 // warning square had nothing to stand out against. 241 is a cool slate.
 check('the board is no longer purple', !/oklch\(30% 0\.045 300\)/.test(css));
 check('and it is dark, not a mid-slate',
-      /\.hb-sq\.l\{background:#213B4F\}/.test(css) && /\.hb-sq\.d\{background:#001122\}/.test(css));
+      /\.hb-sq\.l\{background:#253047\}/.test(css) && /\.hb-sq\.d\{background:#060E23\}/.test(css));
+check('it blends into the page rather than sitting on it',
+      /sits at 1\.08:1 against the page/.test(css.replace(/\s+/g,' ')),
+      'the board is part of the surface, not a panel dropped onto it');
 // Both squares sit BELOW the dead band, where the black piece reads by its
 // light edge on either shade. That is what lets the whole board be dark.
 const flat = css.replace(/\s+/g,' ');
 check('the reasoning is recorded, since it was solved not picked',
       /both squares work via the light edge/.test(flat));
-check('the hue is blue with nothing purple in it',
-      /26 degrees short of violet/.test(flat));
+check('the hue is blue with purple in it, not one or the other',
+      /blue with purple in it rather than either on its own/.test(flat));
 check('and nothing warm anywhere',
       !/#[0-9A-F]*[89A-F][0-9A-F]{3}[0-3][0-9A-F]\}/.test(css.match(/\.hb-sq\.[ld]\{background:#\w{6}\}/g).join('')),
       'red channel never leads in either square');

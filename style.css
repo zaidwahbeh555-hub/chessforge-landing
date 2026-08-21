@@ -163,25 +163,31 @@ img{max-width:100%;display:block}
 .demo-stage{position:relative;padding:18px}
 
 .hb{display:grid;grid-template-columns:repeat(8,1fr);border-radius:6px;overflow:hidden;
-  border:1px solid var(--line-2)}
+  border:1px solid oklch(32% 0.03 265)}
 .hb-sq{aspect-ratio:1;position:relative;display:flex;align-items:center;justify-content:center}
 /* Solved against the actual piece art rather than picked by eye, and solved
-   twice: the first answer was a mid-slate that was legible but far too light
-   for this page.
+   three times, which is worth writing down because the constraint is not
+   obvious.
 
-   The black piece is what decides everything. Its body is near-black and its
-   edge is mid-grey, so there is a dead band around L .36-.48 where the body has
-   faded and the edge has not yet arrived. Above that band a light square works
-   via the dark body; BELOW it, both squares work via the light edge -- which is
-   what makes an all-dark board possible at all, and it is the one that belongs
-   on a near-black page.
+   The black piece decides everything. Its body is near-black and its edge is
+   mid-grey, so there is a dead band around L .36-.48 where the body has faded
+   and the edge has not yet arrived. Above the band a light square works via the
+   dark body -- that was the first answer, and it was a mid-slate far too bright
+   for this page. BELOW the band both squares work via the light edge, and that
+   is what lets the whole board be dark.
 
-   Hue 244: blue, 26 degrees short of violet so there is nothing purple in it,
-   and nothing warm anywhere. Every piece colour clears 3.16:1 on both shades,
-   the checker is 1.63, and the magenta warning reads at 4.6 and 6.7 against
-   them, so it lands as a signal rather than as more board. */
-.hb-sq.l{background:#213B4F}
-.hb-sq.d{background:#001122}
+   Hue 265, between the old board's 244 and the page's own 280: blue with purple
+   in it rather than either on its own. Nothing warm -- the red channel never
+   leads.
+
+   The dark square sits at 1.08:1 against the page, which is deliberate. The
+   board is meant to be part of the surface rather than a panel dropped onto it,
+   so the checker is quiet at 1.45 -- enough to read as squares, not enough to
+   shout. Every piece colour still clears 3.58:1, and the magenta warning reads
+   at 6.9 against the dark square, so the one thing that IS meant to stand out
+   still does. */
+.hb-sq.l{background:#253047}
+.hb-sq.d{background:#060E23}
 .hb-sq img{width:86%;height:86%;object-fit:contain}
 /* The square under discussion. It lights on the beat the finger arrives. */
 .hb-hot::after{
