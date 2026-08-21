@@ -78,8 +78,10 @@ check('the nav and the footer both draw the mark',
 check('both use the canonical path',
       (html.match(new RegExp(PATH_24.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length === 2);
 check('the mark glows', /\.brand-mark\{[\s\S]{0,200}drop-shadow/.test(css));
+// The rule moved into the page's single reduced-motion block rather than
+// carrying its own media query; assert the behaviour, not where it lives.
 check('and stops glowing under reduced motion',
-      /@media\(prefers-reduced-motion:reduce\)\{\.brand-mark\{filter:none\}\}/.test(css));
+      /@media \(prefers-reduced-motion:reduce\)\{[\s\S]*?\.brand-mark\{filter:none\}/.test(css));
 check('the footer mark is smaller than the nav one',
       /\.footer-brand \.brand-mark\{width:17px/.test(css) && /\.brand-mark\{width:20px/.test(css));
 
