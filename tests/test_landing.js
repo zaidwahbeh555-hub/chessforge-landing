@@ -206,14 +206,27 @@ console.log('\n── the board, and the wordmark ──');
 // Hue 300 in the reference sat 40 degrees from the magenta warning, so the
 // warning square had nothing to stand out against. 241 is a cool slate.
 check('the board is no longer purple', !/oklch\(30% 0\.045 300\)/.test(css));
-check('and the chosen pair is recorded',
-      /\.hb-sq\.l\{background:#5F6E7A\}/.test(css) && /\.hb-sq\.d\{background:#182630\}/.test(css));
-check('with the reasoning, since it was solved not picked',
-      /46\s*\n?\s*degrees off the cyan accent/.test(css) || /46 degrees off the cyan/.test(css.replace(/\s+/g,' ')));
+check('and it is dark, not a mid-slate',
+      /\.hb-sq\.l\{background:#213B4F\}/.test(css) && /\.hb-sq\.d\{background:#001122\}/.test(css));
+// Both squares sit BELOW the dead band, where the black piece reads by its
+// light edge on either shade. That is what lets the whole board be dark.
+const flat = css.replace(/\s+/g,' ');
+check('the reasoning is recorded, since it was solved not picked',
+      /both squares work via the light edge/.test(flat));
+check('the hue is blue with nothing purple in it',
+      /26 degrees short of violet/.test(flat));
+check('and nothing warm anywhere',
+      !/#[0-9A-F]*[89A-F][0-9A-F]{3}[0-3][0-9A-F]\}/.test(css.match(/\.hb-sq\.[ld]\{background:#\w{6}\}/g).join('')),
+      'red channel never leads in either square');
 check('the wordmark is mixed case, not a shouted label',
       /brand-strong">Chess<\/span><span class="brand-soft">Forge/.test(html));
 check('set tighter, and closer to the mark',
-      /\.brand\{[\s\S]{0,120}gap:7px[\s\S]{0,60}letter-spacing:-\.02em/.test(css));
+      /\.brand\{[\s\S]{0,160}gap:5px[\s\S]{0,80}letter-spacing:-\.025em/.test(css));
+check('in a rounder, more modern face than the body text',
+      /font-family:'Outfit'/.test(css) && /family=Outfit/.test(html));
+check('and Forge is not thinner than Chess by much',
+      /\.brand-strong\{font-weight:700\}/.test(css) && /\.brand-soft\{font-weight:600/.test(css),
+      'half a step, not a full one');
 check('the feature bullets are line art, not generated shapes',
       (html.match(/class="feat-ic"><svg/g)||[]).length === 4,
       (html.match(/class="feat-ic"><svg/g)||[]).length + ' of 4');

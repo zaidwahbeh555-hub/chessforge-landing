@@ -84,13 +84,14 @@ img{max-width:100%;display:block}
 /* Uppercase and letter-spaced, it read as a label rather than a name, and the
    gap left the mark floating away from the word. Mixed case, tight tracking,
    and the two halves separated by weight instead of by space. */
-.brand{display:flex;align-items:center;gap:7px;font-size:17px;letter-spacing:-.02em}
+.brand{display:flex;align-items:center;gap:5px;font-size:18px;letter-spacing:-.025em;
+  font-family:'Outfit', var(--sans)}
 .brand-hex{color:var(--cyan);display:inline-flex;align-items:center}
 .brand-mark{width:20px;height:20px;display:block;
   filter:drop-shadow(0 0 5px oklch(78% 0.16 195 / .55)) drop-shadow(0 0 12px oklch(78% 0.16 195 / .22))}
-.brand-strong{font-weight:800}
-.brand-soft{font-weight:500}
-.brand-soft{font-weight:500;color:var(--ink-2)}
+.brand-strong{font-weight:700}
+/* Forge was too light against Chess. Half a step up, not a full one. */
+.brand-soft{font-weight:600;color:var(--ink-2)}
 .nav-links{display:flex;align-items:center;gap:clamp(16px,2.4vw,34px)}
 .nav-links a{color:var(--ink-2);font-size:13.5px;font-weight:500;transition:color .15s var(--ease)}
 .nav-links a:hover{color:var(--ink)}
@@ -164,19 +165,23 @@ img{max-width:100%;display:block}
 .hb{display:grid;grid-template-columns:repeat(8,1fr);border-radius:6px;overflow:hidden;
   border:1px solid var(--line-2)}
 .hb-sq{aspect-ratio:1;position:relative;display:flex;align-items:center;justify-content:center}
-/* Solved against the actual piece art rather than picked by eye. The reference
-   used hue 300, which is only 40 degrees off the magenta warning -- so the
-   warning square had nothing to stand out against. Hue 241 is a cool slate: 46
-   degrees off the cyan accent, so it reads as the same family without echoing
-   it, and 99 off the magenta, so a warning is unmistakably foreign.
+/* Solved against the actual piece art rather than picked by eye, and solved
+   twice: the first answer was a mid-slate that was legible but far too light
+   for this page.
 
-   The black piece is what constrains the lightness. Its body is near-black and
-   its edge is mid-grey, so a square between the two fails against both at once:
-   the dark square has to be dark enough for the light edge to separate, and the
-   light square light enough for the dark body to. Every piece colour clears
-   3.24:1 on both shades by one or the other. */
-.hb-sq.l{background:#5F6E7A}
-.hb-sq.d{background:#182630}
+   The black piece is what decides everything. Its body is near-black and its
+   edge is mid-grey, so there is a dead band around L .36-.48 where the body has
+   faded and the edge has not yet arrived. Above that band a light square works
+   via the dark body; BELOW it, both squares work via the light edge -- which is
+   what makes an all-dark board possible at all, and it is the one that belongs
+   on a near-black page.
+
+   Hue 244: blue, 26 degrees short of violet so there is nothing purple in it,
+   and nothing warm anywhere. Every piece colour clears 3.16:1 on both shades,
+   the checker is 1.63, and the magenta warning reads at 4.6 and 6.7 against
+   them, so it lands as a signal rather than as more board. */
+.hb-sq.l{background:#213B4F}
+.hb-sq.d{background:#001122}
 .hb-sq img{width:86%;height:86%;object-fit:contain}
 /* The square under discussion. It lights on the beat the finger arrives. */
 .hb-hot::after{
