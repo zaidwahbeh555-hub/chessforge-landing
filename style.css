@@ -64,11 +64,27 @@ img{max-width:100%;display:block}
   padding:14px 26px; transition:all .18s var(--ease); cursor:pointer;
   font-family:inherit; border:1px solid transparent;
 }
+/* A neon edge, kept faint on purpose. Two shadows: a tight one that reads as
+   the button's own light, and a wide soft one that reads as it falling on the
+   page. Both low alpha -- at full strength this looks like a casino, and the
+   button is meant to invite rather than shout. */
 .btn-primary{
   background:var(--cyan); color:oklch(12% 0.02 280);
-  box-shadow:0 0 18px oklch(78% 0.16 195 / 0.3);
+  box-shadow:0 0 6px oklch(85% 0.19 195 / 0.28),
+             0 0 22px oklch(78% 0.16 195 / 0.20);
+  animation:btnGlow 3.4s ease-in-out infinite;
 }
-.btn-primary:hover{background:var(--cyan-hi);box-shadow:0 0 30px oklch(78% 0.16 195 / 0.5)}
+@keyframes btnGlow{
+  0%,100%{box-shadow:0 0 6px oklch(85% 0.19 195 / 0.22),
+                     0 0 22px oklch(78% 0.16 195 / 0.16)}
+  50%    {box-shadow:0 0 9px oklch(85% 0.19 195 / 0.34),
+                     0 0 30px oklch(78% 0.16 195 / 0.26)}
+}
+.btn-primary:hover{
+  background:var(--cyan-hi); animation:none;
+  box-shadow:0 0 10px oklch(85% 0.19 195 / 0.45),
+             0 0 34px oklch(78% 0.16 195 / 0.32);
+}
 .btn-ghost{border-color:var(--line-2);color:var(--ink);background:transparent}
 .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
 .btn-lg{padding:16px 30px;font-size:16px}
@@ -84,8 +100,12 @@ img{max-width:100%;display:block}
 /* Uppercase and letter-spaced, it read as a label rather than a name, and the
    gap left the mark floating away from the word. Mixed case, tight tracking,
    and the two halves separated by weight instead of by space. */
-.brand{display:flex;align-items:center;gap:5px;font-size:18px;letter-spacing:-.025em;
+/* gap on a flex row applies between EVERY child, so the 5px meant to sit
+   between the mark and the word was also sitting between Chess and Forge. The
+   words are one box now; the gap only separates it from the mark. */
+.brand{display:flex;align-items:center;gap:7px;font-size:18px;letter-spacing:-.025em;
   font-family:'Outfit', var(--sans)}
+.brand-word{display:inline-flex}
 .brand-hex{color:var(--cyan);display:inline-flex;align-items:center}
 .brand-mark{width:20px;height:20px;display:block;
   filter:drop-shadow(0 0 5px oklch(78% 0.16 195 / .55)) drop-shadow(0 0 12px oklch(78% 0.16 195 / .22))}
@@ -163,7 +183,7 @@ img{max-width:100%;display:block}
 .demo-stage{position:relative;padding:18px}
 
 .hb{display:grid;grid-template-columns:repeat(8,1fr);border-radius:6px;overflow:hidden;
-  border:1px solid oklch(32% 0.03 265)}
+  border:1px solid oklch(26% 0.03 270)}
 .hb-sq{aspect-ratio:1;position:relative;display:flex;align-items:center;justify-content:center}
 /* Solved against the actual piece art rather than picked by eye, and solved
    three times, which is worth writing down because the constraint is not
@@ -180,14 +200,19 @@ img{max-width:100%;display:block}
    in it rather than either on its own. Nothing warm -- the red channel never
    leads.
 
-   The dark square sits at 1.08:1 against the page, which is deliberate. The
-   board is meant to be part of the surface rather than a panel dropped onto it,
-   so the checker is quiet at 1.45 -- enough to read as squares, not enough to
-   shout. Every piece colour still clears 3.58:1, and the magenta warning reads
-   at 6.9 against the dark square, so the one thing that IS meant to stand out
-   still does. */
-.hb-sq.l{background:#253047}
-.hb-sq.d{background:#060E23}
+   The dark square sits at 1.01:1 against the page, which is deliberate: the
+   board is meant to be part of the surface rather than a panel dropped onto it.
+   Going this dark compresses the checker, because the +0.05 in a contrast ratio
+   starts to dominate as everything approaches black -- the same lightness step
+   buys less separation down here. The gap between the two shades was widened to
+   pay for that, so the pattern still reads at 1.35 while both squares sit far
+   lower than before.
+
+   Every piece colour still clears 4.12:1, better than it was, because a
+   near-black square is exactly where the black piece's light edge separates
+   best. The magenta warning reads at 7.7 against the dark square. */
+.hb-sq.l{background:#1E253B}
+.hb-sq.d{background:#020313}
 .hb-sq img{width:86%;height:86%;object-fit:contain}
 /* The square under discussion. It lights on the beat the finger arrives. */
 .hb-hot::after{

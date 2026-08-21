@@ -207,10 +207,12 @@ console.log('\n── the board, and the wordmark ──');
 // warning square had nothing to stand out against. 241 is a cool slate.
 check('the board is no longer purple', !/oklch\(30% 0\.045 300\)/.test(css));
 check('and it is dark, not a mid-slate',
-      /\.hb-sq\.l\{background:#253047\}/.test(css) && /\.hb-sq\.d\{background:#060E23\}/.test(css));
+      /\.hb-sq\.l\{background:#1E253B\}/.test(css) && /\.hb-sq\.d\{background:#020313\}/.test(css));
 check('it blends into the page rather than sitting on it',
-      /sits at 1\.08:1 against the page/.test(css.replace(/\s+/g,' ')),
+      /sits at 1\.01:1 against the page/.test(css.replace(/\s+/g,' ')),
       'the board is part of the surface, not a panel dropped onto it');
+check('and the checker gap was widened to survive going that dark',
+      /the same lightness step buys less separation down here/.test(css.replace(/\s+/g,' ')));
 // Both squares sit BELOW the dead band, where the black piece reads by its
 // light edge on either shade. That is what lets the whole board be dark.
 const flat = css.replace(/\s+/g,' ');
@@ -223,8 +225,13 @@ check('and nothing warm anywhere',
       'red channel never leads in either square');
 check('the wordmark is mixed case, not a shouted label',
       /brand-strong">Chess<\/span><span class="brand-soft">Forge/.test(html));
-check('set tighter, and closer to the mark',
-      /\.brand\{[\s\S]{0,160}gap:5px[\s\S]{0,80}letter-spacing:-\.025em/.test(css));
+check('set tight, and closer to the mark',
+      /\.brand\{[\s\S]{0,160}gap:7px[\s\S]{0,80}letter-spacing:-\.025em/.test(css));
+// gap on a flex row applies between every child, so the gap meant for the mark
+// was also pushing Chess and Forge apart.
+check('Chess and Forge are one box, so no gap falls between them',
+      /<span class="brand-word"><span class="brand-strong">Chess<\/span><span class="brand-soft">Forge<\/span><\/span>/.test(html));
+check('and the reason is recorded', /applies between EVERY child/.test(css));
 check('in a rounder, more modern face than the body text',
       /font-family:'Outfit'/.test(css) && /family=Outfit/.test(html));
 check('and Forge is not thinner than Chess by much',
@@ -236,6 +243,19 @@ check('the feature bullets are line art, not generated shapes',
 check('drawn in one family', (html.match(/stroke-width="1\.75"/g)||[]).length >= 3);
 check('and the filled circle-diamond-triangle set is gone',
       !/i-circle|i-diamond|i-triangle/.test(css));
+
+console.log('\n── the primary button ──');
+check('it glows', /\.btn-primary\{[\s\S]{0,300}box-shadow:0 0 6px/.test(css));
+check('faintly — two low-alpha layers, not one bright one',
+      (css.match(/oklch\(\d+% [\d.]+ 195 \/ 0\.[12]\d\)/g)||[]).length >= 4,
+      'a tight edge plus a wide falloff, both under .35');
+check('and it breathes rather than blinks',
+      /@keyframes btnGlow\{/.test(css) && /animation:btnGlow 3\.4s/.test(css),
+      'slow enough to read as light, not as a warning');
+check('hover settles it instead of pulsing harder',
+      /\.btn-primary:hover\{[\s\S]{0,120}animation:none/.test(css));
+check('reduced motion stops it with everything else',
+      /@media \(prefers-reduced-motion:reduce\)\{[\s\S]{0,200}animation:none !important/.test(css));
 
 console.log(`\n  ${pass}/${total} passed`);
 process.exit(pass===total ? 0 : 1);
