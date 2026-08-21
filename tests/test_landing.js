@@ -247,7 +247,7 @@ check('and the filled circle-diamond-triangle set is gone',
 console.log('\n── the primary button ──');
 check('it glows', /\.btn-primary\{[\s\S]{0,300}box-shadow:0 0 6px/.test(css));
 check('faintly — two low-alpha layers, not one bright one',
-      (css.match(/oklch\(\d+% [\d.]+ 195 \/ 0\.[12]\d\)/g)||[]).length >= 4,
+      (css.match(/rgba\((?:34,229,255|124,242,255),\.[12]\d\)/g)||[]).length >= 4,
       'a tight edge plus a wide falloff, both under .35');
 check('and it breathes rather than blinks',
       /@keyframes btnGlow\{/.test(css) && /animation:btnGlow 3\.4s/.test(css),

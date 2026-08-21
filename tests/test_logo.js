@@ -92,8 +92,9 @@ check('it carries its glow in the file, not in CSS',
       (icon.match(new RegExp(PATH_100.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length >= 3,
       'a favicon cannot rely on a stylesheet');
 check('and the reason is written down',
-      /filter\s+support in favicon rendering is inconsistent/.test(icon),
-      'the comment wraps, so the phrase spans a newline');
+      /filter support in favicon rendering is\s+inconsistent/.test(icon.replace(/\s+/g,' ')) ||
+      /filter support in favicon rendering is inconsistent/.test(icon.replace(/\s+/g,' ')),
+      'the comment wraps, so read it with whitespace collapsed');
 check('it has NO plate -- the mark sits on whatever the tab bar is',
       !/<rect/.test(icon), 'transparent, by request');
 check('and it says so', /on nothing/.test(icon));
@@ -107,36 +108,23 @@ if(!fs.existsSync(APP)){
   const appCss  = fs.readFileSync(path.join(APP,'static','css','style.css'),'utf8');
   const appIcon = fs.readFileSync(path.join(APP,'static','favicon.svg'),'utf8');
 
-  // The two favicons are deliberately NOT identical any more. Same mark, same
-  // geometry; the app's is tinted halfway to its own accent so a tab belonging
-  // to the app is distinguishable from a tab belonging to the site.
-  const geom = (svg)=>[...svg.matchAll(/ d="([^"]+)"/g)].map(m=>m[1]);
-  check('the app favicon is the same mark, geometrically',
-        JSON.stringify([...new Set(geom(appIcon))]) === JSON.stringify([...new Set(geom(icon))]),
-        'same path, different tint');
-  // Strokes only: the comment names the landing cyan as the reference it was
-  // mixed from, so a plain includes() would find it in the prose.
-  const strokesOf = (svg)=>[...new Set([...svg.matchAll(/stroke="(#[0-9A-F]{6})"/g)].map(m=>m[1]))];
-  check('and it is tinted, not left cyan',
-        !strokesOf(appIcon).includes('#22E5FF'),
-        'app draws ' + strokesOf(appIcon).join(' ') + '; landing keeps ' + strokesOf(icon).join(' '));
-
-  // The app mark is simply the app's accent -- same hexagon, product colour, so
-  // the tab matches what it opens. It was briefly a midpoint between the two;
-  // the accent is the simpler answer and the one that actually belongs.
+  // One mark, one file. They diverged for a while -- the app tinted to its own
+  // indigo accent -- and then the accents themselves were unified, so there is
+  // no longer anything to diverge about.
+  check('the app favicon is byte-identical to the landing one', appIcon === icon,
+        'one mark means one file');
   const stroke = (svg)=>{
     const m = /stroke="(#[0-9A-F]{6})" stroke-width="7"/.exec(svg);
     return m ? m[1] : null;
   };
-  const ACCENT = '#5B6CFF';
-  check('the app mark is drawn in the app accent', stroke(appIcon) === ACCENT,
+  check('both are drawn in the one cyan', stroke(appIcon) === '#22E5FF' && stroke(icon) === '#22E5FF',
         String(stroke(appIcon)));
-  check('and that really is the accent the app uses',
-        new RegExp('--accent:' + ACCENT).test(appCss),
-        'so the tab and the product cannot drift apart');
-  check('the landing keeps its own cyan', stroke(icon) === '#22E5FF', String(stroke(icon)));
-  check('the highlight is the same hue, lifted, not a foreign colour',
-        /stroke="#B7C8FF"/.test(appIcon), 'B7C8FF is 5B6CFF raised in OKLab');
+  check('which is the app accent', /--accent:#22E5FF/.test(appCss));
+  check('and the landing accent', /--cyan:\s*#22E5FF/.test(css),
+        'so the tab, the buttons and the links are all one colour');
+  check('no earlier version of the cyan survives in the app',
+        !/#00D6D7|0,214,215|5B6CFF|91,108,255/i.test(appCss));
+  check('or on the landing page', !/#00d4ff/i.test(css));
 
   check('the app symbol uses the canonical path', appHtml.includes(PATH_24));
   // The sprite is one long line of many symbols, so a lazy match runs straight
