@@ -99,10 +99,14 @@ check('the portrait is a real image, not a placeholder slot',
 
 console.log('\n── pricing ──');
 check('the paid plan is Grandmaster', /class="plan-name">Grandmaster</.test(html));
-check('at the real price', /class="mono plan-now">\$9</.test(html));
-check('anchored against the struck-through nineteen',
-      /class="plan-was mono">\$19</.test(html) &&
-      /\.plan-was\{[\s\S]{0,120}line-through/.test(css));
+check('at the real price', /class="mono plan-now">\$19\.99</.test(html),
+      'it is 19.99, and 19.99 IS the promotion');
+check('with no invented price struck through beside it',
+      !/plan-was/.test(html) && !/line-through/.test(css),
+      'there is no higher price to strike, and making one up to fake a discount '
+      + 'is the same invented number the rest of this page had removed');
+check('the founding-member framing carries the promotion instead',
+      /founding-member rate/.test(html));
 check('it is the bigger of the two columns',
       /\.plans\{[\s\S]{0,120}grid-template-columns:1fr 1\.25fr/.test(css));
 check('and it shines', /\.plan-glow\{/.test(css) && /@keyframes sheen\{/.test(css));
@@ -122,10 +126,12 @@ check('and it is styled quieter than the feature itself',
 
 console.log('\n── footer ──');
 check('the contact email is a real address',
-      /mailto:zaidwahbeh555@gmail\.com/.test(html));
+      /mailto:chessforgesupport@gmail\.com/.test(html));
 check('and it is shown, not only linked',
-      /class="footer-mail"[^>]*>zaidwahbeh555@gmail\.com</.test(html));
+      /class="footer-mail"[^>]*>chessforgesupport@gmail\.com</.test(html));
 check('the old placeholder address is gone', !/hello@chessforge\.org/.test(html));
+check('no personal address anywhere on the page',
+      !/zaidwahbeh/i.test(html), 'support address only, never a personal one');
 check('terms of service is reachable', /data-legal="terms"/.test(html));
 check('privacy policy is reachable', /data-legal="privacy"/.test(html));
 check('both have real content behind them',

@@ -294,8 +294,7 @@ img{max-width:100%;display:block}
   padding:5px 10px;border-radius:999px;
 }
 .plan-hero .plan-name{font-size:19px;font-weight:800;letter-spacing:-.01em}
-.plan-was{font-size:19px;color:var(--ink-3);text-decoration:line-through;text-decoration-thickness:2px}
-.plan-now{font-size:46px !important;font-weight:700 !important;color:var(--ink) !important;
+.plan-now{font-size:42px !important;font-weight:700 !important;color:var(--ink) !important;
   letter-spacing:-.03em;text-shadow:0 0 26px oklch(78% 0.16 195 / .35)}
 .plan-per{font-size:15px;color:var(--ink-3);font-weight:500}
 .plan-hero .plan-list{color:var(--ink);font-size:14px}
