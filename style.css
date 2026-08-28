@@ -479,3 +479,11 @@ img{max-width:100%;display:block}
   .fg-hand,.fg-say{opacity:1}
   .hb-hot::after{opacity:1}
 }
+
+/* The anchor price, struck, beside the real one. Muted and lighter -- two prices
+   at the same weight reads as a mistake rather than a discount. */
+.plan-was{
+  font-size:22px; font-weight:500; color:var(--ink-3);
+  text-decoration:line-through; text-decoration-thickness:1.5px;
+  margin-right:10px; vertical-align:.18em; opacity:.7;
+}

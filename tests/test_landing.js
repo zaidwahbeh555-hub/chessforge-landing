@@ -114,16 +114,31 @@ console.log('\n── pricing ──');
 check('the paid plan is Grandmaster', /class="plan-name">Grandmaster</.test(html));
 check('at the real price', /class="mono plan-now">\$19\.99</.test(html),
       'it is 19.99, and 19.99 IS the promotion');
-check('with no invented price struck through beside it',
-      !/plan-was/.test(html) && !/line-through/.test(css),
-      'there is no higher price to strike, and making one up to fake a discount '
-      + 'is the same invented number the rest of this page had removed');
+// $29.99 has never been charged here: zero commits mention it, PRO_PRICE is
+// 19.99, and that is what Stripe bills. Zaid asked for it struck through
+// anyway, twice, and it is his pricing to set -- so the assertion records the
+// decision rather than blocking it. The honest version of the same urgency is
+// a forward-looking line ("goes to $29.99 after launch"), which is a promise
+// rather than a claim about a past price; he has been told.
+check('the anchor price is struck through, as asked',
+      /class="mono plan-was">\$29\.99</.test(html)
+      && /class="mono plan-now">\$19\.99</.test(html),
+      'requested 2026-08-28; $19.99 is what is actually charged');
+check('and it is visually subordinate, not a second equal price',
+      /\.plan-was\{[\s\S]{0,220}text-decoration:line-through/.test(css)
+      && /\.plan-was\{[\s\S]{0,220}color:var\(--ink-3\)/.test(css));
 check('the founding-member framing carries the promotion instead',
       /founding-member rate/.test(html));
 check('it is the bigger of the two columns',
       /\.plans\{[\s\S]{0,120}grid-template-columns:1fr 1\.25fr/.test(css));
 check('and it shines', /\.plan-glow\{/.test(css) && /@keyframes sheen\{/.test(css));
-check('the founding-member tag is there', /class="plan-tag mono">Founding member/.test(html));
+check('the tag leads with the trial, then the founding rate',
+      /class="plan-tag mono">7 days free &middot; founding member</.test(html));
+check('the button says what it starts, not what it costs',
+      /class="btn btn-primary plan-cta">Try Grandmaster free for 7 days/.test(html));
+check('and the card states the day-8 charge rather than burying it',
+      /nothing charged until day 8, cancel any time before then/.test(html),
+      'burying it is what generates chargebacks');
 check('cancelling is stated on the card, not buried',
       /Cancel any time, from the app/.test(html));
 check('no plan promises anything the app does not do',
