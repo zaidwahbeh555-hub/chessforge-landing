@@ -3,19 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChessForge — The chess coach that knows your weaknesses</title>
-<meta name="description" content="GM Forge watches you play, learns the mistakes you repeat, and coaches you through every move — live, before you blunder. Not after.">
+<title>AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge</title>
+<meta name="description" content="ChessForge is an AI chess coach that watches you play, learns the mistakes you repeat, and stops you before you blunder — not after. Free to start.">
+<link rel="canonical" href="https://chessforge.org/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#0A0A10">
+<meta name="author" content="ChessForge">
 
-<meta property="og:title" content="ChessForge — the coach that knows your weaknesses">
-<meta property="og:description" content="Live AI chess coaching, built from your own mistakes. Stop losing for the same reasons.">
+<meta property="og:site_name" content="ChessForge">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge">
+<meta property="og:description" content="A coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live, during the game.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://chessforge.org">
+<meta property="og:url" content="https://chessforge.org/">
+<meta property="og:image" content="https://chessforge.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ChessForge — the AI chess coach that stops you before you blunder">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge">
+<meta name="twitter:description" content="A coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live, during the game.">
+<meta name="twitter:image" content="https://chessforge.org/og.png">
+<meta name="twitter:image:alt" content="ChessForge — the AI chess coach that stops you before you blunder">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://chessforge.org/#org",
+   "name": "ChessForge",
+   "url": "https://chessforge.org/",
+   "logo": "https://chessforge.org/favicon.svg",
+   "email": "chessforgesupport@gmail.com",
+   "description": "An AI chess coach that teaches during the game rather than after it."
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://chessforge.org/#site",
+   "url": "https://chessforge.org/",
+   "name": "ChessForge",
+   "publisher": {
+    "@id": "https://chessforge.org/#org"
+   },
+   "inLanguage": "en"
+  },
+  {
+   "@type": "SoftwareApplication",
+   "@id": "https://chessforge.org/#app",
+   "name": "ChessForge",
+   "applicationCategory": "GameApplication",
+   "applicationSubCategory": "Chess training",
+   "operatingSystem": "Web browser",
+   "url": "https://app.chessforge.org",
+   "publisher": {
+    "@id": "https://chessforge.org/#org"
+   },
+   "description": "A chess coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live coaching during the game, drills built from your own errors, and a review of every move.",
+   "featureList": [
+    "Live coaching during the game",
+    "Personal weakness profile",
+    "Puzzles generated from your own blunders",
+    "Move-by-move game review",
+    "Spaced-repetition drills",
+    "Adaptive opponent"
+   ],
+   "offers": [
+    {
+     "@type": "Offer",
+     "name": "Free",
+     "price": "0",
+     "priceCurrency": "CAD",
+     "description": "One coached game a day, five puzzles a day, basic weakness read.",
+     "availability": "https://schema.org/InStock",
+     "url": "https://app.chessforge.org"
+    },
+    {
+     "@type": "Offer",
+     "name": "Grandmaster",
+     "price": "19.99",
+     "priceCurrency": "CAD",
+     "description": "Unlimited coached games, the full Thinking Profile, unlimited puzzles, the full review and Trap Trainer. Seven-day free trial.",
+     "availability": "https://schema.org/InStock",
+     "url": "https://app.chessforge.org"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://chessforge.org/#faq",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "How is this different from a regular engine?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "An engine tells you the best move after you have already played. ChessForge speaks before you commit, and what it says is built from the mistakes you personally keep making rather than from the position alone."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does it get better the more I play?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Every unaided game updates your Thinking Profile, and the drills and puzzles are drawn from it, so the coaching narrows onto your habits as it learns them."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What rating range is this for?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Roughly 600–1600 Elo. You should already know the rules and play real games — it is not a beginner tutorial, and it is not master preparation."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Why does the free plan make me play one game on my own?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Your rating, your accuracy and your Thinking Profile are read only from games you play without help — coached ones do not count, because the coach is doing part of the work. One unaided game a day keeps the measurement honest. Grandmaster removes the gate."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I cancel any time?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Cancel from the app in two clicks. No contract, no email required, and you keep access until the period you have paid for runs out."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Who is behind this?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "One person. ChessForge is built and run by a solo founder, which is why the email in the footer reaches an actual human rather than a ticket queue."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
 </head>
 <body>
 
@@ -77,35 +214,35 @@
              the centre of f2 and not an approximation of it. -->
         <div class="hb-wrap">
           <div class="hb">
-        <div class="hb-sq l" data-sq="a8"><img src="pieces/bR.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="b8"><img src="pieces/bN.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="c8"><img src="pieces/bB.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="a8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="b8"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="c8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></div>
         <div class="hb-sq d" data-sq="d8"></div>
-        <div class="hb-sq l" data-sq="e8"><img src="pieces/bK.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="e8"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></div>
         <div class="hb-sq d" data-sq="f8"></div>
-        <div class="hb-sq l" data-sq="g8"><img src="pieces/bN.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="h8"><img src="pieces/bR.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="a7"><img src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="b7"><img src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="c7"><img src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="d7"><img src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="g8"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="h8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="a7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="b7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="c7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="d7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
         <div class="hb-sq d" data-sq="e7"></div>
-        <div class="hb-sq l" data-sq="f7"><img src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="g7"><img src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="h7"><img src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="f7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="g7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="h7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
         <div class="hb-sq l" data-sq="a6"></div>
         <div class="hb-sq d" data-sq="b6"></div>
         <div class="hb-sq l" data-sq="c6"></div>
         <div class="hb-sq d" data-sq="d6"></div>
         <div class="hb-sq l" data-sq="e6"></div>
-        <div class="hb-sq d" data-sq="f6"><img src="pieces/bQ.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="f6"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></div>
         <div class="hb-sq l" data-sq="g6"></div>
         <div class="hb-sq d" data-sq="h6"></div>
         <div class="hb-sq d" data-sq="a5"></div>
         <div class="hb-sq l" data-sq="b5"></div>
-        <div class="hb-sq d" data-sq="c5"><img src="pieces/bB.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="c5"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></div>
         <div class="hb-sq l" data-sq="d5"></div>
-        <div class="hb-sq d" data-sq="e5"><img src="pieces/bP.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="e5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
         <div class="hb-sq l" data-sq="f5"></div>
         <div class="hb-sq d" data-sq="g5"></div>
         <div class="hb-sq l" data-sq="h5"></div>
@@ -113,34 +250,34 @@
         <div class="hb-sq d" data-sq="b4"></div>
         <div class="hb-sq l" data-sq="c4"></div>
         <div class="hb-sq d" data-sq="d4"></div>
-        <div class="hb-sq l" data-sq="e4"><img src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="e4"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
         <div class="hb-sq d" data-sq="f4"></div>
         <div class="hb-sq l" data-sq="g4"></div>
         <div class="hb-sq d" data-sq="h4"></div>
         <div class="hb-sq d" data-sq="a3"></div>
         <div class="hb-sq l" data-sq="b3"></div>
-        <div class="hb-sq d" data-sq="c3"><img src="pieces/wN.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="c3"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></div>
         <div class="hb-sq l" data-sq="d3"></div>
         <div class="hb-sq d" data-sq="e3"></div>
         <div class="hb-sq l" data-sq="f3"></div>
         <div class="hb-sq d" data-sq="g3"></div>
         <div class="hb-sq l" data-sq="h3"></div>
-        <div class="hb-sq l" data-sq="a2"><img src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="b2"><img src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="c2"><img src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="d2"><img src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="a2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="b2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="c2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="d2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
         <div class="hb-sq l" data-sq="e2"></div>
-        <div class="hb-sq d hb-hot" data-sq="f2"><img src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="g2"><img src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="h2"><img src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="a1"><img src="pieces/wR.svg" alt=""></div>
+        <div class="hb-sq d hb-hot" data-sq="f2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="g2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="h2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="a1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></div>
         <div class="hb-sq l" data-sq="b1"></div>
-        <div class="hb-sq d" data-sq="c1"><img src="pieces/wB.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="d1"><img src="pieces/wQ.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="e1"><img src="pieces/wK.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="f1"><img src="pieces/wB.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="g1"><img src="pieces/wN.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="h1"><img src="pieces/wR.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="c1"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="d1"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="e1"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="f1"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></div>
+        <div class="hb-sq d" data-sq="g1"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></div>
+        <div class="hb-sq l" data-sq="h1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></div>
           </div>
           <svg class="fg-arm" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             <path d="M112 108 C 98 100, 82 92, 68.75 81.25" pathLength="100"/>
@@ -425,19 +562,19 @@
     </div>
     <div class="footer-links">
       <div>
-        <h5>Product</h5>
+        <h3 class="footer-h">Product</h3>
         <a href="https://app.chessforge.org">Open app</a>
         <a href="#how">How it works</a>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
       </div>
       <div>
-        <h5>Support</h5>
+        <h3 class="footer-h">Support</h3>
         <a href="#faq">FAQ</a>
         <a href="mailto:chessforgesupport@gmail.com">Contact</a>
       </div>
       <div>
-        <h5>Legal</h5>
+        <h3 class="footer-h">Legal</h3>
         <a href="#" data-legal="terms">Terms of Service</a>
         <a href="#" data-legal="privacy">Privacy Policy</a>
       </div>
@@ -453,7 +590,7 @@
 <div class="modal-back" id="legalModal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
     <div class="modal-head">
-      <h3 id="legalTitle" class="modal-title"></h3>
+      <h3 id="legalTitle" class="modal-title">Legal</h3>
       <button type="button" class="modal-x" data-legal-close aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6.4 6.4 L17.6 17.6"/><path d="M17.6 6.4 L6.4 17.6"/></svg>
       </button>

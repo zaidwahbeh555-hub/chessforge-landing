@@ -1,0 +1,9 @@
+# chessforge.org — the marketing site. This is the one that should rank.
+User-agent: *
+Allow: /
+
+# The app is a single page behind a sign-in modal. It serves noindex itself,
+# but saying so here keeps crawlers from spending budget on it at all.
+Disallow: /index.v2.html
+
+Sitemap: https://chessforge.org/sitemap.xml

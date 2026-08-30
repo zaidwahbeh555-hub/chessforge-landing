@@ -85,7 +85,9 @@ check('the three parts are one gesture, on one clock',
 check('the position on the board is a real one', (html.match(/class="hb-sq/g)||[]).length === 64,
       (html.match(/class="hb-sq/g)||[]).length + ' squares');
 check('drawn with the real piece art, not glyphs',
-      /<img src="pieces\/wK\.svg"/.test(html) && !/♞|♟|♜/.test(html));
+      /<img[^>]*src="pieces\/wK\.svg"/.test(html) && !/♞|♟|♜/.test(html),
+      'matched on the tag, not on src being the first attribute -- adding '
+      + 'loading="lazy" broke it while the art was untouched');
 check('and what he says about it is true',
       /attacked twice and defended once/.test(html),
       'verified with python-chess: f2 attacked from c5 and f6, defended only from e1');

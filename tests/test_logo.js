@@ -104,9 +104,13 @@ const APP = path.resolve('..', 'nextmove-backend', 'nextmove-v2');
 if(!fs.existsSync(APP)){
   console.log('  (app checkout not found beside this one; skipping the app half)');
 }else{
-  const appHtml = fs.readFileSync(path.join(APP,'templates','index.html'),'utf8');
-  const appCss  = fs.readFileSync(path.join(APP,'static','css','style.css'),'utf8');
-  const appIcon = fs.readFileSync(path.join(APP,'static','favicon.svg'),'utf8');
+  // The app's markup and assets moved into frontend/ when the repo was split
+  // into backend/ and frontend/. These paths were not updated, so this file
+  // threw ENOENT on every run instead of checking anything -- and a test that
+  // crashes reports nothing rather than failing loudly.
+  const appHtml = fs.readFileSync(path.join(APP,'frontend','templates','index.html'),'utf8');
+  const appCss  = fs.readFileSync(path.join(APP,'frontend','static','css','style.css'),'utf8');
+  const appIcon = fs.readFileSync(path.join(APP,'frontend','static','favicon.svg'),'utf8');
 
   // One mark, one file. They diverged for a while -- the app tinted to its own
   // indigo accent -- and then the accents themselves were unified, so there is
