@@ -100,10 +100,26 @@ check('and points at the sitemap',
       /Sitemap: https:\/\/chessforge\.org\/sitemap\.xml/.test(fs.readFileSync('robots.txt','utf8')));
 const sm = fs.readFileSync('sitemap.xml','utf8');
 check('the sitemap is well-formed and lists the real page',
-      /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/.test(sm)
+      /<urlset[^>]*xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9"/.test(sm)
       && /<loc>https:\/\/chessforge\.org\/<\/loc>/.test(sm));
 check('and does not list anchors as if they were pages', !/#/.test(sm),
       'a sitemap full of fragments is a known way to get it ignored');
+
+console.log('\nTHERE IS SOMETHING FOR IMAGE SEARCH TO FIND');
+check('GM Forge is a real file, not only inline SVG',
+      fs.existsSync('gm-forge-ai-chess-coach.png'),
+      'inline SVG is invisible to image search');
+check('he is on the page with honest alt text',
+      /<img[^>]*gm-forge-ai-chess-coach\.png[^>]*>/.test(html)
+      && /alt="GM Forge, the AI chess coach[^"]{20,}"/.test(html));
+check('the filename says what it is',
+      /gm-forge-ai-chess-coach/.test(html), 'a filename is a ranking signal');
+check('and the sitemap points crawlers at both images',
+      /<image:image>/.test(sm) && /gm-forge-ai-chess-coach\.png/.test(sm)
+      && /og\.png/.test(sm),
+      'a crawler will not go looking for them otherwise');
+check('the image sitemap namespace is declared',
+      /xmlns:image="http:\/\/www\.google\.com\/schemas\/sitemap-image\/1\.1"/.test(sm));
 
 console.log('\nHEADINGS DESCRIBE THE PAGE');
 const heads = [...html.matchAll(/<h([1-6])[^>]*>/g)].map(m => +m[1]);

@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!-- One real page. Anchors are not separate URLs and listing them is a known
+     way to get a sitemap ignored, so this says exactly what exists.
+     The image extension is what gets GM Forge and the share card into Google
+     Images; a crawler will not go looking for them otherwise. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://chessforge.org/</loc>
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://chessforge.org/gm-forge-ai-chess-coach.png</image:loc>
+      <image:title>GM Forge — the AI chess coach</image:title>
+      <image:caption>GM Forge, the AI chess coach in ChessForge. He watches your game live and stops you before you blunder.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://chessforge.org/og.png</image:loc>
+      <image:title>ChessForge — the chess coach that knows your weaknesses</image:title>
+      <image:caption>ChessForge: live AI chess coaching during the game, not analysis after it.</image:caption>
+    </image:image>
   </url>
 </urlset>
