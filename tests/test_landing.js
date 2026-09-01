@@ -134,13 +134,28 @@ check('the founding-member framing carries the promotion instead',
 check('it is the bigger of the two columns',
       /\.plans\{[\s\S]{0,120}grid-template-columns:1fr 1\.25fr/.test(css));
 check('and it shines', /\.plan-glow\{/.test(css) && /@keyframes sheen\{/.test(css));
+/* The trial length is written in five places on this page and there is no
+   server here to read it from, so these assert they AGREE rather than pinning a
+   number -- changing 7 to 3 once left the tests asserting the old figure and
+   two of them failed for the right reason. The charge lands the day after it
+   ends, so that one is derived too. */
+const trialTag = (html.match(/class="plan-tag mono">(\d+) days free/) || [])[1];
 check('the tag leads with the trial, then the founding rate',
-      /class="plan-tag mono">7 days free &middot; founding member</.test(html));
+      !!trialTag && /class="plan-tag mono">\d+ days free &middot; founding member</.test(html),
+      trialTag ? trialTag + ' days' : 'no trial tag found');
 check('the button says what it starts, not what it costs',
-      /class="btn btn-primary plan-cta">Try Grandmaster free for 7 days/.test(html));
-check('and the card states the day-8 charge rather than burying it',
-      /nothing charged until day 8, cancel any time before then/.test(html),
-      'burying it is what generates chargebacks');
+      new RegExp('class="btn btn-primary plan-cta">Try Grandmaster free for '
+                 + trialTag + ' days').test(html),
+      'the button must quote the same number as the tag');
+check('the hero offers the same trial as the pricing card',
+      new RegExp('Try Grandmaster free for '
+                 + ({1:'one',2:'two',3:'three',4:'four',5:'five',6:'six',7:'seven',
+                    14:'fourteen'}[trialTag] || trialTag) + ' days').test(html),
+      'hero and card disagreeing on the trial length is a support ticket');
+check('and the card states the charge date rather than burying it',
+      new RegExp('nothing charged until day ' + (Number(trialTag) + 1)
+                 + ', cancel any time before then').test(html),
+      'burying it is what generates chargebacks; the charge is the day after it ends');
 check('cancelling is stated on the card, not buried',
       /Cancel any time, from the app/.test(html));
 check('no plan promises anything the app does not do',
