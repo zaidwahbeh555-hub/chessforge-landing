@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge</title>
-<meta name="description" content="ChessForge is an AI chess coach that watches you play, learns the mistakes you repeat, and stops you before you blunder — not after. Free to start.">
+<meta name="description" content="An AI chess coach that stops you before you blunder, not after. Import your chess.com games and it knows your weaknesses before your first move.">
 <link rel="canonical" href="https://chessforge.org/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#0A0A10">
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="ChessForge">
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge">
-<meta property="og:description" content="A coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live, during the game.">
+<meta property="og:description" content="A coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live, during the game — and it can read your chess.com games to start.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://chessforge.org/">
 <meta property="og:image" content="https://chessforge.org/og.png">
@@ -23,7 +23,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge">
-<meta name="twitter:description" content="A coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live, during the game.">
+<meta name="twitter:description" content="A coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live, during the game — and it can read your chess.com games to start.">
 <meta name="twitter:image" content="https://chessforge.org/og.png">
 <meta name="twitter:image:alt" content="ChessForge — the AI chess coach that stops you before you blunder">
 
@@ -69,11 +69,14 @@
    "description": "A chess coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live coaching during the game, drills built from your own errors, and a review of every move.",
    "featureList": [
     "Live coaching during the game",
+    "Import your chess.com games to start with a weakness profile",
     "Personal weakness profile",
     "Puzzles generated from your own blunders",
-    "Move-by-move game review",
-    "Spaced-repetition drills",
-    "Adaptive opponent"
+    "Move-by-move game review with an in-position chat",
+    "Spaced-repetition drills built from your own mistakes",
+    "Candidate-move comparison before you commit",
+    "Adaptive opponent",
+    "Sign in with Google"
    ],
    "offers": [
     {
@@ -81,7 +84,7 @@
      "name": "Free",
      "price": "0",
      "priceCurrency": "CAD",
-     "description": "One coached game a day, five puzzles a day, basic weakness read.",
+     "description": "One coached game a day, five puzzles a day, a basic weakness read, and your chess.com games imported.",
      "availability": "https://schema.org/InStock",
      "url": "https://app.chessforge.org"
     },
@@ -90,7 +93,7 @@
      "name": "Grandmaster",
      "price": "19.99",
      "priceCurrency": "CAD",
-     "description": "Unlimited coached games, the full Thinking Profile, unlimited puzzles, the full review and Trap Trainer. Seven-day free trial.",
+     "description": "Unlimited coached games, the full Thinking Profile, unlimited puzzles, the full review and Trap Trainer. Three-day free trial.",
      "availability": "https://schema.org/InStock",
      "url": "https://app.chessforge.org"
     }
@@ -130,6 +133,38 @@
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Your rating, your accuracy and your Thinking Profile are read only from games you play without help — coached ones do not count, because the coach is doing part of the work. One unaided game a day keeps the measurement honest. Grandmaster removes the gate."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Do I have to give you my chess.com password?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No, and there is nothing to give. The import asks for your username and reads the public record of your games through chess.com's own public API. There is no login, no password and no permission screen — we could not sign in as you if we wanted to. Disconnecting removes the account and everything built from it."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does importing my chess.com games change my rating here?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. Imported games change what you are shown — your weaknesses, your puzzles, what the coach watches for — and never what you are scored. Your play strength here is read only from unaided games played in ChessForge, and the daily gate stays exactly as it is."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does it work on my phone?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Partly, and it says so rather than pretending. Dashboard, Training, Puzzles and Shop all work on a phone, and you can tap a piece to see its moves and tap a square to play it. Play & Coach and Analysis need a real window — they are a board plus something you read beside it, and both have to be visible at once, so on a phone those two say to come back on a laptop."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I sign in with Google?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. If you already have an account under the same email address, signing in with Google asks for that account's password once to link the two, and after that Google alone is enough. Signing in with Google will never create an account by itself — if there is no account for that address it tells you to make one."
      }
     },
     {
@@ -188,7 +223,8 @@
       </span>
     </h1>
     <p class="hero-sub">ChessForge watches you play, learns the mistakes you repeat, and
-      coaches you through every move — <em>live, before you blunder.</em> Not after.</p>
+      coaches you through every move — <em>live, before you blunder.</em> Not after.
+      Bring your chess.com games and it knows them before your first move here.</p>
     <div class="hero-cta">
       <a href="https://app.chessforge.org" class="btn btn-primary">Start playing free →</a>
       <span class="mono hero-note">no card required</span>
@@ -379,19 +415,28 @@
   <div class="rows">
     <div class="row reveal">
       <span class="mono row-n">01</span>
+      <div><h3 class="row-t">Bring the games you have already played</h3>
+        <p class="row-b">Give it your chess.com username &mdash; just the username, there is no
+          password and no login to their site &mdash; and it reads your last thirty rapid and
+          blitz games in about ten seconds. It arrives already knowing what you get wrong, so
+          the first game here is coached properly instead of guessing. Optional, and it never
+          touches your rating.</p></div>
+    </div>
+    <div class="row reveal">
+      <span class="mono row-n">02</span>
       <div><h3 class="row-t">Play like normal</h3>
         <p class="row-b">Play a game against the bot inside ChessForge. It reads your level and
           plays to it. Nothing to install, nothing to paste in afterwards.</p></div>
     </div>
     <div class="row reveal">
-      <span class="mono row-n">02</span>
+      <span class="mono row-n">03</span>
       <div><h3 class="row-t">Get stopped before you blunder</h3>
         <p class="row-b">When a move is about to cost you, the board pauses and GM Forge points
           at why. You can take it back, walk through it with him, or play it anyway — it is an
           offer, never a lock.</p></div>
     </div>
     <div class="row reveal">
-      <span class="mono row-n">03</span>
+      <span class="mono row-n">04</span>
       <div><h3 class="row-t">Watch the same mistake stop happening</h3>
         <p class="row-b">Every game updates your Thinking Profile, and the positions you got
           wrong come back as drills — spaced out, mixed with others, until the habit changes.</p></div>
@@ -442,9 +487,40 @@
       <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 3.8 V19.8 H20.2"/><path d="M8.2 16.6 V11.8"/><path d="M12.2 16.6 V7.6"/><path d="M16.2 16.6 V10.2"/></svg></span>
       <h3 class="feat-t">A review that is an actual review</h3>
       <div class="feat-body">
-        <p>Every move graded, the engine's move drawn on the board, and a chat that knows which
-          position you are looking at. Ask it about a piece, a square, or a move.</p>
+        <p>Every move graded, both players named, the board the right way up for the side you
+          played, and a chat that knows which position you are looking at. Leave it to drill
+          something and it puts you back on the move you left. Ask it about a piece, a square,
+          or a move.</p>
         <p class="feat-miss"><b>Without it:</b> a list of centipawn numbers you scroll past.</p>
+      </div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h4l2.5-6 3 12 2.5-6h4"/></svg></span>
+      <h3 class="feat-t">He asks before he answers</h3>
+      <div class="feat-body">
+        <p>A coached turn is four steps, not a verdict. <b>Read</b> the position, mark the moves
+          you are <b>choosing between</b> by drawing them on the board, watch him <b>walk each
+          one out</b> so you see what it runs into, then <b>play</b>. He never names the move
+          for you &mdash; if you are stuck, "I don't know what to play here" opens a checklist
+          that narrows it down without giving it away.</p>
+        <p class="feat-miss"><b>Without it:</b> you are told the answer, agree with it, and
+          find nothing has changed next game.</p>
+      </div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.2-6.9"/><path d="M21 4.2V10h-5.8"/></svg></span>
+      <h3 class="feat-t">Start with the games you already played</h3>
+      <div class="feat-body">
+        <p>Connect chess.com with your username alone &mdash; no password, no permissions, we
+          could not log in as you if we wanted to. It reads your last thirty rapid and blitz
+          games, grades every move, and your weaknesses, puzzles and drills are built from
+          them before you have played a single game here. Bullet is skipped on purpose: a
+          one-minute game's mistakes are clock, not habit. Your chess.com rating stays yours
+          &mdash; imported games never move anything measured here.</p>
+        <p class="feat-miss"><b>Without it:</b> a new coaching tool knows nothing about you
+          for the first week.</p>
       </div>
     </div>
   </div>
@@ -482,6 +558,7 @@
       <ul class="plan-list">
         <li>One coached game a day</li>
         <li>Live coaching on every move of it</li>
+        <li>Import your chess.com games</li>
         <li>Five puzzles a day from your own games</li>
         <li>Basic weakness read</li>
       </ul>
@@ -503,6 +580,7 @@
         <li>The full Thinking Profile, with trends over time</li>
         <li>Unlimited puzzles, plus fresh ones mined for your habits</li>
         <li>The full move-by-move review, and Ask GM Forge on any position</li>
+        <li>The five-stage drills, rebuilt from the positions you got wrong</li>
         <li>Trap Trainer — a bot that steers into your weaknesses on purpose</li>
         <li>Every board and piece set in the shop</li>
       </ul>
@@ -542,6 +620,14 @@
       <p>Your rating, your accuracy and your Thinking Profile are read only from games you play
         without help — coached ones do not count, because the coach is doing part of the work.
         One unaided game a day keeps the measurement honest. Grandmaster removes the gate.</p></details>
+    <details class="faq-item"><summary>Do I have to give you my chess.com password?</summary>
+      <p>No, and there is nothing to give. The import asks for your username and reads the public record of your games through chess.com's own public API. There is no login, no password and no permission screen — we could not sign in as you if we wanted to. Disconnecting removes the account and everything built from it.</p></details>
+    <details class="faq-item"><summary>Does importing my chess.com games change my rating here?</summary>
+      <p>No. Imported games change what you are shown — your weaknesses, your puzzles, what the coach watches for — and never what you are scored. Your play strength here is read only from unaided games played in ChessForge, and the daily gate stays exactly as it is.</p></details>
+    <details class="faq-item"><summary>Does it work on my phone?</summary>
+      <p>Partly, and it says so rather than pretending. Dashboard, Training, Puzzles and Shop all work on a phone, and you can tap a piece to see its moves and tap a square to play it. Play &amp; Coach and Analysis need a real window — they are a board plus something you read beside it, and both have to be visible at once, so on a phone those two say to come back on a laptop.</p></details>
+    <details class="faq-item"><summary>Can I sign in with Google?</summary>
+      <p>Yes. If you already have an account under the same email address, signing in with Google asks for that account's password once to link the two, and after that Google alone is enough. Signing in with Google will never create an account by itself — if there is no account for that address it tells you to make one.</p></details>
     <details class="faq-item"><summary>Can I cancel any time?</summary>
       <p>Yes. Cancel from the app in two clicks. No contract, no email required, and you keep
         access until the period you have paid for runs out.</p></details>

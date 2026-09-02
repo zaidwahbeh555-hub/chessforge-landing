@@ -162,8 +162,13 @@ check('no plan promises anything the app does not do',
       !/unlimited everything|guaranteed/i.test(html));
 
 console.log('\n── features say what you are missing ──');
+/* Counted against the number of feature cards, not against a literal 4. The
+   claim is "EVERY feature names the cost", and pinning the count meant adding a
+   fifth feature failed a test about the fifth feature being fine. */
+const featCards = (html.match(/class="feat reveal"/g)||[]).length;
 const misses = (html.match(/class="feat-miss"/g)||[]).length;
-check('every feature names the cost of not having it', misses === 4, misses + ' of 4');
+check('every feature names the cost of not having it',
+      featCards > 0 && misses === featCards, misses + ' of ' + featCards);
 check('stated as a consequence rather than a taunt',
       /<b>Without it:<\/b>/.test(html) && !/you're losing|idiot|stupid/i.test(html));
 check('and it is styled quieter than the feature itself',
@@ -269,9 +274,9 @@ check('in a rounder, more modern face than the body text',
 check('and Forge is not thinner than Chess by much',
       /\.brand-strong\{font-weight:700\}/.test(css) && /\.brand-soft\{font-weight:600/.test(css),
       'half a step, not a full one');
+const featIcons = (html.match(/class="feat-ic"><svg/g)||[]).length;
 check('the feature bullets are line art, not generated shapes',
-      (html.match(/class="feat-ic"><svg/g)||[]).length === 4,
-      (html.match(/class="feat-ic"><svg/g)||[]).length + ' of 4');
+      featIcons > 0 && featIcons === featCards, featIcons + ' of ' + featCards);
 check('drawn in one family', (html.match(/stroke-width="1\.75"/g)||[]).length >= 3);
 check('and the filled circle-diamond-triangle set is gone',
       !/i-circle|i-diamond|i-triangle/.test(css));
