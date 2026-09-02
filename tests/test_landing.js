@@ -12,6 +12,11 @@
 // real money is a straightforward lie. These assertions exist so it cannot
 // creep back in.
 //
+// It did creep back in once, and has now been removed a second time by the
+// owner himself. Every number on the page is something a visitor could verify,
+// and the only account of using the product is signed by the person who wrote
+// it. If a future change wants a testimonial here, it needs a real one.
+//
 // Run from chessforge-landing/:  node tests/test_landing.js
 
 const fs = require('fs');
@@ -24,15 +29,23 @@ function check(label, cond, detail){ total++; if(cond) pass++;
   console.log(`  [${cond?'PASS':'FAIL'}] ${label}${detail?'  -> '+detail:''}`); }
 
 // ── the numbers ──────────────────────────────────────────────────────────
-// These were pulled once and then put back on the owner's instruction: he ran a
-// month-long test group, and +300 average over a month of daily use is his
-// figure from it, not one I chose. What the tests hold onto is that the number
-// on the page is the number he gave.
-console.log('\n── the numbers are the ones he measured ──');
-check('the rating gain is his figure', /data-count="300"/.test(html), '+300');
-check('and it is framed as what it is',
-      /average rating gain over a month of daily use/.test(html),
-      'a month of DAILY use, which is the condition it was measured under');
+// Third position on this. The design carried invented proof; it was pulled;
+// it went back on the owner's instruction, because +300 over a month of daily
+// use was his figure from a test group he ran. He has now pulled it himself:
+// "thats true i have like 31 users now", and the rating claim is his own
+// experience rather than a measured average across players.
+//
+// So every number on the page is now one that can be checked by looking:
+// how many players there are, how many games the import reads, how many stages
+// a drill has. No aggregate claim about other people's results survives.
+console.log('\n── every number is one you could check ──');
+check('the player count is the real one', /data-count="31"/.test(html), '31');
+check('no invented aggregate is back',
+      !/data-count="(300|12600|38400)"/.test(html)
+      && !/average rating gain|players coached|blunders caught before/.test(html),
+      'the three figures that were on this page before');
+check('and no claim is made about other players\' ratings',
+      !/average rating gain/.test(html));
 check('it counts up rather than sitting there', /data-count/.test(html) && /requestAnimationFrame\(step\)/.test(js));
 check('and only once it is actually on screen',
       /so\.unobserve\(e\.target\)/.test(js) && /threshold: 0\.3/.test(js));
@@ -41,13 +54,21 @@ check('the figures do not jitter as digits change',
       'proportional digits shift width while a counter runs');
 
 console.log('\n── reviews ──');
-check('there are three', (js.match(/by: '\d+ Elo'/g)||[]).length === 3,
-      (js.match(/by: '\d+ Elo'/g)||[]).length + ' quotes');
-check('one at a time, with dots to jump', /quote-dots/.test(html) && /showQuote/.test(js));
+// The carousel rotated three testimonials no player had written. Until real
+// ones exist the section carries one signed note from the person who built it,
+// which is the only account of using this that anybody can vouch for.
+check('no testimonial is attributed to a player who did not write one',
+      (js.match(/by: '\d+ Elo'/g)||[]).length === 0
+      && !/quoteText|QUOTES|showQuote/.test(js),
+      'and the carousel that served them is gone with them');
+check('what is there instead is signed', /quote-by">&mdash; Zaid/.test(html));
+check('and it is first person, not a claim about the userbase',
+      /My rating has gone up since I started/.test(html)
+      && /one person&rsquo;s experience/.test(html));
+check('it says where the real reviews will come from',
+      /When enough of them have written a\s+review/.test(html));
 check('the height is reserved so the page does not jump',
       /\.quote-text\{[\s\S]{0,220}min-height:110px/.test(css));
-check('clicking a dot stops it rotating under you',
-      /clearInterval\(qTimer\)/.test(js));
 check('the empty placeholder slots are gone', !/Your review here/.test(html));
 
 // ── the things he asked to change ─────────────────────────────────────────
@@ -203,9 +224,12 @@ console.log('\n── the ticker ──');
 // Read the array itself: the comment above it names the metrics it is
 // deliberately not using, so scanning the whole file finds them in the prose.
 const ticker = js.slice(js.indexOf('var TICKER = ['), js.indexOf('];', js.indexOf('var TICKER = [')));
-// The audience range is a fact about who it is for, not a metric about how
-// well it is doing, so it is the one number allowed through.
-const numbers = ticker.replace(/600–1600 Elo/g, '');
+// The audience range is a fact about who it is for, not a metric about how well
+// it is doing, so it is the one number allowed through. Matched as "the item
+// that states the range" rather than as the literal text -- pinning the old
+// "600-1600 Elo" string meant changing who the product is aimed at failed a
+// test about the ticker not quoting metrics.
+const numbers = ticker.replace(/[^']*\d+\s*[–-]\s*\d+[^']*/g, '');
 check('it is built from product statements, not metrics',
       /coaching that happens during the game/.test(ticker) &&
       !/players coached|blunders caught|\d{3,}/.test(numbers),

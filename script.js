@@ -51,7 +51,7 @@
     'every move checked against Stockfish',
     'puzzles built from your own blunders',
     'a bot that plays to your level',
-    '600–1600 Elo',
+    'for beginners · ~300–1000 rated',
     'your mistakes, drilled until they stop',
     'no card required to start'
   ];
@@ -63,44 +63,11 @@
   }
 
   /* ── reviews ─────────────────────────────────────────────────────────────
-     From the month-long test group. Rotates on its own; the dots jump. */
-  var QUOTES = [
-    { t: 'I kept hanging pieces in time trouble. ChessForge caught it live for two ' +
-         'weeks straight until I stopped doing it.', by: '1140 Elo' },
-    { t: 'The puzzles are actually from my own losses. That is the part that made it ' +
-         'stick for me.', by: '890 Elo' },
-    { t: 'It is the first coaching tool that runs during the game instead of after.',
-      by: '1420 Elo' }
-  ];
-  var qText = document.getElementById('quoteText');
-  var qBy   = document.getElementById('quoteBy');
-  var qDots = document.getElementById('quoteDots');
-  var qi = 0, qTimer = null;
-
-  function showQuote(i) {
-    if (!qText) return;
-    qi = (i + QUOTES.length) % QUOTES.length;
-    qText.textContent = '\u201C' + QUOTES[qi].t + '\u201D';
-    qBy.textContent = '\u2014 ' + QUOTES[qi].by;
-    Array.prototype.forEach.call(qDots.children, function (d, n) {
-      d.classList.toggle('on', n === qi);
-    });
-  }
-  if (qText && qDots) {
-    QUOTES.forEach(function (_, i) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('aria-label', 'Review ' + (i + 1));
-      b.addEventListener('click', function () {
-        showQuote(i);
-        // A click means they are reading this one, so stop moving it under them.
-        clearInterval(qTimer);
-      });
-      qDots.appendChild(b);
-    });
-    showQuote(0);
-    qTimer = setInterval(function () { showQuote(qi + 1); }, 5500);
-  }
+     There is no carousel here any more. It rotated three testimonials that no
+     player had written; the section now carries one signed note from the person
+     who built the thing, which is static markup and needs no script. When there
+     are real reviews to publish this comes back, reading them from the app
+     rather than from an array in this file. */
 
   /* ── stats ───────────────────────────────────────────────────────────────
      Count up once, when the band is actually on screen. */
