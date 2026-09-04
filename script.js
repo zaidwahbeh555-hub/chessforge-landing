@@ -69,6 +69,100 @@
      are real reviews to publish this comes back, reading them from the app
      rather than from an array in this file. */
 
+  /* ── the machine ───────────────────────────────────────────────────────────
+     Four screens in one laptop. Pressing a pick swaps the screen, swings the
+     rig to a new angle and throws the arrow out with a label on it. The rig
+     also leans toward the pointer, which is what sells it as an object rather
+     than a picture of one.
+
+     Everything is guarded: the section may not be on the page, and none of this
+     may run at all if the visitor has asked for reduced motion. */
+  (function () {
+    var stage = document.getElementById('machStage');
+    var rig   = document.getElementById('machRig');
+    var picks = document.getElementById('machPicks');
+    var arrow = document.getElementById('machArrow');
+    var label = document.getElementById('machLabel');
+    if (!stage || !rig || !picks) return;
+
+    var calm = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var VIEWS = {
+      coach:  { rx: 11, ry: -15, label: 'Two moves marked on the board. He plays both of them out, then asks which you would rather have.' },
+      review: { rx:  9, ry:  -9, label: 'Every move graded. The blunder is the one in red, and you can ask about the position it left behind.' },
+      drill:  { rx: 13, ry: -19, label: 'The position you got wrong, back as a drill \u2014 and mixed with other kinds so you have to work out which one it is.' },
+      import: { rx:  8, ry: -12, label: 'Thirty games from chess.com in about ten seconds. Username only \u2014 there is no password to give.' }
+    };
+
+    /* The boards are real markup now -- real pieces, a real position, generated
+       and checked with python-chess so the squares lit up are the squares the
+       text talks about. They used to be painted here as 64 empty divs shaded by
+       :nth-child, which on an eight-wide grid alternates DOWN THE COLUMNS and
+       drew vertical stripes rather than a chessboard. */
+
+    function show(name) {
+      var v = VIEWS[name]; if (!v) return;
+      Array.prototype.forEach.call(document.querySelectorAll('.scr'), function (s) {
+        s.classList.toggle('is-on', s.getAttribute('data-scr') === name);
+      });
+      Array.prototype.forEach.call(picks.querySelectorAll('.mach-pick'), function (b) {
+        var on = b.getAttribute('data-go') === name;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      base.rx = v.rx; base.ry = v.ry;
+      if (!calm) rig.style.setProperty('--rx', v.rx + 'deg');
+      if (!calm) rig.style.setProperty('--ry', v.ry + 'deg');
+      if (label && arrow) {
+        arrow.classList.remove('is-on');
+        label.textContent = v.label;
+        setTimeout(function () { arrow.classList.add('is-on'); }, 90);
+      }
+    }
+
+    var base = { rx: 11, ry: -15 };
+
+    picks.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.mach-pick');
+      if (b) show(b.getAttribute('data-go'));
+    });
+
+    /* Lean toward the pointer. Small numbers on purpose -- past about six
+       degrees it stops reading as a tilt and starts reading as a wobble. */
+    if (!calm) {
+      stage.addEventListener('pointermove', function (e) {
+        var r = stage.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        var dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        rig.style.setProperty('--ry', (base.ry + dx * 6).toFixed(2) + 'deg');
+        rig.style.setProperty('--rx', (base.rx - dy * 5).toFixed(2) + 'deg');
+      });
+      stage.addEventListener('pointerleave', function () {
+        rig.style.setProperty('--ry', base.ry + 'deg');
+        rig.style.setProperty('--rx', base.rx + 'deg');
+      });
+    }
+
+    // Count the imported games up once, when it is actually looked at.
+    var counter = document.getElementById('machCount');
+    if (counter && 'IntersectionObserver' in window && !calm) {
+      var io2 = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          io2.unobserve(en.target);
+          var n = 0, id = setInterval(function () {
+            n += 1; counter.textContent = n;
+            if (n >= 30) clearInterval(id);
+          }, 26);
+        });
+      }, { threshold: 0.4 });
+      io2.observe(counter);
+    }
+
+    show('coach');
+  })();
+
   /* ── stats ───────────────────────────────────────────────────────────────
      Count up once, when the band is actually on screen. */
   var stats = document.getElementById('stats');
@@ -100,6 +194,35 @@
      Real baseline content, in a modal rather than a separate page, so nobody
      loses their place on the way to reading it. */
   var LEGAL = {
+    credits: {
+      title: 'Credits',
+      body: [
+        ['Chess piece artwork',
+         'The chess pieces on this page and in the app are the work of Colin M.L. Burnett, ' +
+         'used under the 3-clause BSD Licence. He publishes them on Wikimedia Commons under a ' +
+         'choice of licences \u2014 GFDL 1.2+, CC BY-SA 3.0, GPL v2/v3 and 3-clause BSD \u2014 ' +
+         'and ChessForge uses them under the BSD terms. The only change made is a viewBox ' +
+         'attribute on each file so the artwork scales with the board; the artwork itself is ' +
+         'unmodified. The full licence text ships with the files at /pieces/LICENSE.txt.'],
+        ['The BSD conditions, in full',
+         'Redistribution and use in source and binary forms, with or without modification, are ' +
+         'permitted provided that redistributions of source code retain the above copyright ' +
+         'notice, this list of conditions and the following disclaimer; that redistributions in ' +
+         'binary form reproduce them in the documentation or other materials provided with the ' +
+         'distribution; and that neither the name of the copyright holder nor the names of its ' +
+         'contributors are used to endorse or promote products derived from this software ' +
+         'without specific prior written permission. This software is provided by the copyright ' +
+         'holders and contributors \u201Cas is\u201D and any express or implied warranties, ' +
+         'including the implied warranties of merchantability and fitness for a particular ' +
+         'purpose, are disclaimed. In no event shall the copyright holder or contributors be ' +
+         'liable for any damages arising in any way out of the use of this software.'],
+        ['Engine and chess logic',
+         'Positions are analysed by Stockfish, free software under the GNU General Public ' +
+         'License v3, which runs as a separate program on our server. Move legality uses ' +
+         'chess.js (BSD) in the browser and python-chess (GPL v3) on the server, each running ' +
+         'as its own component.']
+      ]
+    },
     terms: {
       title: 'Terms of Service',
       body: [

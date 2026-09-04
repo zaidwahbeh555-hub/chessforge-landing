@@ -61,7 +61,13 @@ check('no testimonial is attributed to a player who did not write one',
       (js.match(/by: '\d+ Elo'/g)||[]).length === 0
       && !/quoteText|QUOTES|showQuote/.test(js),
       'and the carousel that served them is gone with them');
-check('what is there instead is signed', /quote-by">&mdash; Zaid/.test(html));
+/* Signed by role, not by name. No personal detail about the owner goes on this
+   page -- not a name, not an age, nothing that identifies him. "solo founder"
+   and "one person" are fine; they say something about the product. */
+check('what is there instead is signed', /quote-by">&mdash; the person who builds/.test(html));
+check('and it names nobody',
+      !/\bZaid\b/i.test(html) && !/\bZaid\b/i.test(js) && !/\bZaid\b/i.test(css),
+      'no personal name anywhere on the page');
 check('and it is first person, not a claim about the userbase',
       /My rating has gone up since I started/.test(html)
       && /one person&rsquo;s experience/.test(html));
@@ -93,16 +99,27 @@ check('the coach reaches, holds, and goes back', /@keyframes reach\{/.test(css))
 check('the fingertip lands on the centre of f2',
       /\.fg-hand\{[\s\S]{0,120}left:68\.75%;top:81\.25%/.test(css),
       'f is file 5 of 8, rank 2 is row 6 of 8');
+/* The ENDPOINT is the claim. This pinned the whole curve including its control
+   points, so moving the arm's origin onto his shoulder -- it used to start at
+   (112,108), off his body entirely -- failed a test about where it lands. */
 check('and the arm ends on the same point',
-      /C 98 100, 82 92, 68\.75 81\.25/.test(html),
+      /68\.75 81\.25"/.test(html),
       'both in the board\'s own coordinate space');
+check('and it starts on his body rather than beside him',
+      /d="M8[0-9] 9[0-9] C/.test(html),
+      'the origin is his near shoulder, inside .fg-wrap');
 check('the arm shares that space rather than guessing at it',
       /\.hb-wrap\{position:relative\}/.test(css) &&
       /\.fg-arm\{position:absolute;inset:0/.test(css));
 check('the square he is pointing at lights up', /\.hb-hot::after\{/.test(css));
+/* One clock, whatever it is set to. This pinned "9s", so speeding the gesture up
+   failed a test about the parts being in step with each other -- which they
+   still were, just faster. */
+const gestureClocks = [...css.matchAll(/animation:(?:reach|handIn|say|hot) (\d+(?:\.\d+)?)s ease-in-out infinite/g)]
+  .map(m => m[1]);
 check('the three parts are one gesture, on one clock',
-      (css.match(/9s ease-in-out infinite/g)||[]).length >= 4,
-      'arm, hand, bubble and square all run 9s');
+      gestureClocks.length >= 4 && new Set(gestureClocks).size === 1,
+      'arm, hand, bubble and square all run ' + (gestureClocks[0] || '?') + 's');
 check('the position on the board is a real one', (html.match(/class="hb-sq/g)||[]).length === 64,
       (html.match(/class="hb-sq/g)||[]).length + ' squares');
 check('drawn with the real piece art, not glyphs',
@@ -111,13 +128,19 @@ check('drawn with the real piece art, not glyphs',
       + 'loading="lazy" broke it while the art was untouched');
 check('and what he says about it is true',
       /attacked twice and defended once/.test(html),
-      'verified with python-chess: f2 attacked from c5 and f6, defended only from e1');
+      'verified with python-chess: f2 attacked from c5 and g4, defended only from e1, 16 units a side');
 
 // A chess audience reads the board before it reads the headline, so the
 // position has to survive that look. The first version of this board was
 // missing the c2 pawn -- legal, but 15 v 16 four moves into a game with nothing
 // captured, which is the kind of thing that costs you the visitor.
-const pieces = [...html.matchAll(/pieces\/(\w)(\w)\.svg/g)].map(m=>[m[1],m[2]]);
+/* Scoped to the HERO board. This scanned the whole page, which was fine when
+   that was the only board on it -- the "Inside the app" screens now carry three
+   more, and counting all four together reported 63 v 64 pieces. The claim has
+   always been about the position the visitor reads first. */
+const heroBoard = html.slice(html.indexOf('<div class="hb">'),
+                             html.indexOf('<svg class="fg-arm'));
+const pieces = [...heroBoard.matchAll(/pieces\/(\w)(\w)\.svg/g)].map(m=>[m[1],m[2]]);
 const white = pieces.filter(p=>p[0]==='w'), black = pieces.filter(p=>p[0]==='b');
 check('both sides have all sixteen units', white.length === 16 && black.length === 16,
       white.length + ' white v ' + black.length + ' black');

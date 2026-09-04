@@ -136,9 +136,9 @@ img{max-width:100%;display:block}
 
 /* ── hero ──────────────────────────────────────────────────────────────── */
 .hero{
-  position:relative; max-width:1280px; margin:0 auto;
+  position:relative; max-width:1330px; margin:0 auto;
   padding:clamp(48px,7vw,96px) var(--edge) 56px;
-  display:grid; grid-template-columns:1.08fr .92fr; gap:clamp(24px,4vw,48px);
+  display:grid; grid-template-columns:1.02fr .98fr; gap:clamp(22px,3.4vw,42px);
   align-items:center;
 }
 .blob{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
@@ -175,7 +175,33 @@ img{max-width:100%;display:block}
 .hero-for-txt{font-size:12.5px;line-height:1.5;color:var(--ink-3)}
 
 /* ── the coach, mid-explanation ────────────────────────────────────────── */
+/* Capped by viewport HEIGHT as well as by the column.
+   The board was sized only by width, so on any window shorter than about
+   700px it ran past the fold -- 26px on a 1440x820 laptop, 78px at
+   1366x768. A board with its last rank cut off is the first thing a
+   visitor sees, and they have to scroll to find out it is a board. */
+/* No margin-inline:auto here. On a grid item it stops the item stretching to
+   its column and it shrinks to fit-content -- the board went from 477px to
+   362px on a full-size window for no reason. */
 .hero-demo{position:relative;z-index:1;min-width:0}
+/* Short windows: the hero is the whole first impression, so it has to fit one.
+   The board starts about 280px down once the header and the hero's top padding
+   are counted, which is why a plain vh cap was still leaving it cut -- the cap
+   has to be on what is LEFT below that point, not on the window. */
+/* Only where it is actually needed. A 900px-tall window already fits the board
+   at full size -- capping there cost 115px of board for nothing. These two
+   thresholds are where it starts being cut: 26px at a 1440x820 laptop, 78px at
+   1366x768. */
+@media (max-height: 800px){
+  .hero{padding-top:clamp(24px,3.5vh,48px); padding-bottom:28px; align-items:start}
+  /* -230 rather than -250: a shade more board, still clear of the fold. */
+  .hero-demo{max-width:min(100%, calc(100vh - 230px))}
+}
+@media (max-height: 640px){
+  .hero{padding-top:20px; gap:22px}
+  .hero-demo{max-width:min(100%, calc(100vh - 210px))}
+  .demo-stage{padding:12px}
+}
 .demo-frame{
   border:1px solid var(--line); border-radius:10px; background:var(--panel);
   overflow:hidden; box-shadow:0 40px 90px -50px oklch(4% 0.02 280);
@@ -223,7 +249,7 @@ img{max-width:100%;display:block}
 .hb-hot::after{
   content:'';position:absolute;inset:0;border-radius:2px;
   box-shadow:inset 0 0 0 2px var(--magenta), 0 0 16px oklch(72% 0.22 340 / .6);
-  opacity:0;animation:hot 9s ease-in-out infinite;
+  opacity:0;animation:hot 6s ease-in-out infinite;
 }
 @keyframes hot{0%,20%{opacity:0}30%,72%{opacity:1}82%,100%{opacity:0}}
 
@@ -236,7 +262,7 @@ img{max-width:100%;display:block}
 .fg-arm{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .fg-arm path{
   fill:none;stroke:oklch(38% 0.055 250);stroke-width:2.4;stroke-linecap:round;
-  stroke-dasharray:100;stroke-dashoffset:100;animation:reach 9s ease-in-out infinite;
+  stroke-dasharray:100;stroke-dashoffset:100;animation:reach 6s ease-in-out infinite;
   filter:drop-shadow(0 2px 6px oklch(4% 0.02 280 / .6));
 }
 @keyframes reach{0%,18%{stroke-dashoffset:100}30%,72%{stroke-dashoffset:0}84%,100%{stroke-dashoffset:100}}
@@ -244,7 +270,7 @@ img{max-width:100%;display:block}
   position:absolute;left:68.75%;top:81.25%;transform:translate(-50%,-50%);
   width:13px;height:13px;border-radius:50%;
   background:oklch(82% 0.07 60);box-shadow:0 0 0 3px oklch(82% 0.07 60 / .22);
-  opacity:0;animation:handIn 9s ease-in-out infinite;
+  opacity:0;animation:handIn 6s ease-in-out infinite;
 }
 @keyframes handIn{
   0%,24%  {opacity:0;transform:translate(-50%,-50%) scale(.5)}
@@ -257,7 +283,7 @@ img{max-width:100%;display:block}
   background:oklch(20% 0.06 340);border:1px solid oklch(50% 0.14 340);
   color:oklch(90% 0.05 340);font-family:var(--mono);font-size:10.5px;line-height:1.55;
   padding:9px 11px;border-radius:6px;opacity:0;
-  animation:say 9s ease-in-out infinite;
+  animation:say 6s ease-in-out infinite;
 }
 .fg-say b{color:oklch(96% 0.03 340)}
 @keyframes say{0%,26%{opacity:0;transform:translateY(6px)}36%,72%{opacity:1;transform:translateY(0)}82%,100%{opacity:0;transform:translateY(6px)}}
@@ -496,7 +522,19 @@ img{max-width:100%;display:block}
    index -- the hero's copy of him is inline SVG and aria-hidden, which is
    invisible to a crawler. Sized in ch-free units so the heading keeps its
    measure, and he stacks above it on a phone. */
-.band-head.has-portrait{display:flex;align-items:center;gap:26px;max-width:820px}
+/* Full width, with the three claims on the right. At 820px the row stopped two
+   thirds of the way across the band and left a hole beside GM Forge. */
+.band-head.has-portrait{display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;gap:clamp(20px,3vw,40px);max-width:none}
+.how-facts{display:flex;flex-direction:column;gap:10px;justify-self:end;
+  padding-left:clamp(16px,2.5vw,32px);border-left:1px solid var(--line)}
+.how-fact{display:flex;align-items:baseline;gap:9px;white-space:nowrap}
+.how-fact b{font-family:var(--mono,monospace);font-size:19px;color:var(--cyan);line-height:1}
+.how-fact span{font-size:12.5px;color:var(--ink-3)}
+@media(max-width:1000px){
+  .band-head.has-portrait{grid-template-columns:auto minmax(0,1fr)}
+  .how-facts{display:none}
+}
 .band-head.has-portrait > div{min-width:0}
 .how-forge{
   flex:0 0 auto;width:108px;height:108px;border-radius:50%;object-fit:cover;
@@ -505,4 +543,183 @@ img{max-width:100%;display:block}
 @media(max-width:640px){
   .band-head.has-portrait{flex-direction:column;align-items:flex-start;gap:16px}
   .how-forge{width:84px;height:84px}
+}
+
+/* ═══ THE MACHINE ═══════════════════════════════════════════════════════════
+   A laptop in real CSS 3D: lid, hinge and base are separate planes inside one
+   perspective, and the rig leans toward the pointer. No library, no canvas --
+   it has to work on a phone that has never heard of WebGL, and a landing page
+   that needs a 3D engine to render its own screenshot is a slow landing page.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.machine{overflow:hidden}
+.mach-wrap{display:grid;grid-template-columns:1.35fr .65fr;gap:clamp(24px,4vw,56px);
+  align-items:center;margin-top:26px}
+@media(max-width:900px){.mach-wrap{grid-template-columns:1fr;gap:26px}}
+
+.mach-stage{perspective:1600px;perspective-origin:50% 40%}
+.mach-rig{
+  position:relative;transform-style:preserve-3d;
+  transform:rotateX(var(--rx,12deg)) rotateY(var(--ry,-14deg)) rotateZ(var(--rz,0deg));
+  transition:transform .5s cubic-bezier(.22,.75,.2,1);
+}
+.mach-glow{position:absolute;inset:-14% -10% -30%;border-radius:50%;
+  background:radial-gradient(closest-side, oklch(70% 0.15 205 / .22), transparent 72%);
+  filter:blur(18px);transform:translateZ(-120px);pointer-events:none}
+
+.mach-lid{transform-style:preserve-3d;transform-origin:50% 100%}
+.mach-bezel{
+  background:linear-gradient(160deg, oklch(22% 0.02 265), oklch(13% 0.015 265));
+  border:1px solid var(--line-2);border-radius:14px 14px 4px 4px;
+  padding:10px 10px 14px;box-shadow:0 40px 90px -40px #000, inset 0 1px 0 oklch(40% 0.02 265);
+}
+.mach-screen{
+  position:relative;aspect-ratio:16/10;border-radius:8px;overflow:hidden;
+  background:var(--bg-2, #0b0d14);border:1px solid oklch(30% 0.02 265);
+}
+.mach-sheen{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg, oklch(100% 0 0 / .07) 0 22%, transparent 46%);
+  mix-blend-mode:screen}
+
+.mach-hinge{height:8px;margin:0 auto;width:34%;border-radius:0 0 6px 6px;
+  background:linear-gradient(oklch(26% 0.02 265), oklch(16% 0.02 265));
+  transform:translateZ(-1px)}
+.mach-base{
+  height:16px;border-radius:4px 4px 12px 12px;
+  background:linear-gradient(oklch(24% 0.02 265), oklch(12% 0.015 265));
+  border:1px solid var(--line-2);border-top:none;
+  transform:rotateX(72deg);transform-origin:50% 0;
+  box-shadow:0 30px 60px -30px #000;position:relative}
+.mach-pad{position:absolute;left:50%;top:4px;transform:translateX(-50%);
+  width:18%;height:5px;border-radius:3px;background:oklch(30% 0.02 265)}
+
+/* every screen stacked in the same box; one is on at a time */
+.scr{position:absolute;inset:0;opacity:0;visibility:hidden;
+  transform:translateZ(0) scale(.985);
+  transition:opacity .34s var(--ease,ease), transform .34s var(--ease,ease)}
+.scr.is-on{opacity:1;visibility:visible;transform:none}
+.scr-bar{display:flex;align-items:center;gap:5px;padding:6px 9px;
+  background:oklch(15% 0.015 265);border-bottom:1px solid oklch(24% 0.02 265)}
+.scr-bar i{width:6px;height:6px;border-radius:50%;background:oklch(34% 0.02 265)}
+.scr-bar .mono{margin-left:8px;font-size:9px;color:var(--ink-3)}
+.scr-body{padding:10px;height:calc(100% - 25px);display:grid;gap:10px}
+/* The real proportions: Play & Coach and the review are three columns with the
+   board in the middle, which is the thing that makes them recognisable. */
+.scr-coach{grid-template-columns:.82fr 1.15fr .9fr}
+.scr-review{grid-template-columns:.8fr 1.1fr .72fr}
+.scr-drill{grid-template-columns:1fr 1.05fr}
+.scr-import{grid-template-rows:auto auto auto;align-content:start}
+.scr-mid{display:flex;flex-direction:column;gap:5px;justify-content:center;min-width:0}
+
+.scr-forge{display:flex;align-items:center;gap:5px}
+.scr-face{width:14px;height:14px;border-radius:50%;flex:none;
+  background:radial-gradient(circle at 50% 38%, #eab387 0 58%, #2a2018 59%)}
+.scr-forge b{font-size:8.5px;color:#22E5FF}
+.scr-sub{margin:0;font-size:8px;color:var(--ink-3);line-height:1.4}
+.scr-do{display:flex;flex-direction:column;gap:6px;justify-content:center;min-width:0}
+.scr-do-h{font-size:9.5px;line-height:1.3;color:var(--ink)}
+.scr-kick{font-size:7px;letter-spacing:.09em;text-transform:uppercase;color:#22E5FF}
+.scr-btn{font-size:8px;text-align:center;padding:4px 6px;border-radius:5px;
+  background:#22E5FF;color:#0C1016;font-weight:700}
+.scr-btn.ghost{background:transparent;border:1px solid var(--line-2);color:var(--ink-3);font-weight:500}
+.scr-evalrow{display:flex;align-items:center;gap:5px}
+.scr-eval{flex:1;height:4px;border-radius:99px;background:oklch(20% 0.02 265);display:block;
+  position:relative;overflow:hidden}
+.scr-eval i{position:absolute;inset:0 auto 0 0;width:var(--v);background:#F2F3F7}
+.scr-evalrow .mono{font-size:7.5px;color:var(--ink-3)}
+.scr-players{display:flex;align-items:center;gap:6px;font-size:7.5px;color:var(--ink-2)}
+.scr-players span{display:flex;align-items:center;gap:3px}
+.scr-players i{width:7px;height:7px;border-radius:50%;border:1px solid var(--line-2)}
+.scr-players i.w{background:#F2F3F7}.scr-players i.k{background:#141620}
+.scr-ctrl{display:flex;align-items:center;justify-content:center;gap:6px;font-size:7.5px;
+  color:var(--ink-3)}
+.scr-counts{display:flex;gap:4px}
+.scr-counts i{font-size:7.5px;font-style:normal;padding:2px 6px;border-radius:99px;font-weight:700}
+.scr-counts .b{background:oklch(55% 0.16 25 / .2);color:#FF7A85}
+.scr-counts .m{background:oklch(70% 0.14 70 / .2);color:#E5A73D}
+.scr-counts .i{background:oklch(20% 0.02 265);color:var(--ink-3)}
+.scr-input{font-size:7.5px;color:var(--ink-3);padding:4px 7px;border-radius:5px;
+  border:1px solid var(--line-2)}
+.scr-stage{display:flex;gap:4px}
+.scr-stage i{flex:1;height:3px;border-radius:99px;background:oklch(20% 0.02 265)}
+.scr-stage i.done{background:oklch(60% 0.14 205 / .5)}
+.scr-stage i.now{background:#22E5FF}
+.scr-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.scr-stat{padding:6px;border-radius:5px;background:oklch(16% 0.015 265);
+  border:1px solid oklch(24% 0.02 265)}
+.scr-stat b{display:block;font-size:12px;color:#22E5FF;font-family:var(--mono,monospace)}
+.scr-stat span{font-size:6.5px;color:var(--ink-3)}
+.scr-go{margin-left:auto;font-size:7.5px;padding:4px 8px;border-radius:5px;
+  background:oklch(60% 0.14 145);color:#0C1016;font-weight:700;white-space:nowrap}
+.scr-count span{font-size:7.5px}
+
+/* Shaded per square, not by :nth-child. On an eight-wide grid odd/even
+   alternates down the COLUMNS, which draws vertical stripes instead of a
+   chessboard -- which is exactly what it was doing. The class is written into
+   each square from the real position instead. */
+.scr-board{border-radius:4px;overflow:hidden;display:grid;
+  grid-template-columns:repeat(8,1fr);aspect-ratio:1;align-self:center;width:100%}
+.scr-board .sq{aspect-ratio:1;position:relative;display:block}
+.scr-board .sq.l{background:#5A677F}
+.scr-board .sq.d{background:#333B4C}
+.scr-board .sq img{width:100%;height:100%;display:block}
+.scr-board .sq.hot{box-shadow:inset 0 0 0 2px #22E5FF}
+.scr-board .sq.bad{box-shadow:inset 0 0 0 2px #FF7A85}
+.scr-board .sq.dot::after{content:'';position:absolute;left:50%;top:50%;
+  width:30%;height:30%;transform:translate(-50%,-50%);border-radius:50%;
+  background:#22E5FF;opacity:.9}
+
+.scr-rail{display:flex;flex-direction:column;gap:7px;justify-content:center}
+.scr-step{display:flex;gap:4px;flex-wrap:wrap}
+.scr-step span{font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 5px;border-radius:99px;background:oklch(20% 0.02 265);color:var(--ink-3)}
+.scr-step span.on{background:oklch(70% 0.15 205 / .18);color:#22E5FF}
+.scr-say{margin:0;font-size:9.5px;line-height:1.45;color:var(--ink)}
+.scr-chips{display:flex;gap:5px}
+.scr-chips b{font-size:9px;padding:3px 8px;border-radius:99px;
+  border:1px solid oklch(70% 0.15 205 / .5);color:#22E5FF}
+.scr-moves{display:flex;flex-direction:column;gap:3px;justify-content:center;font-size:8.5px}
+.scr-moves .mv{display:flex;gap:5px;align-items:center;color:var(--ink-2);
+  padding:2px 5px;border-radius:4px}
+.scr-moves .mv.bad{background:oklch(55% 0.16 25 / .16)}
+.scr-moves em{margin-left:auto;font-style:normal;font-size:7.5px}
+.scr-moves .g{color:#5ED39A}.scr-moves .o{color:var(--ink-3)}.scr-moves .b{color:#FF7A85}
+.scr-bars{display:flex;flex-direction:column;gap:5px}
+.scr-bars i{position:relative;height:13px;border-radius:3px;background:oklch(20% 0.02 265);
+  display:block;overflow:hidden}
+.scr-bars i::before{content:'';position:absolute;inset:0 auto 0 0;width:var(--v);
+  background:linear-gradient(90deg,#22E5FF,oklch(62% 0.13 250))}
+.scr-bars b{position:relative;font-size:7.5px;line-height:13px;padding-left:6px;
+  color:#0C1016;font-weight:700}
+.scr-card{display:flex;gap:8px;align-items:center;padding:8px;border-radius:6px;
+  background:oklch(16% 0.015 265);border:1px solid oklch(60% 0.14 145 / .3)}
+.scr-cc{width:20px;height:20px;border-radius:5px;flex:none;
+  background:oklch(60% 0.14 145 / .18);border:1px solid oklch(60% 0.14 145 / .45)}
+.scr-card b{font-size:9px;color:var(--ink)}
+.scr-card p{margin:1px 0 0;font-size:8px;color:var(--ink-3)}
+.scr-count{display:flex;align-items:baseline;gap:6px}
+.scr-count b{font-family:var(--mono,monospace);font-size:22px;color:#22E5FF}
+.scr-count span{font-size:8.5px;color:var(--ink-3)}
+
+/* the arrow, out of the screen and toward the reader */
+.mach-arrow{position:absolute;right:-6%;top:14%;width:44%;pointer-events:none;
+  transform:translateZ(90px) rotateY(-16deg);opacity:0;
+  transition:opacity .4s ease, transform .5s cubic-bezier(.22,.75,.2,1)}
+.mach-arrow.is-on{opacity:1;transform:translateZ(120px) rotateY(-16deg)}
+.mach-arrow svg{width:100%;height:auto;filter:drop-shadow(0 6px 18px oklch(70% 0.15 205 / .45))}
+.mach-label{position:absolute;right:0;top:-6px;transform:translateY(-100%);
+  background:oklch(14% 0.02 265);border:1px solid oklch(70% 0.15 205 / .55);
+  color:var(--ink);font-size:11px;line-height:1.35;padding:7px 10px;border-radius:9px;
+  max-width:230px;display:block;box-shadow:0 14px 30px -16px #000}
+
+.mach-picks{display:flex;flex-direction:column;gap:9px}
+.mach-pick{display:block;text-align:left;padding:12px 14px;border-radius:11px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink);
+  transition:border-color .18s ease, transform .18s ease, background .18s ease}
+.mach-pick:hover{border-color:var(--line-2);transform:translateX(3px)}
+.mach-pick.is-on{border-color:#22E5FF;background:oklch(70% 0.15 205 / .08)}
+.mach-pick b{display:block;font-size:14px;margin-bottom:2px}
+.mach-pick span{font-size:12px;color:var(--ink-3)}
+
+@media(prefers-reduced-motion:reduce){
+  .mach-rig,.scr,.mach-arrow{transition:none}
 }
