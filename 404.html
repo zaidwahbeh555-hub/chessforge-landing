@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — ChessForge</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* style.css reserves 73px at the top for the site nav bar. This page has
+     no nav, so that space is just an empty strip and 73px of scroll. */
+  body{padding-top:0}
+  /* One screen, centred, using the tokens the rest of the site already sets. */
+  /* border-box, or the padding is added to 100vh and the page scrolls a little
+     for no reason. */
+  .nf{min-height:100vh;box-sizing:border-box;display:grid;place-items:center;
+    padding:32px 20px;text-align:center}
+  .nf-in{max-width:520px}
+  .nf-code{font-family:var(--mono,'IBM Plex Mono',monospace);font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--cyan,#22E5FF);margin:0 0 18px}
+  .nf-h{font-size:clamp(28px,5vw,40px);line-height:1.15;letter-spacing:-.02em;margin:0 0 14px;
+    color:var(--ink,#fff)}
+  .nf-p{font-size:16px;line-height:1.6;color:var(--ink-2,#aaa);margin:0 0 28px}
+  .nf-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .nf-board{display:grid;grid-template-columns:repeat(4,26px);gap:0;margin:0 auto 26px;
+    width:104px;border-radius:6px;overflow:hidden;opacity:.5}
+  .nf-board i{aspect-ratio:1}
+  .nf-board i:nth-child(odd){background:oklch(20% 0.012 280)}
+  .nf-board i:nth-child(even){background:oklch(13% 0.012 280)}
+  .nf-board i.k{display:grid;place-items:center;color:var(--cyan,#22E5FF);font-size:15px;opacity:.9}
+</style>
+</head>
+<body>
+<main class="nf">
+  <div class="nf-in">
+    <!-- A lone king with nowhere to go. Stalemate, not checkmate: the page is
+         missing, nothing is broken. -->
+    <div class="nf-board" aria-hidden="true">
+      <i></i><i></i><i></i><i></i>
+      <i></i><i class="k">&#9812;</i><i></i><i></i>
+      <i></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i></i>
+    </div>
+    <p class="nf-code">Error 404</p>
+    <h1 class="nf-h">No legal moves from here.</h1>
+    <p class="nf-p">That page does not exist. It may have been renamed, or the link
+      that brought you here was wrong.</p>
+    <div class="nf-row">
+      <a class="btn btn-primary" href="/">Back to the home page</a>
+      <a class="btn btn-ghost" href="https://app.chessforge.org">Open the app</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>
