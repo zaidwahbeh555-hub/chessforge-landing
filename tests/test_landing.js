@@ -64,7 +64,7 @@ check('no testimonial is attributed to a player who did not write one',
 /* Signed by role, not by name. No personal detail about the owner goes on this
    page -- not a name, not an age, nothing that identifies him. "solo founder"
    and "one person" are fine; they say something about the product. */
-check('what is there instead is signed', /quote-by">&mdash; the person who builds/.test(html));
+check('what is there instead is signed', /quote-by">&mdash; the person who built/.test(html));
 check('and it names nobody',
       !/\bZaid\b/i.test(html) && !/\bZaid\b/i.test(js) && !/\bZaid\b/i.test(css),
       'no personal name anywhere on the page');
@@ -72,7 +72,23 @@ check('and it is first person, not a claim about the userbase',
       /My rating has gone up since I started/.test(html)
       && /one person&rsquo;s experience/.test(html));
 check('it says where the real reviews will come from',
-      /When enough of them have written a\s+review/.test(html));
+      /When\s+enough of them have written a review/.test(html));
+/* The player count is read from the app rather than typed into the page.
+   It said 31 while the real number had moved on, which is a stale claim about
+   our own product -- worse than making none. The number in the HTML is now a
+   fallback: if the fetch is slow, blocked or the app is down, the page reads
+   exactly as it did before. */
+check('the player count is fetched, not hardcoded',
+      /data-live="users"/.test(html) && /public\/stats/.test(js));
+check('and the same number in the prose is updated with it',
+      /<span data-live-users>/.test(html) && /data-live-users/.test(js));
+check('a hardcoded number is still there as the fallback',
+      /data-count="\d+"[^>]*data-live="users"/.test(html));
+check('the count-up waits for the real figure, so it does not animate to the '
+      + 'wrong number and then correct itself',
+      /liveCount\(startStats\)/.test(js));
+check('and a hanging request cannot stop the animation for good',
+      /setTimeout\(finish, \d+\)/.test(js));
 check('the height is reserved so the page does not jump',
       /\.quote-text\{[\s\S]{0,220}min-height:110px/.test(css));
 check('the empty placeholder slots are gone', !/Your review here/.test(html));

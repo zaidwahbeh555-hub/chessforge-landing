@@ -163,10 +163,43 @@
     show('coach');
   })();
 
-  /* ── stats ───────────────────────────────────────────────────────────────
-     Count up once, when the band is actually on screen. */
+  /* ── the player count, read from the app ─────────────────────────────────
+     It used to say 31 because 31 was typed into the HTML the day this was
+     written. The number then kept moving and the page did not, so a claim
+     about our own product quietly went stale -- which is worse than making no
+     claim at all.
+
+     /public/stats returns nothing but a count. If it is slow, blocked, or the
+     app is down, the number already in the HTML stands and the page behaves
+     exactly as it did before: this can only correct the figure, never empty it.
+     Fetched before the count-up animation starts so the reader sees one number
+     rather than watching it change. */
+  function liveCount(done) {
+    var el = document.querySelector('[data-count][data-live="users"]');
+    if (!el || !window.fetch) { done(); return; }
+    var settled = false;
+    function finish() { if (!settled) { settled = true; done(); } }
+    // Never let a hanging request stop the animation from running at all.
+    setTimeout(finish, 2500);
+    fetch('https://app.chessforge.org/public/stats', { mode: 'cors' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var n = d && d.users;
+        if (typeof n === 'number' && n > 0) {
+          el.setAttribute('data-count', String(n));
+          document.querySelectorAll('[data-live-users]').forEach(function (t) {
+            t.textContent = String(n);
+          });
+        }
+      })
+      .catch(function () {})
+      .then(finish);
+  }
+
+  /* Count up once, when the band is actually on screen. */
   var stats = document.getElementById('stats');
-  if (stats && 'IntersectionObserver' in window) {
+  function startStats() {
+    if (!(stats && 'IntersectionObserver' in window)) return;
     var so = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -189,6 +222,9 @@
     }, { threshold: 0.3 });
     so.observe(stats);
   }
+  // The count first, then the animation -- so the reader sees one number
+  // settle rather than 31 counting up and then correcting itself.
+  liveCount(startStats);
 
   /* ── legal ───────────────────────────────────────────────────────────────
      Real baseline content, in a modal rather than a separate page, so nobody
