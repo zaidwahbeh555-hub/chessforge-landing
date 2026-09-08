@@ -142,6 +142,21 @@ if(!fs.existsSync(APP)){
   check('and the old cyan is gone from it', !/#22E5FF/i.test(appCss),
         'one accent, or the two drift again');
   check('the mark is drawn in that same accent', /#2FD1FF/i.test(icon));
+  // The app draws the mark from a sprite symbol rather than the file, so it is
+  // the one copy that can silently keep an old shape -- and it did: the sidebar
+  // was still a bare hexagon after every other mark had changed.
+  const appHtmlSrc = fs.readFileSync(path.join(APP,'frontend','templates','index.html'),'utf8');
+  const symPath = (/<symbol id="ic-logo"[\s\S]*?d="([\s\S]*?)"/.exec(appHtmlSrc)||[])[1] || '';
+  const filePath = (/fill-rule="evenodd" d="([\s\S]*?)"/.exec(icon)||[])[1] || '';
+  const flat = (t)=>t.replace(/\s+/g,' ').trim();
+  check('the app sprite draws the SAME path as the file', flat(symPath) === flat(filePath),
+        'one shape, or the sidebar drifts again');
+  check('and it is filled, not stroked -- .ic is written for line icons',
+        /<symbol id="ic-logo"[^>]*>\s*<path fill="currentColor" stroke="none"/.test(appHtmlSrc));
+  check('the old bare hexagon is gone from the app',
+        !/M12 2\.7 L20\.05 7\.35/.test(appHtmlSrc));
+  check('the admin page has an icon too -- it had none and drew the browser default',
+        /rel="icon"/.test(fs.readFileSync(path.join(APP,'frontend','templates','admin.html'),'utf8')));
 
 }
 
