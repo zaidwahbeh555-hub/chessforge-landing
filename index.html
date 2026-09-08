@@ -39,10 +39,20 @@
 <header class="nav">
   <a class="brand" href="#top" aria-label="ChessForge, back to top">
     <img class="mark-img" src="logo.svg" alt="" aria-hidden="true">
+    <span class="brand-word">Chess<b>Forge</b></span>
   </a>
-  <!-- Everything else lives behind one control at every width, not just on
-       phones. A row of links that collapses into a burger below some threshold
-       is two different headers to keep working; this is one. -->
+  <nav class="links" aria-label="Sections">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="navcta">
+    <a class="ghost" href="https://app.chessforge.org">Log in</a>
+    <a class="fill" href="https://app.chessforge.org">Start playing &rarr;</a>
+  </div>
+  <!-- Phones only. The four links and two buttons above do not fit beside the
+       mark at that width, so they move behind this. -->
   <button class="burger" id="burger" aria-expanded="false" aria-controls="menu"
           aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -386,7 +396,8 @@
           <li>Hang a piece on move 14, same as last week</li>
           <li>Close the tab</li>
         </ol>
-        <div class="two-foot"><span class="two-line down"></span>Nothing about YOUR game
+        <div class="two-foot"><span class="elo down"><svg viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M6 1v8M2.5 6.5 6 10l3.5-3.5"/></svg>Elo</span>Nothing about YOUR game
           was ever in it.</div>
       </div>
       <div class="two-side lit">
@@ -398,7 +409,8 @@
           <li>Drill that exact pattern while you still remember it</li>
           <li>Play it again and get it right</li>
         </ol>
-        <div class="two-foot"><span class="two-line up"></span>It happened to YOUR move,
+        <div class="two-foot"><span class="elo up"><svg viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M6 11V3M2.5 5.5 6 2l3.5 3.5"/></svg>Elo</span>It happened to YOUR move,
           in YOUR game.</div>
       </div>
     </div>
