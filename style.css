@@ -347,11 +347,15 @@ img{max-width:100%;display:block}
 .facts{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
 .facts-in{max-width:clamp(960px,68vw,1440px);margin:0 auto;padding:clamp(56px,5vw,84px) var(--edge);
   display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center}
-.fact-n{font-size:clamp(28px,3.6vw,52px);font-weight:600;color:var(--cyan);
-  letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.fact:nth-child(2) .fact-n{color:var(--ink)}
-.fact:nth-child(3) .fact-n{color:var(--magenta)}
-.fact-l{font-size:13px;color:var(--ink-3);margin-top:8px;line-height:1.5}
+/* One line each, same size, same weight. The row used to be three big numerals
+   with sentences of three different lengths under them, so it read as three
+   unrelated thoughts rather than one row of facts. */
+.fact{display:flex;align-items:baseline;justify-content:center;gap:9px;flex-wrap:wrap}
+.fact-n,.fact-s{font-size:clamp(19px,1.9vw,28px);font-weight:600;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:var(--cyan)}
+.fact-s{color:var(--ink)}
+.fact:nth-child(3) .fact-s{color:var(--magenta)}
+.fact-l{font-size:clamp(13px,1.1vw,16px);color:var(--ink-3);line-height:1.4}
 
 /* ── pricing ───────────────────────────────────────────────────────────── */
 .plans{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(20px,2vw,32px);

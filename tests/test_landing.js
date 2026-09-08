@@ -39,7 +39,12 @@ function check(label, cond, detail){ total++; if(cond) pass++;
 // how many players there are, how many games the import reads, how many stages
 // a drill has. No aggregate claim about other people's results survives.
 console.log('\n── every number is one you could check ──');
-check('the player count is the real one', /data-count="31"/.test(html), '31');
+// The literal is only the FALLBACK now -- the live figure comes from the app,
+// so pinning an exact number here would just go stale again. What matters is
+// that some real number is there to fall back to and that it is wired to the
+// live source (checked below).
+check('the player count has a real fallback in the markup',
+      /data-count="\d+"[^>]*data-live="users"/.test(html));
 check('no invented aggregate is back',
       !/data-count="(300|12600|38400)"/.test(html)
       && !/average rating gain|players coached|blunders caught before/.test(html),
