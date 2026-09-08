@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ChessForge">
+  <title>ChessForge</title>
+  <!-- A hexagon with the knight cut OUT of it, so the two are one shape rather
+       than a mark sitting inside a container. The silhouette is drawn from the
+       same profile the 3D piece uses: a broad base, a stepped collar, and the
+       muzzle-forward head with an ear. -->
+  <defs>
+    <linearGradient id="cfHex" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5cb0ff"/>
+      <stop offset="1" stop-color="#2f8ef0"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#cfHex)" fill-rule="evenodd" d="
+      M32 2.6 55.4 16v32L32 61.4 8.6 48V16z
+      M41.6 47.5c.6-3.6.2-6.9-1.2-9.9-1.3-2.9-3.3-5.2-5.6-7.2-2-1.7-3.6-3.2-4.6-4.8-.7-1-1-2-1-3l3.6 2.5
+        c.5.4 1.2.3 1.6-.2l2.2-3.1c.4-.5.3-1.2-.2-1.6l-6.2-4.4 1.9-4.6c.3-.8-.4-1.6-1.2-1.4l-3.6.9
+        c-4.3 1.1-7.6 3.7-9.7 7.3-2 3.4-2.8 7.4-2.6 11.4l.2 3.2c0 .6.6 1.1 1.2 1l3.6-.5c.5-.1.9-.5 1-1l.5-3.4
+        c.2-1.4.7-2.5 1.5-3.4l.9 2.6c.6 1.8 1.7 3.4 3 4.9 1.9 2.1 3.5 3.9 4.5 5.7 1 1.7 1.4 3.5 1.1 5.8
+        l-.4 2.9c-.1.7.5 1.3 1.2 1.3h6.1c.6 0 1.1-.4 1.2-1z"/>
+</svg>

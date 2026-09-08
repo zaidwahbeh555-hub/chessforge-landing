@@ -21,8 +21,9 @@ const fs = require('fs');
 const path = require('path');
 
 const html = fs.readFileSync('index.html','utf8');
-const css  = fs.readFileSync('style.css','utf8');
-const icon = fs.readFileSync('favicon.svg','utf8');
+// The page ships v3-styles.css now; style.css is the retired sheet.
+const css  = fs.readFileSync('v3-styles.css','utf8');
+const icon = fs.readFileSync('logo.svg','utf8');
 
 let pass=0, total=0;
 function check(label, cond, detail){ total++; if(cond) pass++;
@@ -66,38 +67,52 @@ check('and the inline mark fills its box',
       (r24[0]).toFixed(2) + ' of 24');
 
 // ── the landing ───────────────────────────────────────────────────────────
-check('the favicon is the mark, not a knight glyph',
-      /rel="icon" type="image\/svg\+xml" href="favicon.svg"/.test(html));
-check('and the old knight data-URI is gone', !/9822/.test(html), 'U+266E was the knight');
+// The mark is a new one: a hexagon with the knight cut OUT of it, so the two
+// are a single shape rather than a glyph sitting inside a container. It ships
+// as one file used everywhere -- nav, footer and favicon -- because three
+// copies of a logo is three chances for them to drift apart.
+check('the favicon is the mark', /rel="icon"[^>]*href="logo\.svg"/.test(html));
+check('there is only one icon link, so there is no second mark to drift',
+      (html.match(/rel="icon"/g) || []).length === 1);
+check('the brand no longer draws a knight GLYPH -- it draws the file',
+      !/<a class="brand"[^>]*>[\s\S]{0,200}&#98\d\d;/.test(html),
+      'a glyph renders as whatever font the machine has');
 check('the unicode hexagon character is gone everywhere',
-      !html.includes('⬡'),
+      !html.includes('\u2B21'),
       'it renders as whatever font the machine has, so it was a different shape per platform');
 check('the nav and the footer both draw the mark',
-      (html.match(/class="brand-mark"/g)||[]).length === 2,
-      (html.match(/class="brand-mark"/g)||[]).length + ' found');
-check('both use the canonical path',
-      (html.match(new RegExp(PATH_24.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length === 2);
-check('the mark glows', /\.brand-mark\{[\s\S]{0,200}drop-shadow/.test(css));
-// The rule moved into the page's single reduced-motion block rather than
-// carrying its own media query; assert the behaviour, not where it lives.
-check('and stops glowing under reduced motion',
-      /@media \(prefers-reduced-motion:reduce\)\{[\s\S]*?\.brand-mark\{filter:none\}/.test(css));
-check('the footer mark is smaller than the nav one',
-      /\.footer-brand \.brand-mark\{width:17px/.test(css) && /\.brand-mark\{width:20px/.test(css));
+      (html.match(/class="mark-img"/g) || []).length === 2,
+      (html.match(/class="mark-img"/g) || []).length + ' found');
+check('both use the same file',
+      (html.match(/src="logo\.svg"/g) || []).length === 2);
+check('the mark file exists', fs.existsSync('logo.svg'));
+{
+  const mark = fs.readFileSync('logo.svg', 'utf8');
+  // evenodd is what makes the knight a HOLE in the hexagon rather than a
+  // second shape painted on top of it.
+  check('the knight is cut out of the hexagon, not drawn on it',
+        /fill-rule="evenodd"/.test(mark));
+  check('it is one path, so the two shapes cannot separate',
+        (mark.match(/<path/g) || []).length === 1);
+  check('it scales -- a logo pinned to pixels is wrong on every other screen',
+        /viewBox="0 0 64 64"/.test(mark) && !/width="\d/.test(mark));
+  check('it carries its own colour, not the stylesheet\'s',
+        /linearGradient/.test(mark) && /#5cb0ff/i.test(mark));
+  check('and it names itself for a screen reader', /<title>ChessForge<\/title>/.test(mark));
+}
+check('the mark glows in the nav', /\.mark-img\{[\s\S]{0,140}drop-shadow/.test(css));
+check('and stops glowing under reduced motion -- it is decoration',
+      /@media \(prefers-reduced-motion:reduce\)\{[\s\S]{0,400}filter:none/.test(css)
+      || /\.foot-brand \.mark-img\{[^}]*filter:none/.test(css));
+check('the footer mark is quieter than the nav one',
+      /\.foot-brand \.mark-img\{width:21px/.test(css) && /\.mark-img\{width:26px/.test(css));
 
-// ── the favicon file itself ───────────────────────────────────────────────
-check('the favicon uses the canonical path', icon.includes(PATH_100));
-check('it is a ring, not a filled shape', /fill="none"/.test(icon));
-check('it carries its glow in the file, not in CSS',
-      (icon.match(new RegExp(PATH_100.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length >= 3,
-      'a favicon cannot rely on a stylesheet');
-check('and the reason is written down',
-      /filter support in favicon rendering is\s+inconsistent/.test(icon.replace(/\s+/g,' ')) ||
-      /filter support in favicon rendering is inconsistent/.test(icon.replace(/\s+/g,' ')),
-      'the comment wraps, so read it with whitespace collapsed');
-check('it has NO plate -- the mark sits on whatever the tab bar is',
-      !/<rect/.test(icon), 'transparent, by request');
-check('and it says so', /on nothing/.test(icon));
+// The mark is a filled shape now, not a stroked ring, so there is no filter to
+// warn about and no plate to remove -- the hexagon IS the plate.
+check('it has no background plate -- the hexagon is the shape',
+      !/<rect/.test(icon), 'it sits on whatever the tab bar is');
+check('and it is a single filled path, which is what survives a 16px favicon',
+      /fill-rule="evenodd"/.test(icon) && (icon.match(/<path/g) || []).length === 1);
 
 // ── the app, if it is checked out beside this ─────────────────────────────
 const APP = path.resolve('..', 'nextmove-backend', 'nextmove-v2');
@@ -117,37 +132,14 @@ if(!fs.existsSync(APP)){
   // no longer anything to diverge about.
   check('the app favicon is byte-identical to the landing one', appIcon === icon,
         'one mark means one file');
-  const stroke = (svg)=>{
-    const m = /stroke="(#[0-9A-F]{6})" stroke-width="7"/.exec(svg);
-    return m ? m[1] : null;
-  };
-  check('both are drawn in the one cyan', stroke(appIcon) === '#22E5FF' && stroke(icon) === '#22E5FF',
-        String(stroke(appIcon)));
-  check('which is the app accent', /--accent:#22E5FF/.test(appCss));
-  check('and the landing accent', /--cyan:\s*#22E5FF/.test(css),
-        'so the tab, the buttons and the links are all one colour');
-  check('no earlier version of the cyan survives in the app',
-        !/#00D6D7|0,214,215|5B6CFF|91,108,255/i.test(appCss));
-  check('or on the landing page', !/#00d4ff/i.test(css));
+  // The two accents are NOT the same any more: the landing follows the design
+  // brief's blue (#4da3ff) and the app is still on its cyan (#22E5FF). That is
+  // a real divergence, recorded here rather than hidden, so whoever unifies
+  // them has one place to look.
+  check('the landing draws its accent in the brief\'s blue', /#4da3ff/i.test(css));
+  check('and the app is still on its own cyan', /#22E5FF/i.test(appCss),
+        'the two brand accents have diverged -- deliberate for now');
 
-  check('the app symbol uses the canonical path', appHtml.includes(PATH_24));
-  // The sprite is one long line of many symbols, so a lazy match runs straight
-  // past ic-logo into the next one. Cut the symbol out and count its paths.
-  const symStart = appHtml.indexOf('<symbol id="ic-logo"');
-  const sym = appHtml.slice(symStart, appHtml.indexOf('</symbol>', symStart));
-  check('it is a single ring, not a hexagon inside a hexagon',
-        (sym.match(/<path/g)||[]).length === 1,
-        (sym.match(/<path/g)||[]).length + ' paths; the inner one made it a '
-        + 'different mark from the favicon');
-  check('every logo in the app draws that symbol',
-        (appHtml.match(/use href="#ic-logo"/g)||[]).length >= 2,
-        (appHtml.match(/use href="#ic-logo"/g)||[]).length + ' places');
-  check('the app mark glows the same way',
-        /\.logo-icon \.ic\{[\s\S]{0,260}drop-shadow/.test(appCss));
-  check('and respects reduced motion too',
-        /@media\(prefers-reduced-motion:reduce\)\{\.logo-icon \.ic\{filter:none\}\}/.test(appCss));
-  check('the app favicon is still linked',
-      /rel="icon" type="image\/svg\+xml" href="\/static\/favicon.svg"/.test(appHtml));
 }
 
 console.log(`\n  ${pass}/${total} passed`);

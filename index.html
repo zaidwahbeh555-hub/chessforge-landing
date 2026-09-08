@@ -1,15 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge</title>
 <meta name="description" content="An AI chess coach that stops you before you blunder, not after. Import your chess.com games and it knows your weaknesses before your first move.">
 <link rel="canonical" href="https://chessforge.org/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#0A0A10">
 <meta name="author" content="ChessForge">
-
 <meta property="og:site_name" content="ChessForge">
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge">
@@ -20,863 +19,812 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="ChessForge — the AI chess coach that stops you before you blunder">
-
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI Chess Coach — Live Coaching &amp; Game Analysis | ChessForge">
 <meta name="twitter:description" content="A coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live, during the game — and it can read your chess.com games to start.">
 <meta name="twitter:image" content="https://chessforge.org/og.png">
 <meta name="twitter:image:alt" content="ChessForge — the AI chess coach that stops you before you blunder">
-
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://chessforge.org/#org", "name": "ChessForge", "url": "https://chessforge.org/", "logo": "https://chessforge.org/favicon.svg", "email": "chessforgesupport@gmail.com", "description": "An AI chess coach that teaches during the game rather than after it."}, {"@type": "WebSite", "@id": "https://chessforge.org/#site", "url": "https://chessforge.org/", "name": "ChessForge", "publisher": {"@id": "https://chessforge.org/#org"}, "inLanguage": "en"}, {"@type": "SoftwareApplication", "@id": "https://chessforge.org/#app", "name": "ChessForge", "applicationCategory": "GameApplication", "applicationSubCategory": "Chess training", "operatingSystem": "Web browser", "url": "https://app.chessforge.org", "publisher": {"@id": "https://chessforge.org/#org"}, "description": "A chess coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live coaching during the game, drills built from your own errors, and a review of every move.", "featureList": ["Live coaching during the game", "Import your chess.com games to start with a weakness profile", "Personal weakness profile", "Puzzles generated from your own blunders", "Move-by-move game review with an in-position chat", "Spaced-repetition drills built from your own mistakes", "Candidate-move comparison before you commit", "Adaptive opponent", "Sign in with Google"], "offers": [{"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "CAD", "description": "One coached game a day, five puzzles a day, a basic weakness read, and your chess.com games imported.", "availability": "https://schema.org/InStock", "url": "https://app.chessforge.org"}, {"@type": "Offer", "name": "Grandmaster", "price": "19.99", "priceCurrency": "CAD", "description": "Unlimited games coached or not, unlimited puzzles, repeatable drills, deep analysis, Ask GM Forge, the full Thinking Profile and Trap Trainer. Three-day free trial.", "availability": "https://schema.org/InStock", "url": "https://app.chessforge.org"}]}, {"@type": "FAQPage", "@id": "https://chessforge.org/#faq", "mainEntity": [{"@type": "Question", "name": "How is this different from an engine?", "acceptedAnswer": {"@type": "Answer", "text": "An engine tells you the move and the number. GM Forge tells you what your move runs into, on which square, and what it costs in material — while you can still take it back. Every move he names comes from Stockfish; he is not allowed to invent one."}}, {"@type": "Question", "name": "Why does the free plan make me play one game on my own?", "acceptedAnswer": {"@type": "Answer", "text": "Because that game is the measurement. Your play strength, your accuracy and every drill you get are read from unaided games. Coaching before that would be built on nothing."}}, {"@type": "Question", "name": "Does it get better the more I play?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, and specifically: the drills change. Patterns your games keep producing get served more often, and ones you have stopped falling for get spaced further apart."}}, {"@type": "Question", "name": "What rating range is this for?", "acceptedAnswer": {"@type": "Answer", "text": "Roughly 300 to 1000. It is built for the point where you lose to the same three or four things over and over and cannot see which ones they are."}}, {"@type": "Question", "name": "Do I have to give you my chess.com password?", "acceptedAnswer": {"@type": "Answer", "text": "No. The import reads the games chess.com already publishes on its public API. Your username is all it needs."}}, {"@type": "Question", "name": "Does it work on my phone?", "acceptedAnswer": {"@type": "Answer", "text": "Dashboard, Training, Puzzles and Shop do. Play & Coach and Analysis need a bigger screen — they put a board, a graded move list and the coach side by side, and stacked on a phone those stop being one thing you can read."}}, {"@type": "Question", "name": "Can I cancel any time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, from your account menu, including during the trial."}}]}]}</script>
+<link rel="icon" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@graph": [
-  {
-   "@type": "Organization",
-   "@id": "https://chessforge.org/#org",
-   "name": "ChessForge",
-   "url": "https://chessforge.org/",
-   "logo": "https://chessforge.org/favicon.svg",
-   "email": "chessforgesupport@gmail.com",
-   "description": "An AI chess coach that teaches during the game rather than after it."
-  },
-  {
-   "@type": "WebSite",
-   "@id": "https://chessforge.org/#site",
-   "url": "https://chessforge.org/",
-   "name": "ChessForge",
-   "publisher": {
-    "@id": "https://chessforge.org/#org"
-   },
-   "inLanguage": "en"
-  },
-  {
-   "@type": "SoftwareApplication",
-   "@id": "https://chessforge.org/#app",
-   "name": "ChessForge",
-   "applicationCategory": "GameApplication",
-   "applicationSubCategory": "Chess training",
-   "operatingSystem": "Web browser",
-   "url": "https://app.chessforge.org",
-   "publisher": {
-    "@id": "https://chessforge.org/#org"
-   },
-   "description": "A chess coach that watches you play, learns the mistakes you repeat, and stops you before you blunder. Live coaching during the game, drills built from your own errors, and a review of every move.",
-   "featureList": [
-    "Live coaching during the game",
-    "Import your chess.com games to start with a weakness profile",
-    "Personal weakness profile",
-    "Puzzles generated from your own blunders",
-    "Move-by-move game review with an in-position chat",
-    "Spaced-repetition drills built from your own mistakes",
-    "Candidate-move comparison before you commit",
-    "Adaptive opponent",
-    "Sign in with Google"
-   ],
-   "offers": [
-    {
-     "@type": "Offer",
-     "name": "Free",
-     "price": "0",
-     "priceCurrency": "CAD",
-     "description": "One coached game a day, five puzzles a day, a basic weakness read, and your chess.com games imported.",
-     "availability": "https://schema.org/InStock",
-     "url": "https://app.chessforge.org"
-    },
-    {
-     "@type": "Offer",
-     "name": "Grandmaster",
-     "price": "19.99",
-     "priceCurrency": "CAD",
-     "description": "Unlimited games coached or not, unlimited puzzles, repeatable drills, deep analysis, Ask GM Forge, the full Thinking Profile and Trap Trainer. Three-day free trial.",
-     "availability": "https://schema.org/InStock",
-     "url": "https://app.chessforge.org"
-    }
-   ]
-  },
-  {
-   "@type": "FAQPage",
-   "@id": "https://chessforge.org/#faq",
-   "mainEntity": [
-    {
-     "@type": "Question",
-     "name": "How is this different from a regular engine?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "An engine tells you the best move after you have already played. ChessForge speaks before you commit, and what it says is built from the mistakes you personally keep making rather than from the position alone."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Does it get better the more I play?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Yes. Every unaided game updates your Thinking Profile, and the drills and puzzles are drawn from it, so the coaching narrows onto your habits as it learns them."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "What rating range is this for?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Beginners, roughly 300–1000. You should know how the pieces move; you do not need to know anything else. This is aimed squarely at the stage where games are decided by pieces going missing rather than by deep plans — it is not master preparation."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Why does the free plan make me play one game on my own?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Your rating, your accuracy and your Thinking Profile are read only from games you play without help — coached ones do not count, because the coach is doing part of the work. One unaided game a day keeps the measurement honest. Grandmaster removes the gate."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Do I have to give you my chess.com password?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "No, and there is nothing to give. The import asks for your username and reads the public record of your games through chess.com's own public API. There is no login, no password and no permission screen — we could not sign in as you if we wanted to. Disconnecting removes the account and everything built from it."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Does importing my chess.com games change my rating here?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "No. Imported games change what you are shown — your weaknesses, your puzzles, what the coach watches for — and never what you are scored. Your play strength here is read only from unaided games played in ChessForge, and the daily gate stays exactly as it is."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Does it work on my phone?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Partly, and it says so rather than pretending. Dashboard, Training, Puzzles and Shop all work on a phone, and you can tap a piece to see its moves and tap a square to play it. Play & Coach and Analysis need a real window — they are a board plus something you read beside it, and both have to be visible at once, so on a phone those two say to come back on a laptop."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Can I sign in with Google?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Yes. If you already have an account under the same email address, signing in with Google asks for that account's password once to link the two, and after that Google alone is enough. Signing in with Google will never create an account by itself — if there is no account for that address it tells you to make one."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Can I cancel any time?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Yes. Cancel from the app in two clicks. No contract, no email required, and you keep access until the period you have paid for runs out."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Who is behind this?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "One person. ChessForge is built and run by a solo founder, which is why the email in the footer reaches an actual human rather than a ticket queue."
-     }
-    }
-   ]
-  }
- ]
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="v3-styles.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="prog" id="prog"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
 
-<!-- ░░ NAV ░░ -->
-<header class="nav" id="nav">
-  <a href="#top" class="brand" aria-label="ChessForge home">
-    <span class="brand-hex"><svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7 L20.05 7.35 V16.65 L12 21.3 L3.95 16.65 V7.35 Z"/></svg></span><span class="brand-word"><span class="brand-strong">Chess</span><span class="brand-soft">Forge</span></span>
+<header class="nav">
+  <a class="brand" href="#top">
+<img class="mark-img" src="logo.svg" alt="" aria-hidden="true">
+    <span>Chess<b>Forge</b></span>
   </a>
-  <nav class="nav-links" id="navLinks">
-    <a href="#machine">Inside the app</a>
+  <nav class="links" aria-label="Sections">
     <a href="#how">How it works</a>
     <a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
-    <a href="https://app.chessforge.org" class="nav-cta">Open app →</a>
   </nav>
-  <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span></button>
+  <div class="navcta">
+    <a class="ghost" href="https://app.chessforge.org">Log in</a>
+    <a class="fill" href="https://app.chessforge.org">Start playing &rarr;</a>
+  </div>
 </header>
 
-<main id="top">
-
-<!-- ░░ HERO ░░ -->
-<section class="hero">
-  <div class="blob blob-a" aria-hidden="true"></div>
-  <div class="blob blob-b" aria-hidden="true"></div>
-
-  <div class="hero-copy">
-    <div class="eyebrow"><span class="eyebrow-rule"></span>Live AI chess coaching</div>
-    <h1 class="hero-h1">The chess coach that knows your
-      <span class="word-underline">weaknesses
-        <svg class="scribble" viewBox="0 0 340 34" fill="none" aria-hidden="true">
-          <path d="M6 22 C 70 6, 130 30, 196 15 C 250 3, 300 12, 334 24" stroke="#22E5FF" stroke-width="6" stroke-linecap="round"/>
-        </svg>
-      </span>
-    </h1>
-    <p class="hero-sub">ChessForge watches you play, learns the mistakes you repeat, and
-      coaches you through every move — <em>live, before you blunder.</em> Not after.
-      Bring your chess.com games and it knows them before your first move here.</p>
-    <div class="hero-cta">
-      <a href="https://app.chessforge.org" class="btn btn-primary">Start playing free →</a>
-      <span class="mono hero-note">no card required</span>
-    </div>
-    <div class="hero-for">
-      <span class="mono hero-for-tag">Beginners &middot; ~300–1000</span>
-      <span class="hero-for-txt">You know how the pieces move and you lose games you do not
-        understand. That is exactly who this is for.</span>
-    </div>
-  </div>
-
-  <!-- The coach, mid-explanation. It runs on its own: nothing here is clickable,
-       because a landing page should show you the product working, not hand you a
-       toy to operate. The position is real -- White to move, f2 attacked twice
-       and defended once, by the king alone. -->
-  <figure class="hero-demo" aria-label="GM Forge explaining a position">
-    <div class="demo-frame">
-      <div class="demo-bar"><span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-dot"></span>
-        <span class="mono demo-title">Play &amp; Coach</span></div>
-      <div class="demo-stage">
-        <!-- The board and the gesture share one coordinate system: the arm and
-             the fingertip are positioned against .hb-wrap, so 68.75%/81.25% is
-             the centre of f2 and not an approximation of it. -->
-        <div class="hb-wrap">
-          <div class="hb">
-        <div class="hb-sq l" data-sq="a8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="b8"></div>
-        <div class="hb-sq l" data-sq="c8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="d8"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="e8"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="f8"></div>
-        <div class="hb-sq l" data-sq="g8"></div>
-        <div class="hb-sq d" data-sq="h8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="a7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="b7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="c7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="d7"></div>
-        <div class="hb-sq d" data-sq="e7"></div>
-        <div class="hb-sq l" data-sq="f7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="g7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="h7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="a6"></div>
-        <div class="hb-sq d" data-sq="b6"></div>
-        <div class="hb-sq l" data-sq="c6"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="d6"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="e6"></div>
-        <div class="hb-sq d" data-sq="f6"></div>
-        <div class="hb-sq l" data-sq="g6"></div>
-        <div class="hb-sq d" data-sq="h6"></div>
-        <div class="hb-sq d" data-sq="a5"></div>
-        <div class="hb-sq l" data-sq="b5"></div>
-        <div class="hb-sq d hb-hot" data-sq="c5"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="d5"></div>
-        <div class="hb-sq d" data-sq="e5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="f5"></div>
-        <div class="hb-sq d" data-sq="g5"></div>
-        <div class="hb-sq l" data-sq="h5"></div>
-        <div class="hb-sq l" data-sq="a4"></div>
-        <div class="hb-sq d" data-sq="b4"></div>
-        <div class="hb-sq l" data-sq="c4"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="d4"></div>
-        <div class="hb-sq l" data-sq="e4"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="f4"></div>
-        <div class="hb-sq l hb-hot" data-sq="g4"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="h4"></div>
-        <div class="hb-sq d" data-sq="a3"></div>
-        <div class="hb-sq l" data-sq="b3"></div>
-        <div class="hb-sq d" data-sq="c3"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="d3"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="e3"></div>
-        <div class="hb-sq l" data-sq="f3"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="g3"></div>
-        <div class="hb-sq l" data-sq="h3"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="a2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="b2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="c2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="d2"></div>
-        <div class="hb-sq l" data-sq="e2"></div>
-        <div class="hb-sq d hb-hot" data-sq="f2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="g2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="h2"></div>
-        <div class="hb-sq d" data-sq="a1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="b1"></div>
-        <div class="hb-sq d" data-sq="c1"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="d1"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></div>
-        <div class="hb-sq d" data-sq="e1"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></div>
-        <div class="hb-sq l" data-sq="f1"></div>
-        <div class="hb-sq d" data-sq="g1"></div>
-        <div class="hb-sq l" data-sq="h1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></div>
-          </div>
-          <svg class="fg-arm" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <!-- Starts at his near SHOULDER, not past his far side. It began at
-                 (112,108) -- beyond the bottom-right corner of the board, which is
-                 outside his body entirely, so the arm appeared to grow out of the
-                 air beside him. (86,94) is the shoulder closest to the board. -->
-            <path d="M86 94 C 80 90, 74 86, 68.75 81.25" pathLength="100"/>
-          </svg>
-          <span class="fg-hand" aria-hidden="true"></span>
-        </div>
-        <div class="fg-say">His knight just landed on <b>g4</b>. Now count <b>f2</b> — the
-          knight and the bishop on c5 both hit it &mdash; attacked twice and defended once,
-          and the one defending it is your king.</div>
-        <div class="fg-wrap" aria-hidden="true"><svg class="fg-art" viewBox="0 0 200 220" aria-hidden="true">
-              <path d="M8 220 C8 158 52 138 100 138 C148 138 192 158 192 220 Z" fill="#243044"/>
-              <path d="M82 140 L100 138 L118 140 L109 168 L91 168 Z" fill="#0f1520"/>
-              <path d="M95 146 L105 146 L112 200 L100 212 L88 200 Z" fill="#3b7fd4"/>
-              <rect x="87" y="120" width="26" height="30" rx="11" fill="#e0a878"/>
-              <ellipse cx="100" cy="88" rx="44" ry="48" fill="#eab387"/>
-              <circle cx="57" cy="90" r="8.5" fill="#e0a878"/>
-              <circle cx="143" cy="90" r="8.5" fill="#e0a878"/>
-              <path d="M56 84 C54 42 84 30 100 30 C116 30 146 42 144 84 C140 66 130 58 118 56 C122 62 122 70 120 74 C114 58 96 54 84 58 C82 66 82 72 84 76 C74 66 62 68 56 84 Z" fill="#2a2018"/>
-              <g stroke="#2a2018" stroke-width="4.4" fill="none" stroke-linecap="round">
-                <path d="M74 78 Q84 73 94 78"/><path d="M106 78 Q116 73 126 78"/>
-              </g>
-              <ellipse cx="84" cy="91" rx="7.8" ry="8.8" fill="#F7F9FF"/>
-              <circle cx="85" cy="92" r="5.4" fill="#4A6FA5"/><circle cx="85" cy="92" r="3.1" fill="#141821"/>
-              <circle cx="82.7" cy="89.3" r="1.3" fill="#fff" opacity=".95"/>
-              <ellipse cx="116" cy="91" rx="7.8" ry="8.8" fill="#F7F9FF"/>
-              <circle cx="117" cy="92" r="5.4" fill="#4A6FA5"/><circle cx="117" cy="92" r="3.1" fill="#141821"/>
-              <circle cx="114.7" cy="89.3" r="1.3" fill="#fff" opacity=".95"/>
-              <path d="M100 95 L96 106 L104 106 Z" fill="#dd9a68"/>
-              <path d="M86 114 Q100 125 114 114" stroke="#b5673c" stroke-width="4.2" fill="none" stroke-linecap="round"/>
-              <path d="M56 88 C54 52 146 52 144 88" stroke="#0f1520" stroke-width="6" fill="none"/>
-              <rect x="50" y="84" width="13" height="22" rx="6" fill="#0f1520"/>
-              <rect x="137" y="84" width="13" height="22" rx="6" fill="#0f1520"/>
-              <path d="M63 106 Q80 124 92 118" stroke="#0f1520" stroke-width="5" fill="none" stroke-linecap="round"/>
-              <circle cx="92" cy="118" r="5.5" fill="#3b7fd4"/>
-            </svg></div>
-        <span class="mono demo-caption">live position analysis</span>
+<main id="main">
+<section class="hero" id="top">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <div class="orb orb-b" aria-hidden="true"></div>
+  <div class="hero-in">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="dot" aria-hidden="true"></span>Play. Get coached. Drill it.</div>
+      <h1>You already know the move was wrong.<span class="accent"> Nobody told you why.</span></h1>
+      <p class="lede-2">ChessForge tells you during the game.</p>
+      <p class="lede">GM Forge watches every move you play, stops you on the ones that matter,
+         and points at the square you are missing &mdash; then turns that mistake into a drill
+         while you can still remember playing it.</p>
+      <a class="cta" href="https://app.chessforge.org">Play a coached game &rarr;</a>
+      <div class="fine">Free plan, no card. One game a week with the coach.</div>
+      <div class="stats" id="stats">
+        <div class="stat"><span class="stat-n" data-count="34" data-live="users">0</span>
+          <span class="stat-l">players so far</span></div>
+        <div class="stat"><span class="stat-s">AI + Stockfish</span>
+          <span class="stat-l">powered</span></div>
+        <div class="stat"><span class="stat-s">Your games</span>
+          <span class="stat-l">&amp; chess.com</span></div>
       </div>
     </div>
-  </figure>
-</section>
 
-<!-- ░░ TICKER ░░ -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-run" id="tickerRun"></div>
-</div>
-
-<!-- ░░ COACH ░░ -->
-<section class="coach">
-  <div class="coach-portrait"><svg class="coach-art" viewBox="0 0 200 220" aria-hidden="true">
-              <path d="M8 220 C8 158 52 138 100 138 C148 138 192 158 192 220 Z" fill="#243044"/>
-              <path d="M82 140 L100 138 L118 140 L109 168 L91 168 Z" fill="#0f1520"/>
-              <path d="M95 146 L105 146 L112 200 L100 212 L88 200 Z" fill="#3b7fd4"/>
-              <rect x="87" y="120" width="26" height="30" rx="11" fill="#e0a878"/>
-              <ellipse cx="100" cy="88" rx="44" ry="48" fill="#eab387"/>
-              <circle cx="57" cy="90" r="8.5" fill="#e0a878"/>
-              <circle cx="143" cy="90" r="8.5" fill="#e0a878"/>
-              <path d="M56 84 C54 42 84 30 100 30 C116 30 146 42 144 84 C140 66 130 58 118 56 C122 62 122 70 120 74 C114 58 96 54 84 58 C82 66 82 72 84 76 C74 66 62 68 56 84 Z" fill="#2a2018"/>
-              <g stroke="#2a2018" stroke-width="4.4" fill="none" stroke-linecap="round">
-                <path d="M74 78 Q84 73 94 78"/><path d="M106 78 Q116 73 126 78"/>
-              </g>
-              <ellipse cx="84" cy="91" rx="7.8" ry="8.8" fill="#F7F9FF"/>
-              <circle cx="85" cy="92" r="5.4" fill="#4A6FA5"/><circle cx="85" cy="92" r="3.1" fill="#141821"/>
-              <circle cx="82.7" cy="89.3" r="1.3" fill="#fff" opacity=".95"/>
-              <ellipse cx="116" cy="91" rx="7.8" ry="8.8" fill="#F7F9FF"/>
-              <circle cx="117" cy="92" r="5.4" fill="#4A6FA5"/><circle cx="117" cy="92" r="3.1" fill="#141821"/>
-              <circle cx="114.7" cy="89.3" r="1.3" fill="#fff" opacity=".95"/>
-              <path d="M100 95 L96 106 L104 106 Z" fill="#dd9a68"/>
-              <path d="M86 114 Q100 125 114 114" stroke="#b5673c" stroke-width="4.2" fill="none" stroke-linecap="round"/>
-              <path d="M56 88 C54 52 146 52 144 88" stroke="#0f1520" stroke-width="6" fill="none"/>
-              <rect x="50" y="84" width="13" height="22" rx="6" fill="#0f1520"/>
-              <rect x="137" y="84" width="13" height="22" rx="6" fill="#0f1520"/>
-              <path d="M63 106 Q80 124 92 118" stroke="#0f1520" stroke-width="5" fill="none" stroke-linecap="round"/>
-              <circle cx="92" cy="118" r="5.5" fill="#3b7fd4"/>
-            </svg></div>
-  <div>
-    <div class="eyebrow">Your coach</div>
-    <h3 class="coach-name">GM Forge</h3>
-    <p class="coach-bio">He sits beside you while you play. He points at the square that
-      matters, asks the question you should have asked yourself, and turns the mistakes you
-      actually make into drills. Every move he names is checked against Stockfish before he
-      says it — he does not guess, and he does not invent lines.</p>
-  </div>
-</section>
-
-<!-- ░░ HOW IT WORKS ░░ -->
-<!-- ░░ THE MACHINE ░░ ─────────────────────────────────────────────────────────
-     A laptop you can actually poke. Real CSS 3D -- the lid, the base and the
-     screen are separate planes in one perspective, and the whole rig tilts
-     toward the pointer. Pressing a hotspot swings the model, swaps what is on
-     the screen, and throws a labelled arrow out of it in depth.
-
-     No library and no canvas: transforms, gradients and one small script. It
-     has to run on a phone that has never heard of WebGL. -->
-<section class="band machine" id="machine">
-  <div class="band-head reveal">
-    <span class="eyebrow">Inside the app</span>
-    <h2 class="h2">Have a look around before you sign up</h2>
-    <p class="band-sub">Press any of the four. The screen changes and the arrow points at the
-      part that does the work.</p>
-  </div>
-
-  <div class="mach-wrap reveal">
-    <div class="mach-stage" id="machStage">
-      <div class="mach-rig" id="machRig">
-        <div class="mach-glow" aria-hidden="true"></div>
-
-        <div class="mach-lid">
-          <div class="mach-bezel">
-            <div class="mach-screen" id="machScreen">
-
-              <!-- 1 — Play & Coach. Three columns, the way the real screen is:
-                   what he says on the left, the board in the middle, the step
-                   you are being asked to take on the right. -->
-              <div class="scr is-on" data-scr="coach">
-                <div class="scr-bar"><i></i><i></i><i></i><span class="mono">Play &amp; Coach</span></div>
-                <div class="scr-body scr-coach">
-                  <div class="scr-rail">
-                    <div class="scr-forge"><span class="scr-face"></span><b>GM Forge</b></div>
-                    <p class="scr-say">His knight just landed on g4. What does it hit?</p>
-                    <p class="scr-sub">Mark the moves you are choosing between.</p>
-                  </div>
-                  <div class="scr-mid">
-                    <div class="scr-board" id="scrBoardA"><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d hot"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l hot"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i><i class="sq d"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l"></i><i class="sq d hot"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i></div>
-                    <div class="scr-evalrow"><span class="scr-eval"><i style="--v:54%"></i></span>
-                      <span class="mono">+0.3</span></div>
-                  </div>
-                  <div class="scr-do">
-                    <div class="scr-step"><span>Read</span><span class="on">Candidates</span><span>Compare</span><span>Play</span></div>
-                    <b class="scr-do-h">What are you choosing between?</b>
-                    <div class="scr-chips"><b>Nxg4</b><b>d4</b></div>
-                    <span class="scr-btn">Walk 2 moves through</span>
-                    <span class="scr-btn ghost">I don't know what to play</span>
-                  </div>
+    <div class="tilt" id="tilt">
+      <div class="win" id="win">
+        <div class="win-bar">
+          <span class="win-dot" aria-hidden="true"></span>
+          <span class="win-name">ChessForge</span>
+          <span class="win-tabs" aria-hidden="true"><i></i><i></i><i></i></span>
+        </div>
+        <div class="win-body">
+          <aside class="win-rail" aria-hidden="true">
+            <button class="rail-i" data-i="0"><span>&#9635;</span>Dashboard</button>
+            <button class="rail-i on" data-i="1"><span>&#9822;</span>Play &amp; Coach</button>
+            <button class="rail-i" data-i="2"><span>&#9678;</span>Training</button>
+            <button class="rail-i" data-i="3"><span>&#9636;</span>Analysis</button>
+            <button class="rail-i" data-i="4"><span>&#10022;</span>Puzzles</button>
+            <button class="rail-i" data-i="5"><span>&#9672;</span>Shop</button>
+          </aside>
+          <div class="win-main">
+            <!-- Six panes, one shown at a time, switched by the rail. Each is a
+                 flat sketch of the real screen -- the point is that pressing a
+                 tab takes you somewhere, which a highlight that moves alone
+                 does not do. -->
+            <section class="pane" data-pane="0" hidden>
+              <div class="win-head"><span class="win-title">Dashboard</span>
+                <span class="badges"><i>Optional</i></span></div>
+              <div class="p-ses">
+                <div class="p-ses-h">Want it laid out for you?</div>
+                <div class="p-ses-row">
+                  <span class="p-ses-o"><b>15</b>min</span>
+                  <span class="p-ses-o on"><b>30</b>min</span>
+                  <span class="p-ses-o"><b>60</b>min</span>
                 </div>
+                <div class="p-ses-p">Play &rarr; see what broke &rarr; drill it &rarr; play it again</div>
               </div>
+              <div class="p-tiles">
+                <div class="p-tile"><b>1422</b><i>play strength</i></div>
+                <div class="p-tile"><b>5</b><i>day streak</i></div>
+                <div class="p-tile"><b>3</b><i>drills due</i></div>
+              </div>
+            </section>
 
-              <!-- 2 — Analysis. The review screen: everything you read on the
-                   left, the board in the middle, the graded move list beside it. -->
-              <div class="scr" data-scr="review">
-                <div class="scr-bar"><i></i><i></i><i></i><span class="mono">Analysis</span></div>
-                <div class="scr-body scr-review">
-                  <div class="scr-rail">
-                    <div class="scr-counts"><i class="b">2</i><i class="m">3</i><i class="i">5</i></div>
-                    <div class="scr-forge"><span class="scr-face"></span><b>GM Forge</b></div>
-                    <p class="scr-say">Ask me anything about this position.</p>
-                    <span class="scr-input">Why was that bad?</span>
-                  </div>
-                  <div class="scr-mid">
-                    <div class="scr-players"><span><i class="w"></i>you</span><span class="mono">vs</span><span><i class="k"></i>GM Forge</span></div>
-                    <div class="scr-board" id="scrBoardB"><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i><i class="sq d"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i><i class="sq l bad"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i></div>
-                    <div class="scr-ctrl"><span>&#124;&#9664;</span><span>&#9664;</span><span class="mono">14 / 41</span><span>&#9654;</span><span>&#9654;&#124;</span></div>
-                  </div>
-                  <div class="scr-moves">
-                    <div class="mv"><span class="mono">12.</span> Nf3 <em class="g">best</em></div>
-                    <div class="mv"><span class="mono">13.</span> h3 <em class="o">ok</em></div>
-                    <div class="mv bad"><span class="mono">14.</span> Bd3 <em class="b">blunder</em></div>
-                    <div class="mv"><span class="mono">15.</span> Qe2 <em class="o">ok</em></div>
-                    <div class="mv"><span class="mono">16.</span> Rf1 <em class="g">best</em></div>
-                    <div class="mv"><span class="mono">17.</span> c4 <em class="g">best</em></div>
-                  </div>
+            <section class="pane" data-pane="1">
+              <div class="win-head"><span class="win-title">Coached game</span>
+                <span class="badges"><b>Move 6</b><i>Your turn</i></span></div>
+              <div class="win-grid">
+                <div class="win-boardcol">
+                  <div class="who"><span class="pip b"></span>Bot &middot; 1450</div>
+                  <div class="hb" id="hb"><i class="sq d" data-sq="a8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="b8"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i>
+<i class="sq d" data-sq="c8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq l" data-sq="d8"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></i>
+<i class="sq d" data-sq="e8"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></i>
+<i class="sq l" data-sq="f8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq d" data-sq="g8"><img loading="lazy" decoding="async" src="pieces/b1.svg" alt=""></i>
+<i class="sq l" data-sq="h8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="a7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="b7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="c7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="d7"></i>
+<i class="sq l" data-sq="e7"></i>
+<i class="sq d" data-sq="f7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="g7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="h7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="a6"></i>
+<i class="sq l" data-sq="b6"></i>
+<i class="sq d" data-sq="c6"></i>
+<i class="sq l" data-sq="d6"></i>
+<i class="sq d" data-sq="e6"></i>
+<i class="sq l" data-sq="f6"></i>
+<i class="sq d" data-sq="g6"></i>
+<i class="sq l" data-sq="h6"></i>
+<i class="sq l" data-sq="a5"></i>
+<i class="sq d" data-sq="b5"></i>
+<i class="sq l" data-sq="c5"></i>
+<i class="sq d" data-sq="d5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="e5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="f5"></i>
+<i class="sq l" data-sq="g5"></i>
+<i class="sq d" data-sq="h5"></i>
+<i class="sq d" data-sq="a4"></i>
+<i class="sq l" data-sq="b4"></i>
+<i class="sq d" data-sq="c4"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq l" data-sq="d4"></i>
+<i class="sq d" data-sq="e4"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="f4"></i>
+<i class="sq d" data-sq="g4"></i>
+<i class="sq l" data-sq="h4"></i>
+<i class="sq l" data-sq="a3"></i>
+<i class="sq d" data-sq="b3"></i>
+<i class="sq l" data-sq="c3"></i>
+<i class="sq d" data-sq="d3"></i>
+<i class="sq l" data-sq="e3"></i>
+<i class="sq d flag" data-sq="f3"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i>
+<i class="sq l" data-sq="g3"></i>
+<i class="sq d" data-sq="h3"></i>
+<i class="sq d" data-sq="a2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="b2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="c2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="d2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="e2"></i>
+<i class="sq l" data-sq="f2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="g2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="h2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="a1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i>
+<i class="sq d" data-sq="b1"></i>
+<i class="sq l" data-sq="c1"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq d" data-sq="d1"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></i>
+<i class="sq l" data-sq="e1"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></i>
+<i class="sq d" data-sq="f1"></i>
+<i class="sq l" data-sq="g1"></i>
+<i class="sq d" data-sq="h1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i></div>
+                  <div class="who you"><span class="pip w"></span>You &middot; 1422</div>
+                  <div class="evalbar"><span style="width:52%"></span></div>
                 </div>
-              </div>
-
-              <!-- 3 — Training. Stage 2 of 5, the worked example, with the real
-                   stage names and the weakness bars underneath. -->
-              <div class="scr" data-scr="drill">
-                <div class="scr-bar"><i></i><i></i><i></i><span class="mono">Training</span></div>
-                <div class="scr-body scr-drill">
-                  <div class="scr-mid">
-                    <div class="scr-board" id="scrBoardC"><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d dot"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l dot"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i><i class="sq d"></i><i class="sq d"></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq l"></i><i class="sq d hot"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i><i class="sq d"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i><i class="sq l"></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></i><i class="sq d"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></i><i class="sq l"></i><i class="sq d"></i><i class="sq l"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i></div>
+                <div class="win-side">
+                  <div class="alert">
+                    <div class="alert-h"><span class="bang">!</span>Stop &mdash; look at f7</div>
+                    <p>You are about to play Ng5. It attacks f7 twice, but f7 is
+                       defended twice as well.</p>
+                    <button class="alert-b" id="explain">Show me what happens</button>
                   </div>
-                  <div class="scr-do">
-                    <span class="scr-kick">Stage 2 of 5 &mdash; Guided example</span>
-                    <b class="scr-do-h">Watch the thought process</b>
-                    <p class="scr-say">His bishop on c5 and his knight on g4 both hit f2.
-                      Attacked twice, defended once.</p>
-                    <div class="scr-stage"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></div>
-                    <div class="scr-bars">
-                      <i style="--v:78%"><b>Hanging piece</b></i>
-                      <i style="--v:46%"><b>Missed tactic</b></i>
-                      <i style="--v:22%"><b>Back rank</b></i>
+                  <div class="forge">
+                    <div class="forge-h"><img src="gm-forge-ai-chess-coach.png" alt="" class="forge-av" loading="lazy" decoding="async">GM Forge</div>
+                    <p class="forge-msg" id="forgemsg">Count the defenders before you count the
+                       attackers. Which black piece is holding f7 together?</p>
+                    <div class="asks">
+                      <button class="ask on" data-i="0">What are they threatening?</button>
+                      <button class="ask" data-i="1">Best move here</button>
+                      <button class="ask" data-i="2">My worst piece</button>
                     </div>
                   </div>
                 </div>
               </div>
+            </section>
 
-              <!-- 4 — Dashboard. The four stat cards and the chess.com card,
-                   which is what you actually see when you sign in. -->
-              <div class="scr" data-scr="import">
-                <div class="scr-bar"><i></i><i></i><i></i><span class="mono">Dashboard</span></div>
-                <div class="scr-body scr-import">
-                  <div class="scr-stats">
-                    <div class="scr-stat"><b>~740</b><span>Play strength</span></div>
-                    <div class="scr-stat"><b>6 days</b><span>Streak</span></div>
-                    <div class="scr-stat"><b>12</b><span>Positions waiting</span></div>
-                    <div class="scr-stat"><b>3</b><span>Drills due</span></div>
-                  </div>
-                  <div class="scr-card">
-                    <span class="scr-cc"></span>
-                    <div><b>Bring your games from chess.com</b>
-                      <p>Username only &mdash; no password.</p></div>
-                    <span class="scr-go">Read my games</span>
-                  </div>
-                  <div class="scr-count"><b id="machCount">30</b><span>games read &middot; graded &middot; folded into your profile</span></div>
-                </div>
+            <section class="pane" data-pane="2" hidden>
+              <div class="win-head"><span class="win-title">Training</span>
+                <span class="badges"><b>3 due</b></span></div>
+              <div class="p-rows">
+                <div class="p-row"><span class="p-dot bad"></span><b>Counting defenders</b><i>Vulnerable</i></div>
+                <div class="p-row"><span class="p-dot mid"></span><b>Loose pieces</b><i>Learning</i></div>
+                <div class="p-row"><span class="p-dot mid"></span><b>Back rank</b><i>Building</i></div>
+                <div class="p-row"><span class="p-dot ok"></span><b>Forks</b><i>Automatic</i></div>
               </div>
+              <div class="p-note">Five stages, spaced over days, every one built from a
+                position you actually played.</div>
+            </section>
 
-              <span class="mach-sheen" aria-hidden="true"></span>
-            </div>
+            <section class="pane" data-pane="3" hidden>
+              <div class="win-head"><span class="win-title">Analysis</span>
+                <span class="badges"><i>4 games</i></span></div>
+              <div class="p-rows tight">
+                <div class="p-row"><b>vs GM Forge (unaided)</b><i>2 blunders</i></div>
+                <div class="p-row"><b>vs GM Forge (unaided)</b><i>1 blunder</i></div>
+                <div class="p-row"><b>vs GM Forge (coached)</b><i>clean</i></div>
+                <div class="p-row"><b>vs GM Forge (unaided)</b><i>3 blunders</i></div>
+              </div>
+              <div class="p-note">Open one and every move is graded, with the moments
+                that decided it named.</div>
+            </section>
+
+            <section class="pane" data-pane="4" hidden>
+              <div class="win-head"><span class="win-title">Puzzles</span>
+                <span class="badges"><b>From your losses</b></span></div>
+              <div class="hb small"><i class="sq d" data-sq="a8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="b8"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i>
+<i class="sq d" data-sq="c8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq l" data-sq="d8"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></i>
+<i class="sq d" data-sq="e8"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></i>
+<i class="sq l" data-sq="f8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq d" data-sq="g8"><img loading="lazy" decoding="async" src="pieces/b1.svg" alt=""></i>
+<i class="sq l" data-sq="h8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="a7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="b7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="c7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="d7"></i>
+<i class="sq l" data-sq="e7"></i>
+<i class="sq d" data-sq="f7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="g7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="h7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="a6"></i>
+<i class="sq l" data-sq="b6"></i>
+<i class="sq d" data-sq="c6"></i>
+<i class="sq l" data-sq="d6"></i>
+<i class="sq d" data-sq="e6"></i>
+<i class="sq l" data-sq="f6"></i>
+<i class="sq d" data-sq="g6"></i>
+<i class="sq l" data-sq="h6"></i>
+<i class="sq l" data-sq="a5"></i>
+<i class="sq d" data-sq="b5"></i>
+<i class="sq l" data-sq="c5"></i>
+<i class="sq d" data-sq="d5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="e5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="f5"></i>
+<i class="sq l" data-sq="g5"></i>
+<i class="sq d" data-sq="h5"></i>
+<i class="sq d" data-sq="a4"></i>
+<i class="sq l" data-sq="b4"></i>
+<i class="sq d" data-sq="c4"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq l" data-sq="d4"></i>
+<i class="sq d" data-sq="e4"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="f4"></i>
+<i class="sq d" data-sq="g4"></i>
+<i class="sq l" data-sq="h4"></i>
+<i class="sq l" data-sq="a3"></i>
+<i class="sq d" data-sq="b3"></i>
+<i class="sq l" data-sq="c3"></i>
+<i class="sq d" data-sq="d3"></i>
+<i class="sq l" data-sq="e3"></i>
+<i class="sq d" data-sq="f3"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i>
+<i class="sq l" data-sq="g3"></i>
+<i class="sq d" data-sq="h3"></i>
+<i class="sq d" data-sq="a2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="b2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="c2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="d2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="e2"></i>
+<i class="sq l" data-sq="f2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="g2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="h2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="a1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i>
+<i class="sq d" data-sq="b1"></i>
+<i class="sq l" data-sq="c1"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq d" data-sq="d1"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></i>
+<i class="sq l" data-sq="e1"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></i>
+<i class="sq d" data-sq="f1"></i>
+<i class="sq l" data-sq="g1"></i>
+<i class="sq d" data-sq="h1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i></div>
+              <div class="p-note">Positions lifted out of games you actually played &mdash;
+                not a generic set.</div>
+            </section>
+
+            <section class="pane" data-pane="5" hidden>
+              <div class="win-head"><span class="win-title">Shop</span>
+                <span class="badges"><i>Earned with XP</i></span></div>
+              <div class="p-swatches">
+                <span class="sw" style="--l:#bccedb;--d:#4a7191"></span>
+                <span class="sw" style="--l:#5a677f;--d:#333b4c"></span>
+                <span class="sw" style="--l:#e9f3dc;--d:#4e9a5a"></span>
+                <span class="sw" style="--l:#e4cba5;--d:#a5754c"></span>
+              </div>
+              <div class="p-note">Boards, finishes and piece sets, bought with XP you earn
+                by playing. Two boards are free.</div>
+            </section>
           </div>
         </div>
+      </div>
+      <p class="hint">Click a square &mdash; or press a question</p>
+    </div>
+  </div>
+</section>
 
-        <div class="mach-hinge" aria-hidden="true"></div>
-        <div class="mach-base"><span class="mach-pad"></span></div>
+<section class="strip">
+  <p class="strip-h">The loop the whole product is built on.</p>
+  <div class="strip-row">
+    <div class="step"><span class="ic">&#9822;</span><div><b>Play a game</b><i>unaided, so the reading is honest</i></div></div>
+    <span class="arw" aria-hidden="true">&rarr;</span>
+    <div class="step"><span class="ic">&#9678;</span><div><b>See what broke</b><i>every move graded</i></div></div>
+    <span class="arw" aria-hidden="true">&rarr;</span>
+    <div class="step"><span class="ic">&#9636;</span><div><b>Drill it</b><i>from your own position</i></div></div>
+    <span class="arw" aria-hidden="true">&rarr;</span>
+    <div class="step"><span class="ic">&#10022;</span><div><b>Play it again</b><i>coached, under pressure</i></div></div>
+  </div>
+</section>
 
-        <!-- the arrow, thrown out of the screen in depth -->
-        <div class="mach-arrow" id="machArrow" aria-hidden="true">
-          <svg viewBox="0 0 200 60" preserveAspectRatio="none">
-            <defs><linearGradient id="agrad" x1="0" x2="1">
-              <stop offset="0" stop-color="#22E5FF" stop-opacity="0"/>
-              <stop offset="1" stop-color="#22E5FF"/></linearGradient></defs>
-            <path d="M4 52 C 60 52, 120 30, 176 12" stroke="url(#agrad)" stroke-width="3"
-                  fill="none" stroke-linecap="round"/>
-            <path d="M176 12 L164 14 L170 22 Z" fill="#22E5FF"/>
-          </svg>
-          <span class="mach-label" id="machLabel"></span>
+<section class="contrast">
+  <div class="orb orb-c" aria-hidden="true"></div>
+  <div class="contrast-in reveal">
+    <div>
+      <h2>You do not need more chess videos.<br><span class="accent">You need someone watching the game you are in.</span></h2>
+      <div class="cols">
+        <div>
+          <div class="col-h">What usually happens:</div>
+          <ul class="list bad">
+            <li>Play, lose, close the tab</li>
+            <li>Solve puzzles unrelated to anything you play</li>
+            <li>Read an engine line and learn nothing from it</li>
+            <li>Make the same mistake next week</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-h">What ChessForge does:</div>
+          <ul class="list good">
+            <li>Stops you mid-game, before the move</li>
+            <li>Points at the actual square</li>
+            <li>Explains it in words, not centipawns</li>
+            <li>Drills that exact pattern until it sticks</li>
+          </ul>
         </div>
       </div>
     </div>
-
-    <div class="mach-picks" id="machPicks" role="tablist" aria-label="What to look at">
-      <button type="button" class="mach-pick is-on" data-go="coach" role="tab" aria-selected="true">
-        <b>The coached turn</b><span>He asks before he answers</span></button>
-      <button type="button" class="mach-pick" data-go="review" role="tab" aria-selected="false">
-        <b>The review</b><span>Every move graded</span></button>
-      <button type="button" class="mach-pick" data-go="drill" role="tab" aria-selected="false">
-        <b>The drills</b><span>Built from your mistakes</span></button>
-      <button type="button" class="mach-pick" data-go="import" role="tab" aria-selected="false">
-        <b>The import</b><span>Your chess.com games</span></button>
+    <div class="watch">
+      <!-- Not an ornament. This is the product's actual argument: you cannot
+           get this from a video, because it has to happen to YOUR move. The
+           three lines below are what Stockfish really returns for this
+           position -- Ng5 hangs the knight to Qxg5, Nxe5 trades a knight for a
+           pawn, castling is best. -->
+      <div class="watch-board" id="wboard"><i class="sq d" data-sq="a8"></i>
+<i class="sq l" data-sq="b8"></i>
+<i class="sq d" data-sq="c8"></i>
+<i class="sq l" data-sq="d8"></i>
+<i class="sq d" data-sq="e8"></i>
+<i class="sq l" data-sq="f8"></i>
+<i class="sq d" data-sq="g8"></i>
+<i class="sq l" data-sq="h8"></i>
+<i class="sq l" data-sq="a7"></i>
+<i class="sq d" data-sq="b7"></i>
+<i class="sq l" data-sq="c7"></i>
+<i class="sq d" data-sq="d7"></i>
+<i class="sq l" data-sq="e7"></i>
+<i class="sq d" data-sq="f7"></i>
+<i class="sq l" data-sq="g7"></i>
+<i class="sq d" data-sq="h7"></i>
+<i class="sq d" data-sq="a6"></i>
+<i class="sq l" data-sq="b6"></i>
+<i class="sq d" data-sq="c6"></i>
+<i class="sq l" data-sq="d6"></i>
+<i class="sq d" data-sq="e6"></i>
+<i class="sq l" data-sq="f6"></i>
+<i class="sq d" data-sq="g6"></i>
+<i class="sq l" data-sq="h6"></i>
+<i class="sq l" data-sq="a5"></i>
+<i class="sq d" data-sq="b5"></i>
+<i class="sq l" data-sq="c5"></i>
+<i class="sq d" data-sq="d5"></i>
+<i class="sq l" data-sq="e5"></i>
+<i class="sq d" data-sq="f5"></i>
+<i class="sq l" data-sq="g5"></i>
+<i class="sq d" data-sq="h5"></i>
+<i class="sq d" data-sq="a4"></i>
+<i class="sq l" data-sq="b4"></i>
+<i class="sq d" data-sq="c4"></i>
+<i class="sq l" data-sq="d4"></i>
+<i class="sq d" data-sq="e4"></i>
+<i class="sq l" data-sq="f4"></i>
+<i class="sq d" data-sq="g4"></i>
+<i class="sq l" data-sq="h4"></i>
+<i class="sq l" data-sq="a3"></i>
+<i class="sq d" data-sq="b3"></i>
+<i class="sq l" data-sq="c3"></i>
+<i class="sq d" data-sq="d3"></i>
+<i class="sq l" data-sq="e3"></i>
+<i class="sq d" data-sq="f3"></i>
+<i class="sq l" data-sq="g3"></i>
+<i class="sq d" data-sq="h3"></i>
+<i class="sq d" data-sq="a2"></i>
+<i class="sq l" data-sq="b2"></i>
+<i class="sq d" data-sq="c2"></i>
+<i class="sq l" data-sq="d2"></i>
+<i class="sq d" data-sq="e2"></i>
+<i class="sq l" data-sq="f2"></i>
+<i class="sq d" data-sq="g2"></i>
+<i class="sq l" data-sq="h2"></i>
+<i class="sq l" data-sq="a1"></i>
+<i class="sq d" data-sq="b1"></i>
+<i class="sq l" data-sq="c1"></i>
+<i class="sq d" data-sq="d1"></i>
+<i class="sq l" data-sq="e1"></i>
+<i class="sq d" data-sq="f1"></i>
+<i class="sq l" data-sq="g1"></i>
+<i class="sq d" data-sq="h1"></i></div>
+      <div class="watch-ask">Your move. Which one?</div>
+      <div class="watch-btns" id="wbtns">
+        <button data-mv="Ng5">Ng5<span>attack f7</span></button>
+        <button data-mv="Nxe5">Nxe5<span>win a pawn</span></button>
+        <button data-mv="O-O">O&#8209;O<span>castle</span></button>
+      </div>
+      <div class="watch-say" id="wsay">
+        <img src="gm-forge-ai-chess-coach.png" alt="" class="watch-av" loading="lazy" decoding="async">
+        <p id="wtext">Pick one and I will play it out. This is the part a video cannot
+           do for you &mdash; it has to happen to your move, in your game.</p>
+      </div>
+      <button class="watch-reset" id="wreset" hidden>Try another &#8630;</button>
     </div>
   </div>
 </section>
 
-<section class="band" id="how">
-  <!-- GM Forge as a real, crawlable image file rather than the inline SVG used
-       in the hero. Inline SVG is invisible to image search; a PNG with a
-       descriptive filename and honest alt text is what can actually appear in
-       Google Images and lead back here. Same artwork. -->
-  <div class="band-head reveal has-portrait">
-    <img class="how-forge" src="gm-forge-ai-chess-coach.png" width="640" height="640"
-         loading="lazy" decoding="async"
-         alt="GM Forge, the AI chess coach in ChessForge, wearing a headset — he watches your game live and stops you before you blunder">
+<section id="how" class="band">
+  <div class="reveal">
+    <div class="brow">How it works</div>
+    <h2>One session. It takes you through the whole thing.</h2>
+    <p class="band-lede">Open the app and it asks one question &mdash; how long have you got.
+       Then it walks you through the tabs in order, one step at a time, and tells you what is next.</p>
+  </div>
+  <div class="cards four">
+    <article class="card reveal"><div class="card-t"><span class="n">01</span><span class="ic">&#9822;</span></div>
+      <h3>Play one on your own</h3><p>No coach, no hints. Your strength, your accuracy and every
+      drill you get are read from games like this one.</p></article>
+    <article class="card reveal"><div class="card-t"><span class="n">02</span><span class="ic">&#9678;</span></div>
+      <h3>See what happened</h3><p>Every move graded by Stockfish, the moments that decided it
+      named, and GM Forge ready to answer about any position on the board.</p></article>
+    <article class="card reveal"><div class="card-t"><span class="n">03</span><span class="ic">&#9636;</span></div>
+      <h3>Drill what it cost</h3><p>The pattern you just lost material to, turned into practice
+      while you can still remember playing it.</p></article>
+    <article class="card reveal"><div class="card-t"><span class="n">04</span><span class="ic">&#10022;</span></div>
+      <h3>Play it again, coached</h3><p>Same weakness, someone beside you. This is where the
+      drill gets tested against a real opponent.</p></article>
+  </div>
+</section>
+
+<section class="forge-band">
+  <div class="orb orb-d" aria-hidden="true"></div>
+  <div class="forge-in reveal">
     <div>
-      <span class="eyebrow">How it works</span>
-      <h2 class="h2">Coaching that happens during the game</h2>
+      <div class="brow">Meet GM Forge</div>
+      <h2>He talks while you play.</h2>
+      <p class="band-lede">Not a report you read afterwards. He reads the position, asks what you
+         are weighing, plays your candidate moves out, and tells you what each one runs into
+         &mdash; before you commit.</p>
+      <a class="cta small" href="https://app.chessforge.org">Play a coached game &rarr;</a>
     </div>
-    <!-- The right of this row was empty. Three things that are true and short. -->
-    <div class="how-facts" aria-hidden="false">
-      <div class="how-fact"><b>30</b><span>chess.com games read in ~10s</span></div>
-      <div class="how-fact"><b>5</b><span>stages in every drill</span></div>
-      <div class="how-fact"><b>0</b><span>moves he plays for you</span></div>
+    <div class="chips" id="chips">
+      <button class="chip on" data-i="0">&ldquo;What are they threatening?&rdquo;</button>
+      <button class="chip" data-i="1">&ldquo;Was that move right?&rdquo;</button>
+      <button class="chip" data-i="2">&ldquo;Which of my pieces is worst?&rdquo;</button>
     </div>
-  </div>
-  <div class="rows">
-    <div class="row reveal">
-      <span class="mono row-n">01</span>
-      <div><h3 class="row-t">Bring the games you have already lost</h3>
-        <p class="row-b">Your chess.com username. Not a password &mdash; there is no login to their site and no permission screen. Thirty games read in about ten seconds, every move graded, and it arrives knowing what you get wrong. Skip it if you like; you just start colder.</p></div>
-    </div>
-    <div class="row reveal">
-      <span class="mono row-n">02</span>
-      <div><h3 class="row-t">Play, and get interrupted</h3>
-        <p class="row-b">A normal game against a bot at your level. The difference is that when a move is about to cost you something, the board stops. Not afterwards, not in a report &mdash; at the moment your hand is on the piece.</p></div>
-    </div>
-    <div class="row reveal">
-      <span class="mono row-n">03</span>
-      <div><h3 class="row-t">Name two moves before you play one</h3>
-        <p class="row-b">This is the part people remember. Draw an arrow for each move you are weighing, and GM Forge plays both of them out on the board so you watch what each one runs into. Then he asks which you would rather have. He does not tell you. He never tells you.</p></div>
-    </div>
-    <div class="row reveal">
-      <span class="mono row-n">04</span>
-      <div><h3 class="row-t">The mistake becomes the drill</h3>
-        <p class="row-b">Every position you got wrong comes back &mdash; tomorrow, then in three days, then in a week &mdash; mixed in with other kinds so you have to work out which problem you are even looking at. That mixing is the part that makes it stick.</p></div>
-    </div>
-    <div class="row reveal">
-      <span class="mono row-n">05</span>
-      <div><h3 class="row-t">Watch the same mistake stop happening</h3>
-        <p class="row-b">Your weakness profile is built only from games nobody helped you with, so it stays honest. When a pattern goes quiet, it drops out of rotation and something else takes its place.</p></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ░░ FEATURES ░░ -->
-<section class="band" id="features">
-  <div class="band-head reveal">
-    <span class="eyebrow">Features</span>
-    <h2 class="h2">Built around your weaknesses, not generic drills</h2>
-    <p class="band-sub">Everything below is running in the app right now. This is what playing
-      without it costs you.</p>
-  </div>
-  <div class="rows feat-rows">
-    <div class="feat reveal">
-      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg></span>
-      <h3 class="feat-t">Live move coaching</h3>
-      <div class="feat-body">
-        <p>He speaks on every move — points at the square, names the threat, asks what you
-          think before you commit.</p>
-        <p class="feat-miss"><b>Without it:</b> you find out what went wrong after the game,
-          when there is nothing left to do about it.</p>
-      </div>
-    </div>
-    <div class="feat reveal">
-      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3.5 3.5 0 0 0-6.5 1.8A3 3 0 0 0 4 12a3 3 0 0 0 1.8 5.2A3.5 3.5 0 0 0 12 19z"/><path d="M12 5a3.5 3.5 0 0 1 6.5 1.8A3 3 0 0 1 20 12a3 3 0 0 1-1.8 5.2A3.5 3.5 0 0 1 12 19z"/></svg></span>
-      <h3 class="feat-t">Your Thinking Profile</h3>
-      <div class="feat-body">
-        <p>A running read on <em>how</em> you go wrong — board vision, threat blindness,
-          impulse, calculation depth — built only from games you play unaided, so it stays honest.</p>
-        <p class="feat-miss"><b>Without it:</b> you know your rating and nothing about why it
-          is stuck.</p>
-      </div>
-    </div>
-    <div class="feat reveal">
-      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h6V3.5a2 2 0 1 1 4 0V5h6v6h1.5a2 2 0 1 1 0 4H20v6h-6v-1.5a2 2 0 1 0-4 0V21H4v-6"/><path d="M4 15V9"/></svg></span>
-      <h3 class="feat-t">Puzzles from your own blunders</h3>
-      <div class="feat-body">
-        <p>The tactics you miss become the tactics you drill, alongside fresh positions mined
-          to train the same habit so you are never solving the same board twice.</p>
-        <p class="feat-miss"><b>Without it:</b> puzzle rush on positions that have nothing to
-          do with the way you lose.</p>
-      </div>
-    </div>
-    <div class="feat reveal">
-      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 3.8 V19.8 H20.2"/><path d="M8.2 16.6 V11.8"/><path d="M12.2 16.6 V7.6"/><path d="M16.2 16.6 V10.2"/></svg></span>
-      <h3 class="feat-t">A review that is an actual review</h3>
-      <div class="feat-body">
-        <p>Every move graded, both players named, the board the right way up for the side you
-          played, and a chat that knows which position you are looking at. Leave it to drill
-          something and it puts you back on the move you left. Ask it about a piece, a square,
-          or a move.</p>
-        <p class="feat-miss"><b>Without it:</b> a list of centipawn numbers you scroll past.</p>
-      </div>
-    </div>
-
-    <div class="feat reveal">
-      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h4l2.5-6 3 12 2.5-6h4"/></svg></span>
-      <h3 class="feat-t">He asks before he answers</h3>
-      <div class="feat-body">
-        <p>A coached turn is four steps, not a verdict. <b>Read</b> the position, mark the moves
-          you are <b>choosing between</b> by drawing them on the board, watch him <b>walk each
-          one out</b> so you see what it runs into, then <b>play</b>. He never names the move
-          for you &mdash; if you are stuck, "I don't know what to play here" opens a checklist
-          that narrows it down without giving it away.</p>
-        <p class="feat-miss"><b>Without it:</b> you are told the answer, agree with it, and
-          find nothing has changed next game.</p>
-      </div>
-    </div>
-
-    <div class="feat reveal">
-      <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.2-6.9"/><path d="M21 4.2V10h-5.8"/></svg></span>
-      <h3 class="feat-t">Start with the games you already played</h3>
-      <div class="feat-body">
-        <p>Connect chess.com with your username alone &mdash; no password, no permissions, we
-          could not log in as you if we wanted to. It reads your last thirty rapid and blitz
-          games, grades every move, and your weaknesses, puzzles and drills are built from
-          them before you have played a single game here. Bullet is skipped on purpose: a
-          one-minute game's mistakes are clock, not habit. Your chess.com rating stays yours
-          &mdash; imported games never move anything measured here.</p>
-        <p class="feat-miss"><b>Without it:</b> a new coaching tool knows nothing about you
-          for the first week.</p>
+    <div class="portrait-col">
+      <div class="bubble" id="bubble">Every answer is read straight off the engine for the
+        position on your board.</div>
+      <div class="portrait">
+        <div class="portrait-glow" aria-hidden="true"></div>
+        <img src="gm-forge-ai-chess-coach.png" loading="lazy" decoding="async" alt="GM Forge, the AI chess coach who watches your game and points at what you are missing">
       </div>
     </div>
   </div>
 </section>
 
-<!-- ░░ STATS ░░ -->
-<section class="facts">
-  <div class="facts-in" id="stats">
-    <!-- Three facts, one line each, the same shape.
-         They used to be a counted number, a counted number and a counted number
-         with three sentences of different lengths hanging off them, which read
-         as three unrelated thoughts sharing a row. Only the first is a figure
-         that moves, and it is read live from the app. -->
-    <div class="fact">
-      <span class="mono fact-n" data-count="34" data-live="users">0</span>
-      <span class="fact-l">players so far</span>
-    </div>
-    <div class="fact">
-      <span class="mono fact-s">AI + Stockfish</span>
-      <span class="fact-l">powered</span>
-    </div>
-    <div class="fact">
-      <span class="mono fact-s">Your games</span>
-      <span class="fact-l">&amp; chess.com</span>
-    </div>
+<section id="features" class="band">
+  <div class="reveal">
+    <div class="brow">Features</div>
+    <h2>Everything is built out of your own games.</h2>
+  </div>
+  <div class="cards six">
+    <article class="card reveal"><span class="ic">&#9822;</span><h3>Live coaching</h3>
+      <p>GM Forge stops you on the moves that matter and points at the square.</p></article>
+    <article class="card reveal"><span class="ic">&#9678;</span><h3>Every move graded</h3>
+      <p>Stockfish reads the whole game. You get the moments that decided it, named.</p></article>
+    <article class="card reveal"><span class="ic">&#9636;</span><h3>Drills from your mistakes</h3>
+      <p>Five stages, spaced over days, built from patterns your games keep producing.</p></article>
+    <article class="card reveal"><span class="ic">&#10022;</span><h3>Puzzles you actually got wrong</h3>
+      <p>Positions lifted out of your own losses, not a generic set.</p></article>
+    <article class="card reveal"><span class="ic">&#9672;</span><h3>chess.com import</h3>
+      <p>Read your last games in about ten seconds and start from what they show.</p></article>
+    <article class="card reveal"><span class="ic">&#9673;</span><h3>Ask GM Forge</h3>
+      <p>Any position in any of your games. Every move he names comes from the engine.</p></article>
   </div>
 </section>
 
-<!-- ░░ PRICING ░░ -->
-<section class="band" id="pricing">
-  <div class="band-head center reveal">
-    <span class="eyebrow">Pricing</span>
-    <h2 class="h2">Start free. Try Grandmaster free for three days.</h2>
-  </div>
-  <div class="plans">
-    <div class="plan reveal">
-      <h3 class="plan-name">Free</h3>
-      <div class="plan-price"><span class="mono">$0</span></div>
-      <p class="plan-note">Enough to see whether he is any good.</p>
-      <ul class="plan-list">
-        <li>One coached game a day</li>
-        <li>Live coaching on every move of it</li>
-        <li>Import your chess.com games</li>
-        <li>Five puzzles a day from your own games</li>
-        <li>Basic weakness read</li>
-      </ul>
-      <a href="https://app.chessforge.org" class="btn btn-ghost plan-cta">Start free</a>
+<section id="example" class="band alt">
+  <div class="ex reveal">
+    <div>
+      <div class="brow">The difference</div>
+      <h2>Stop reading evaluations.<br><span class="accent">Start understanding them.</span></h2>
     </div>
-
-    <div class="plan plan-hero reveal">
-      <div class="plan-glow" aria-hidden="true"></div>
-      <div class="plan-tag mono">3 days free &middot; founding member</div>
-      <h3 class="plan-name">Grandmaster</h3>
-      <div class="plan-price">
-        <span class="mono plan-was">$29.99</span><span class="mono plan-now">$19.99</span><span class="plan-per">/mo</span>
+    <div class="ex-pair">
+      <div class="ex-card">
+        <div class="ex-h">An engine tells you:</div>
+        <div class="ex-body">
+          <div class="mini"><i class="sq d" data-sq="a8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="b8"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i>
+<i class="sq d" data-sq="c8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq l" data-sq="d8"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></i>
+<i class="sq d" data-sq="e8"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></i>
+<i class="sq l" data-sq="f8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq d" data-sq="g8"><img loading="lazy" decoding="async" src="pieces/b1.svg" alt=""></i>
+<i class="sq l" data-sq="h8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="a7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="b7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="c7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="d7"></i>
+<i class="sq l" data-sq="e7"></i>
+<i class="sq d" data-sq="f7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="g7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="h7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="a6"></i>
+<i class="sq l" data-sq="b6"></i>
+<i class="sq d" data-sq="c6"></i>
+<i class="sq l" data-sq="d6"></i>
+<i class="sq d" data-sq="e6"></i>
+<i class="sq l" data-sq="f6"></i>
+<i class="sq d" data-sq="g6"></i>
+<i class="sq l" data-sq="h6"></i>
+<i class="sq l" data-sq="a5"></i>
+<i class="sq d" data-sq="b5"></i>
+<i class="sq l" data-sq="c5"></i>
+<i class="sq d" data-sq="d5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="e5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="f5"></i>
+<i class="sq l" data-sq="g5"></i>
+<i class="sq d" data-sq="h5"></i>
+<i class="sq d" data-sq="a4"></i>
+<i class="sq l" data-sq="b4"></i>
+<i class="sq d" data-sq="c4"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq l" data-sq="d4"></i>
+<i class="sq d" data-sq="e4"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="f4"></i>
+<i class="sq d" data-sq="g4"></i>
+<i class="sq l" data-sq="h4"></i>
+<i class="sq l" data-sq="a3"></i>
+<i class="sq d" data-sq="b3"></i>
+<i class="sq l" data-sq="c3"></i>
+<i class="sq d" data-sq="d3"></i>
+<i class="sq l" data-sq="e3"></i>
+<i class="sq d" data-sq="f3"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i>
+<i class="sq l" data-sq="g3"></i>
+<i class="sq d" data-sq="h3"></i>
+<i class="sq d" data-sq="a2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="b2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="c2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="d2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="e2"></i>
+<i class="sq l" data-sq="f2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="g2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="h2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="a1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i>
+<i class="sq d" data-sq="b1"></i>
+<i class="sq l" data-sq="c1"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq d" data-sq="d1"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></i>
+<i class="sq l" data-sq="e1"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></i>
+<i class="sq d" data-sq="f1"></i>
+<i class="sq l" data-sq="g1"></i>
+<i class="sq d" data-sq="h1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i></div>
+          <div>
+            <span class="tag bad">Blunder</span>
+            <div class="ex-k">Evaluation</div>
+            <div class="ex-v">&minus;3.6</div>
+            <div class="ex-k">Best move <b>Nf3</b></div>
+            <p class="ex-q">Correct, and useless.</p>
+          </div>
+        </div>
       </div>
-      <p class="plan-note">Free for three days, then the founding-member rate &mdash; which stays
-        at this price for as long as you keep the subscription running. Card required,
-        nothing charged until day 4, cancel any time before then.</p>
-      <ul class="plan-list">
-        <li><b>Unlimited</b> coached games — no daily gate</li>
-        <li>The full Thinking Profile, with trends over time</li>
-        <li>Unlimited puzzles, plus fresh ones mined for your habits</li>
-        <li>The full move-by-move review, and Ask GM Forge on any position</li>
-        <li>The five-stage drills, rebuilt from the positions you got wrong</li>
-        <li>Trap Trainer — a bot that steers into your weaknesses on purpose</li>
-        <li>Every board and piece set in the shop</li>
-      </ul>
-      <a href="https://app.chessforge.org/?upgrade=1" class="btn btn-primary plan-cta">Try Grandmaster free for 3 days →</a>
-      <p class="plan-fine">Cancel any time, from the app, in two clicks.</p>
+      <div class="ex-card lit">
+        <div class="ex-h">GM Forge tells you:</div>
+        <div class="ex-body">
+          <div class="mini"><i class="sq d" data-sq="a8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="b8"><img loading="lazy" decoding="async" src="pieces/bN.svg" alt=""></i>
+<i class="sq d" data-sq="c8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq l" data-sq="d8"><img loading="lazy" decoding="async" src="pieces/bQ.svg" alt=""></i>
+<i class="sq d" data-sq="e8"><img loading="lazy" decoding="async" src="pieces/bK.svg" alt=""></i>
+<i class="sq l" data-sq="f8"><img loading="lazy" decoding="async" src="pieces/bB.svg" alt=""></i>
+<i class="sq d" data-sq="g8"><img loading="lazy" decoding="async" src="pieces/b1.svg" alt=""></i>
+<i class="sq l" data-sq="h8"><img loading="lazy" decoding="async" src="pieces/bR.svg" alt=""></i>
+<i class="sq l" data-sq="a7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="b7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="c7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="d7"></i>
+<i class="sq l" data-sq="e7"></i>
+<i class="sq d" data-sq="f7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="g7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="h7"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="a6"></i>
+<i class="sq l" data-sq="b6"></i>
+<i class="sq d" data-sq="c6"></i>
+<i class="sq l" data-sq="d6"></i>
+<i class="sq d" data-sq="e6"></i>
+<i class="sq l" data-sq="f6"></i>
+<i class="sq d" data-sq="g6"></i>
+<i class="sq l" data-sq="h6"></i>
+<i class="sq l" data-sq="a5"></i>
+<i class="sq d" data-sq="b5"></i>
+<i class="sq l" data-sq="c5"></i>
+<i class="sq d" data-sq="d5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq l" data-sq="e5"><img loading="lazy" decoding="async" src="pieces/bP.svg" alt=""></i>
+<i class="sq d" data-sq="f5"></i>
+<i class="sq l" data-sq="g5"></i>
+<i class="sq d" data-sq="h5"></i>
+<i class="sq d" data-sq="a4"></i>
+<i class="sq l" data-sq="b4"></i>
+<i class="sq d" data-sq="c4"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq l" data-sq="d4"></i>
+<i class="sq d" data-sq="e4"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="f4"></i>
+<i class="sq d" data-sq="g4"></i>
+<i class="sq l" data-sq="h4"></i>
+<i class="sq l" data-sq="a3"></i>
+<i class="sq d" data-sq="b3"></i>
+<i class="sq l" data-sq="c3"></i>
+<i class="sq d" data-sq="d3"></i>
+<i class="sq l" data-sq="e3"></i>
+<i class="sq d" data-sq="f3"><img loading="lazy" decoding="async" src="pieces/wN.svg" alt=""></i>
+<i class="sq l" data-sq="g3"></i>
+<i class="sq d" data-sq="h3"></i>
+<i class="sq d" data-sq="a2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="b2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="c2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="d2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="e2"></i>
+<i class="sq l" data-sq="f2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq d" data-sq="g2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="h2"><img loading="lazy" decoding="async" src="pieces/wP.svg" alt=""></i>
+<i class="sq l" data-sq="a1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i>
+<i class="sq d" data-sq="b1"></i>
+<i class="sq l" data-sq="c1"><img loading="lazy" decoding="async" src="pieces/wB.svg" alt=""></i>
+<i class="sq d" data-sq="d1"><img loading="lazy" decoding="async" src="pieces/wQ.svg" alt=""></i>
+<i class="sq l" data-sq="e1"><img loading="lazy" decoding="async" src="pieces/wK.svg" alt=""></i>
+<i class="sq d" data-sq="f1"></i>
+<i class="sq l" data-sq="g1"></i>
+<i class="sq d" data-sq="h1"><img loading="lazy" decoding="async" src="pieces/wR.svg" alt=""></i></div>
+          <div>
+            <span class="tag good">What it costs</span>
+            <p class="ex-p">Ng5 is the move to look at, and it costs you. Count the material
+               at the end of the line: you come out a piece down. Against that, Nf3 keeps more
+               &mdash; the difference is about 3.6 of a pawn, which is the kind of gap that
+               decides an endgame.</p>
+            <div class="ex-k">Drilled as</div>
+            <div class="pills"><span>Counting defenders</span><span>Loose pieces</span></div>
+            <a class="cta tiny" href="https://app.chessforge.org">Drill this &rarr;</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ░░ PROOF ░░ -->
-<!-- No testimonials until there are real ones to publish. What is here instead
-     is the one thing that can be stood behind: the person who built it, saying
-     what happened to his own rating, signed. Reviews from players go up when
-     players have written them. -->
-<section class="band proof" id="proof">
-  <div class="quotes">
+<section class="proof band">
+  <div class="quote reveal">
     <p class="quote-text">I built this because my own games kept ending the same way, and I
       could never see it happening while it happened. My rating has gone up since I started
       using it. That is one person&rsquo;s experience, and it is the only one I can promise
       you is real &mdash; so it is the only one on this page.</p>
-    <div class="mono quote-by">&mdash; the person who built ChessForge</div>
-    <p class="quote-note">There are <span data-live-users>31</span> players here. When
-      enough of them have written a review, theirs will be on this page instead of mine.</p>
+    <div class="quote-by">&mdash; the person who built ChessForge</div>
+    <p class="quote-note">There are <span data-live-users>34</span> players here. When enough
+      of them have written a review, theirs will be on this page instead of mine.</p>
   </div>
 </section>
 
-<!-- ░░ FAQ ░░ -->
-<section class="band" id="faq">
-  <div class="band-head reveal">
-    <span class="eyebrow">FAQ</span>
-    <h2 class="h2">Questions</h2>
+<section id="pricing" class="band">
+  <div class="reveal">
+    <div class="brow">Pricing</div>
+    <h2>Free is a real plan. Grandmaster removes the limits.</h2>
   </div>
-  <div class="faqs">
-    <details class="faq-item"><summary>How is this different from a regular engine?</summary>
-      <p>An engine tells you the best move after you have already played. ChessForge speaks
-        before you commit, and what it says is built from the mistakes you personally keep
-        making rather than from the position alone.</p></details>
-    <details class="faq-item"><summary>Does it get better the more I play?</summary>
-      <p>Yes. Every unaided game updates your Thinking Profile, and the drills and puzzles are
-        drawn from it, so the coaching narrows onto your habits as it learns them.</p></details>
-    <details class="faq-item"><summary>What rating range is this for?</summary>
-      <p>Beginners, roughly 300–1000. You should know how the pieces move; you do not need to
-        know anything else. This is aimed squarely at the stage where games are decided by
-        pieces going missing rather than by deep plans — it is not master preparation.</p></details>
-    <details class="faq-item"><summary>Why does the free plan make me play one game on my own?</summary>
-      <p>Your rating, your accuracy and your Thinking Profile are read only from games you play
-        without help — coached ones do not count, because the coach is doing part of the work.
-        One unaided game a day keeps the measurement honest. Grandmaster removes the gate.</p></details>
-    <details class="faq-item"><summary>Do I have to give you my chess.com password?</summary>
-      <p>No, and there is nothing to give. The import asks for your username and reads the public record of your games through chess.com's own public API. There is no login, no password and no permission screen — we could not sign in as you if we wanted to. Disconnecting removes the account and everything built from it.</p></details>
-    <details class="faq-item"><summary>Does importing my chess.com games change my rating here?</summary>
-      <p>No. Imported games change what you are shown — your weaknesses, your puzzles, what the coach watches for — and never what you are scored. Your play strength here is read only from unaided games played in ChessForge, and the daily gate stays exactly as it is.</p></details>
-    <details class="faq-item"><summary>Does it work on my phone?</summary>
-      <p>Partly, and it says so rather than pretending. Dashboard, Training, Puzzles and Shop all work on a phone, and you can tap a piece to see its moves and tap a square to play it. Play &amp; Coach and Analysis need a real window — they are a board plus something you read beside it, and both have to be visible at once, so on a phone those two say to come back on a laptop.</p></details>
-    <details class="faq-item"><summary>Can I sign in with Google?</summary>
-      <p>Yes. If you already have an account under the same email address, signing in with Google asks for that account's password once to link the two, and after that Google alone is enough. Signing in with Google will never create an account by itself — if there is no account for that address it tells you to make one.</p></details>
-    <details class="faq-item"><summary>Can I cancel any time?</summary>
-      <p>Yes. Cancel from the app in two clicks. No contract, no email required, and you keep
-        access until the period you have paid for runs out.</p></details>
-    <details class="faq-item"><summary>Who is behind this?</summary>
-      <p>One person. ChessForge is built and run by a solo founder, which is why the email in
-        the footer reaches an actual human rather than a ticket queue.</p></details>
+  <div class="plans reveal">
+    <div class="plan">
+      <div class="plan-n">Free</div>
+      <div class="plan-p">$0</div>
+      <ul class="plan-l">
+        <li>One unaided game a week</li>
+        <li>One coached game a week</li>
+        <li>Five puzzles a day</li>
+        <li>Drills from your own mistakes</li>
+        <li>chess.com import</li>
+      </ul>
+      <a class="ghost wide" href="https://app.chessforge.org">Start free</a>
+    </div>
+    <div class="plan lit">
+      <div class="plan-n">Grandmaster</div>
+      <div class="plan-p"><s>$29.99</s> $19.99<small>CAD / month</small></div>
+      <ul class="plan-l">
+        <li>Unlimited coached games</li>
+        <li>Every game analysed in full</li>
+        <li>Ask GM Forge about any position</li>
+        <li>All puzzles, all drills</li>
+        <li>Boards, finishes and piece sets</li>
+      </ul>
+      <a class="fill wide" href="https://app.chessforge.org?upgrade=1">Start the 3&#8209;day trial</a>
+      <p class="plan-f">Card required, cancel any time before it ends.</p>
+    </div>
   </div>
 </section>
 
-<!-- ░░ CLOSING CTA ░░ -->
+<section id="faq" class="band alt">
+  <div class="reveal">
+    <div class="brow">Questions</div>
+    <h2>The ones people actually ask.</h2>
+  </div>
+  <div class="faq reveal">
+    <details><summary>How is this different from an engine?</summary>
+      <p>An engine tells you the move and the number. GM Forge tells you what your move runs
+         into, on which square, and what it costs in material &mdash; while you can still take
+         it back. Every move he names comes from Stockfish; he is not allowed to invent one.</p></details>
+    <details><summary>Why does the free plan make me play one game on my own?</summary>
+      <p>Because that game is the measurement. Your play strength, your accuracy and every drill
+         you get are read from unaided games. Coaching before that would be built on nothing.</p></details>
+    <details><summary>Does it get better the more I play?</summary>
+      <p>Yes, and specifically: the drills change. Patterns your games keep producing get served
+         more often, and ones you have stopped falling for get spaced further apart.</p></details>
+    <details><summary>What rating range is this for?</summary>
+      <p>Roughly 300 to 1000. It is built for the point where you lose to the same three or four
+         things over and over and cannot see which ones they are.</p></details>
+    <details><summary>Do I have to give you my chess.com password?</summary>
+      <p>No. The import reads the games chess.com already publishes on its public API. Your
+         username is all it needs.</p></details>
+    <details><summary>Does it work on my phone?</summary>
+      <p>Dashboard, Training, Puzzles and Shop do. Play &amp; Coach and Analysis need a bigger
+         screen &mdash; they put a board, a graded move list and the coach side by side, and
+         stacked on a phone those stop being one thing you can read.</p></details>
+    <details><summary>Can I cancel any time?</summary>
+      <p>Yes, from your account menu, including during the trial.</p></details>
+  </div>
+</section>
+
 <section class="closer">
-  <h2 class="h2 closer-h">Play your next game with a coach who already knows what you will get wrong</h2>
-  <a href="https://app.chessforge.org" class="btn btn-primary btn-lg">Start playing free →</a>
-  <p class="mono closer-note">Free to start · no card required</p>
+  <div class="closer-in reveal">
+    <div class="closer-grid" aria-hidden="true"></div>
+    <h2>Your next game could teach you something.</h2>
+    <p>Or it could be another one you forget by Tuesday.</p>
+    <a class="cta" href="https://app.chessforge.org">Play a coached game &rarr;</a>
+    <div class="fine">Free plan, no card required.</div>
+  </div>
 </section>
-
 </main>
 
-<!-- ░░ FOOTER ░░ -->
-<footer class="footer">
-  <div class="footer-top">
-    <div class="footer-col">
-      <div class="footer-brand"><span class="brand-hex"><svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7 L20.05 7.35 V16.65 L12 21.3 L3.95 16.65 V7.35 Z"/></svg></span>ChessForge</div>
-      <p class="footer-tag">The chess coach that knows <em>your</em> weaknesses and coaches you
-        through every move — while the game is still going.</p>
-      <a class="footer-mail" href="mailto:chessforgesupport@gmail.com">chessforgesupport@gmail.com</a>
-    </div>
-    <div class="footer-links">
-      <div>
-        <h3 class="footer-h">Product</h3>
-        <a href="https://app.chessforge.org">Open app</a>
-        <a href="#how">How it works</a>
-        <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-      </div>
-      <div>
-        <h3 class="footer-h">Support</h3>
-        <a href="#faq">FAQ</a>
-        <a href="mailto:chessforgesupport@gmail.com">Contact</a>
-      </div>
-      <div>
-        <h3 class="footer-h">Legal</h3>
-        <a href="#" data-legal="terms">Terms of Service</a>
-        <a href="#" data-legal="privacy">Privacy Policy</a>
-        <a href="#" data-legal="credits">Credits</a>
-      </div>
-    </div>
+<footer class="foot">
+  <div>
+    <div class="brand foot-brand"><img class="mark-img" src="logo.svg" alt="" aria-hidden="true"><span>Chess<b>Forge</b></span></div>
+    <p class="foot-p">A coach who is there while you play.</p>
   </div>
-  <div class="footer-bottom">
-    <span>© <span id="year">2026</span> ChessForge. All rights reserved.</span>
-    <span class="mono">Built by a solo founder, for players tired of guessing.</span>
+  <nav class="foot-links" aria-label="Footer">
+    <a href="#how">How it works</a><a href="#features">Features</a>
+    <a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+  </nav>
+  <div class="foot-legal">
+    <button type="button" data-legal="terms">Terms</button>
+    <button type="button" data-legal="privacy">Privacy</button>
+    <button type="button" data-legal="credits">Credits</button>
+    <p class="foot-c">&copy; <span id="year">2026</span> ChessForge. All rights reserved.</p>
   </div>
 </footer>
 
-<!-- ░░ LEGAL ░░ -->
-<div class="modal-back" id="legalModal" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
-    <div class="modal-head">
-      <h3 id="legalTitle" class="modal-title">Legal</h3>
-      <button type="button" class="modal-x" data-legal-close aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6.4 6.4 L17.6 17.6"/><path d="M17.6 6.4 L6.4 17.6"/></svg>
-      </button>
-    </div>
-    <div class="modal-body" id="legalBody"></div>
-  </div>
-</div>
+<div class="modal" id="lg-terms" hidden><div class="modal-in"><button class="modal-x" data-close>&times;</button>
+  <h2>Terms of Service</h2><div class="modal-b">
+  <p>ChessForge is a chess coaching service. By using it you agree to use it lawfully and not to
+     abuse, scrape or resell it. Subscriptions renew monthly until cancelled; cancel any time from
+     your account menu and access continues to the end of the period already paid for. The service
+     is provided as is, without warranty. This is a plain-language summary and not legal advice.</p>
+  </div></div></div>
+<div class="modal" id="lg-privacy" hidden><div class="modal-in"><button class="modal-x" data-close>&times;</button>
+  <h2>Privacy Policy</h2><div class="modal-b">
+  <p>We store the account you create, the games you play here, and the games you choose to import.
+     Payments are handled by Stripe; we never see your card. We do not sell your data. Marketing
+     email is opt-in and every message carries a one-click unsubscribe. Ask for deletion any time
+     and the account and its games go. This is a plain-language summary and not legal advice.</p>
+  </div></div></div>
+<div class="modal" id="lg-credits" hidden><div class="modal-in"><button class="modal-x" data-close>&times;</button>
+  <h2>Credits</h2><div class="modal-b">
+  <h3>Chess pieces</h3>
+  <p>The pieces are the work of <b>Colin M.L. Burnett</b>, used under the 3-clause BSD Licence.
+     The originals are published on Wikimedia Commons under a choice of licences (GFDL 1.2+,
+     CC BY-SA 3.0, GPL v2/v3 and 3-clause BSD); ChessForge uses them under the BSD terms. The only
+     change is a <code>viewBox</code> attribute so the artwork scales. The full licence ships with
+     the files at <a href="pieces/LICENSE.txt">pieces/LICENSE.txt</a>.</p>
+  <h3>Engine</h3>
+  <p>Analysis is performed by <b>Stockfish</b>, free software under the GNU GPL v3, running as a
+     separate program on our server.</p>
+  <h3>Chess logic</h3>
+  <p>Move generation uses <b>chess.js</b> (BSD) in the browser and <b>python-chess</b> (GPL v3)
+     on the server.</p>
+  </div></div></div>
 
-<script src="script.js"></script>
+<script src="v3-app.js" defer></script>
 </body>
 </html>
