@@ -54,10 +54,15 @@ img{max-width:100%;display:block}
 }
 .eyebrow-rule{width:26px;height:1px;background:var(--cyan);flex:none}
 .h2{
-  font-size:clamp(26px,3.4vw,34px); font-weight:800; letter-spacing:-.02em;
+  font-size:clamp(26px,3.4vw,46px); font-weight:800; letter-spacing:-.02em;
   line-height:1.18; color:var(--ink); margin:0; text-wrap:pretty;
 }
-.band{max-width:960px;margin:0 auto;padding:clamp(60px,9vw,100px) var(--edge)}
+/* Was a flat 960px, which used 38% of a 30" display and left the rest
+   empty. Widened fluidly rather than stretched: past about 1440px a line of
+   body text stops being readable, so the rest of the growth goes into type
+   size and spacing instead. */
+.band{max-width:clamp(960px,68vw,1440px);margin:0 auto;
+  padding:clamp(60px,9vw,120px) var(--edge)}
 .band-head{margin-bottom:44px;max-width:640px}
 .band-head.center{margin-left:auto;margin-right:auto;text-align:center}
 .band-head.center .eyebrow{justify-content:center}
@@ -151,7 +156,7 @@ img{max-width:100%;display:block}
 
 .hero-copy{position:relative;z-index:1;min-width:0}
 .hero-h1{
-  font-size:clamp(36px,5.2vw,62px); line-height:1.03; font-weight:800;
+  font-size:clamp(36px,5.2vw,86px); line-height:1.03; font-weight:800;
   letter-spacing:-.03em; margin:0 0 22px; color:var(--ink); text-wrap:pretty;
 }
 /* The one hand-drawn thing on the page. A wavy text-decoration was too tight and
@@ -302,7 +307,7 @@ img{max-width:100%;display:block}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── coach intro ───────────────────────────────────────────────────────── */
-.coach{max-width:840px;margin:0 auto;padding:clamp(56px,8vw,88px) var(--edge) 8px;
+.coach{max-width:clamp(840px,58vw,1200px);margin:0 auto;padding:clamp(56px,8vw,104px) var(--edge) 8px;
   display:flex;align-items:center;gap:clamp(20px,3vw,32px)}
 .coach-portrait{
   width:108px;height:108px;flex:none;border-radius:50%;overflow:hidden;
@@ -340,16 +345,17 @@ img{max-width:100%;display:block}
 
 /* ── facts band ────────────────────────────────────────────────────────── */
 .facts{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
-.facts-in{max-width:960px;margin:0 auto;padding:56px var(--edge);
+.facts-in{max-width:clamp(960px,68vw,1440px);margin:0 auto;padding:clamp(56px,5vw,84px) var(--edge);
   display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center}
-.fact-n{font-size:clamp(28px,3.6vw,38px);font-weight:600;color:var(--cyan);
+.fact-n{font-size:clamp(28px,3.6vw,52px);font-weight:600;color:var(--cyan);
   letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .fact:nth-child(2) .fact-n{color:var(--ink)}
 .fact:nth-child(3) .fact-n{color:var(--magenta)}
 .fact-l{font-size:13px;color:var(--ink-3);margin-top:8px;line-height:1.5}
 
 /* ── pricing ───────────────────────────────────────────────────────────── */
-.plans{display:grid;grid-template-columns:1fr 1.25fr;gap:20px;max-width:840px;margin:0 auto;align-items:start}
+.plans{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(20px,2vw,32px);
+  max-width:clamp(840px,58vw,1200px);margin:0 auto;align-items:start}
 .plan{
   position:relative;border:1px solid var(--line);border-radius:16px;
   padding:30px 28px;background:var(--panel);display:flex;flex-direction:column;gap:16px;
@@ -394,7 +400,7 @@ img{max-width:100%;display:block}
 /* One quote at a time, centred, with the height reserved so the page does not
    jump when a longer one comes round. */
 .quotes{max-width:720px;margin:0 auto;text-align:center}
-.quote-text{font-size:clamp(18px,2.4vw,22px);line-height:1.5;font-weight:500;
+.quote-text{font-size:clamp(18px,2.4vw,30px);line-height:1.5;font-weight:500;
   letter-spacing:-.01em;color:var(--ink);margin:0 0 20px;min-height:110px;text-wrap:pretty}
 .quote-by{font-size:13px;color:var(--ink-3);margin-bottom:20px}
 /* The note under the signature. Smaller than the quote, so it reads as a
@@ -419,7 +425,7 @@ img{max-width:100%;display:block}
 
 /* ── closer ────────────────────────────────────────────────────────────── */
 .closer{max-width:720px;margin:0 auto;padding:20px var(--edge) clamp(72px,10vw,120px);text-align:center}
-.closer-h{margin-bottom:26px;font-size:clamp(24px,3.2vw,30px)}
+.closer-h{margin-bottom:26px;font-size:clamp(24px,3.2vw,42px)}
 .closer-note{display:block;margin-top:16px;font-size:12.5px;color:var(--ink-3)}
 
 /* ── footer ────────────────────────────────────────────────────────────── */
