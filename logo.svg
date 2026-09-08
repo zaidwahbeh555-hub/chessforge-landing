@@ -6,8 +6,8 @@
        muzzle-forward head with an ear. -->
   <defs>
     <linearGradient id="cfHex" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#5cb0ff"/>
-      <stop offset="1" stop-color="#2f8ef0"/>
+      <stop offset="0" stop-color="#5CDBFF"/>
+      <stop offset="1" stop-color="#2FD1FF"/>
     </linearGradient>
   </defs>
   <path fill="url(#cfHex)" fill-rule="evenodd" d="

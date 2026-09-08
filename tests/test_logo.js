@@ -97,15 +97,14 @@ check('the mark file exists', fs.existsSync('logo.svg'));
   check('it scales -- a logo pinned to pixels is wrong on every other screen',
         /viewBox="0 0 64 64"/.test(mark) && !/width="\d/.test(mark));
   check('it carries its own colour, not the stylesheet\'s',
-        /linearGradient/.test(mark) && /#5cb0ff/i.test(mark));
+        /linearGradient/.test(mark) && /#2FD1FF/i.test(mark));
   check('and it names itself for a screen reader', /<title>ChessForge<\/title>/.test(mark));
 }
 check('the mark glows in the nav', /\.mark-img\{[\s\S]{0,140}drop-shadow/.test(css));
-check('and stops glowing under reduced motion -- it is decoration',
-      /@media \(prefers-reduced-motion:reduce\)\{[\s\S]{0,400}filter:none/.test(css)
-      || /\.foot-brand \.mark-img\{[^}]*filter:none/.test(css));
+check('and the footer copy of it does not glow -- one mark, two weights',
+      /\.foot-brand \.mark-img\{[^}]*filter:none/.test(css));
 check('the footer mark is quieter than the nav one',
-      /\.foot-brand \.mark-img\{width:21px/.test(css) && /\.mark-img\{width:26px/.test(css));
+      /\.foot-brand \.mark-img\{width:21px/.test(css) && /\.mark-img\{width:34px/.test(css));
 
 // The mark is a filled shape now, not a stroked ring, so there is no filter to
 // warn about and no plate to remove -- the hexagon IS the plate.
@@ -136,9 +135,13 @@ if(!fs.existsSync(APP)){
   // brief's blue (#4da3ff) and the app is still on its cyan (#22E5FF). That is
   // a real divergence, recorded here rather than hidden, so whoever unifies
   // them has one place to look.
-  check('the landing draws its accent in the brief\'s blue', /#4da3ff/i.test(css));
-  check('and the app is still on its own cyan', /#22E5FF/i.test(appCss),
-        'the two brand accents have diverged -- deliberate for now');
+  // The two accents used to differ -- the app on #22E5FF cyan, the landing on
+  // the brief's #4DA3FF blue. They meet at #2FD1FF now, weighted toward cyan,
+  // so the mark, the buttons and the tab icon are one colour across both.
+  check('the app accent is the blended one', /#2FD1FF/i.test(appCss));
+  check('and the old cyan is gone from it', !/#22E5FF/i.test(appCss),
+        'one accent, or the two drift again');
+  check('the mark is drawn in that same accent', /#2FD1FF/i.test(icon));
 
 }
 

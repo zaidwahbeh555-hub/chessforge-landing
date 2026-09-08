@@ -44,26 +44,41 @@ img{max-width:100%;display:block}
   pointer-events:none;z-index:2;will-change:transform;
   background:radial-gradient(circle,rgba(61,155,255,.10) 0,transparent 62%)}
 
-/* nav */
-.nav{position:fixed;inset:0 0 auto;z-index:80;height:66px;display:flex;align-items:center;
-  justify-content:space-between;gap:24px;padding:0 var(--gut);
+/* nav — a mark on the left, one control on the right, nothing else */
+.nav{position:fixed;inset:0 0 auto;z-index:80;height:64px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 var(--gut);
   background:rgba(4,11,22,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px;color:#e6edf7;font:600 17px/1 Sora,sans-serif;
-  letter-spacing:-.02em}
-.brand b{color:var(--a);font-weight:600}
-.mark{display:none}
-.mark-img{width:26px;height:26px;filter:drop-shadow(0 0 12px rgba(61,155,255,.55))}
-.links{display:flex;gap:clamp(14px,2vw,30px)}
-.links a{font-size:13.5px;font-weight:500;color:#9fb2c9}
-.links a:hover{color:#e6edf7}
-.navcta{display:flex;align-items:center;gap:10px}
+/* The mark alone. It is the shape people recognise, and the wordmark beside it
+   was saying the same thing twice at 17px. */
+.brand{display:flex;align-items:center}
+.mark-img{width:34px;height:34px;filter:drop-shadow(0 0 12px rgba(47,209,255,.5))}
+.burger{width:42px;height:42px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;background:none;border:1px solid rgba(120,170,235,.22);
+  border-radius:10px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
+.burger:hover{border-color:var(--a);background:rgba(47,209,255,.08)}
+.burger span{display:block;width:17px;height:1.5px;border-radius:2px;background:#cfe0f5;
+  transition:transform .25s var(--ease),opacity .2s ease}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.menu{position:fixed;top:64px;right:var(--gut);z-index:79;min-width:210px;
+  display:flex;flex-direction:column;padding:10px;border-radius:14px;
+  background:rgba(6,15,28,.97);border:1px solid var(--line-2);backdrop-filter:blur(16px);
+  box-shadow:0 26px 60px -24px rgba(0,0,0,.9)}
+.menu[hidden]{display:none}
+.menu a{padding:11px 13px;border-radius:9px;font-size:14px;font-weight:500;color:#cfe0f5}
+.menu a:hover{background:rgba(47,209,255,.1);color:var(--a-2)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:8px 4px}
+.menu-cta{background:linear-gradient(180deg,var(--a-top),var(--a-bot));color:var(--on-a)!important;
+  font-weight:700;text-align:center;margin-top:4px}
+.menu-cta:hover{background:linear-gradient(180deg,#7ce0ff,var(--a))}
 .ghost{font-size:13.5px;font-weight:600;color:#e6edf7;padding:9px 16px;border-radius:8px;
   border:1px solid rgba(120,170,235,.22)}
 .ghost:hover{border-color:var(--a);color:var(--a-2)}
 .fill{font-size:13.5px;font-weight:600;color:var(--on-a);padding:10px 18px;border-radius:8px;
   background:linear-gradient(180deg,var(--a-top),var(--a-bot));
-  box-shadow:0 8px 24px -8px rgba(61,155,255,.8)}
-.fill:hover{background:linear-gradient(180deg,#7cc2ff,var(--a))}
+  box-shadow:0 8px 24px -8px rgba(47,209,255,.6)}
+.fill:hover{background:linear-gradient(180deg,#7ce0ff,var(--a))}
 .wide{display:block;text-align:center;width:100%;padding:13px}
 
 /* hero */
@@ -194,9 +209,27 @@ h1{font-size:clamp(36px,4.4vw,64px);line-height:1.06;letter-spacing:-.035em;colo
   color:var(--brow);margin-bottom:14px}
 h2{font-size:clamp(24px,3vw,46px);line-height:1.12;color:var(--ink)}
 .band-lede{font-size:14.5px;line-height:1.65;color:var(--ink-4);max-width:62ch;margin-top:16px}
-.cards{display:grid;gap:clamp(12px,1.6vw,22px);margin-top:clamp(28px,3.4vw,46px)}
-.cards.four{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.cards.six{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+/* One row, always.
+   
+   auto-fit reflowed these into 3+3 and then 2+2+2 as the screen narrowed, so
+   the same section was a different shape on every machine. They are one row
+   now at every width -- but six cards across a 375px phone would be 55px each,
+   which is not a row anybody can read. Below the point where they stop fitting
+   the row SCROLLS instead of wrapping: still one row, still in order, and you
+   swipe it. Scroll-snap so it lands on a card rather than between two. */
+.cards{display:grid;grid-auto-flow:column;gap:clamp(12px,1.6vw,22px);
+  margin-top:clamp(28px,3.4vw,46px)}
+.cards.four{grid-auto-columns:minmax(0,1fr)}
+.cards.six{grid-auto-columns:minmax(0,1fr)}
+@media (max-width:1180px){
+  .cards{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+    padding-bottom:10px;scrollbar-width:thin}
+  .cards.four{grid-auto-columns:minmax(240px,1fr)}
+  .cards.six{grid-auto-columns:minmax(230px,1fr)}
+  .cards .card{scroll-snap-align:start}
+  .cards::-webkit-scrollbar{height:6px}
+  .cards::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
+}
 .card{border:1px solid var(--line-2);border-radius:12px;padding:clamp(18px,1.8vw,26px);
   background:linear-gradient(180deg,var(--card-a),var(--card-b));display:flex;flex-direction:column;gap:10px;
   transition:border-color .3s ease,background .3s ease,box-shadow .3s ease}
@@ -294,10 +327,23 @@ h2{font-size:clamp(24px,3vw,46px);line-height:1.12;color:var(--ink)}
   letter-spacing:-.03em}
 .plan-p s{color:var(--ink-7);font-size:.55em;margin-right:8px;font-weight:500}
 .plan-p small{display:block;font:500 12.5px/1 Manrope,sans-serif;color:var(--ink-6);margin-top:8px}
-.plan-l{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:10px}
-.plan-l li{font-size:13.5px;color:var(--ink-3);padding-left:22px;position:relative}
-.plan-l li::before{content:"";position:absolute;left:0;top:6px;width:12px;height:12px;border-radius:50%;
-  background:rgba(61,155,255,.16);border:1px solid rgba(61,155,255,.55)}
+.plan-lede{font-size:13.5px;color:var(--ink-4);margin:0 0 18px}
+/* A sentence per line, not a two-word label. "Spaced repetition" tells somebody
+   who already knows what it is; the sentence tells everyone else. */
+.plan-l{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:12px}
+.plan-l li{font-size:13px;line-height:1.55;color:var(--ink-4);padding-left:26px;position:relative}
+.plan-l li b{font-weight:600;color:var(--ink-3)}
+.plan-l li::before{position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;
+  line-height:1}
+.plan-l li.y::before{content:"\2713";background:rgba(61,155,255,.16);
+  border:1px solid rgba(61,155,255,.55);color:var(--a-2)}
+/* What free does NOT get, said plainly rather than left off the list. Somebody
+   comparing two columns needs to see the gap, not infer it from an absence. */
+.plan-l li.n{color:var(--ink-7)}
+.plan-l li.n b{color:var(--ink-7)}
+.plan-l li.n::before{content:"\2715";background:rgba(255,107,107,.1);
+  border:1px solid rgba(255,107,107,.35);color:#ff9a9a}
 .plan-f{font-size:12px;color:var(--ink-7);margin-top:12px;text-align:center}
 
 /* faq */
@@ -376,12 +422,52 @@ h2{font-size:clamp(24px,3vw,46px);line-height:1.12;color:var(--ink)}
   .ex{grid-template-columns:1fr}
   .portrait-col{max-width:340px;margin:0 auto}
 }
+/* ── phone: the same page, tidier ────────────────────────────────────────────
+   Nothing is hidden and nothing moves section to section. What changes is the
+   things that were sized for a wide screen and read as cramped on a narrow
+   one: the stats row stacking instead of squeezing three items onto a line,
+   the hero settling down from its desktop scale, and the padding coming in so
+   text is not pressed against the edge. */
 @media (max-width:760px){
-  .links{display:none}
-  .stats{flex-direction:column;gap:18px}
-  .stat+.stat{padding-left:0;border-left:0;border-top:1px solid var(--line);padding-top:18px}
+  .stats{flex-direction:column;align-items:flex-start;gap:0}
+  .stat{padding:12px 0;width:100%}
+  .stat+.stat{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .hero{padding-top:96px}
+  h1{font-size:clamp(30px,8.4vw,40px);line-height:1.1}
+  .lede-2{font-size:17px}
+  .lede{font-size:15px}
+  .cta{width:100%;text-align:center;padding:15px 20px}
+  .band,.contrast-in,.forge-in{padding-left:var(--gut);padding-right:var(--gut)}
+  h2{font-size:clamp(23px,6.6vw,30px)}
+  /* Two nine-item lists side by side became two very narrow columns. */
+  .cols,.ex-pair,.plans,.two{grid-template-columns:1fr}
+  .ex-body{flex-direction:column}
+  .mini{width:min(74%,240px)}
+  .quote-text{font-size:18px}
+  .faq summary{font-size:14.5px}
+  .foot{text-align:left}
   .foot-legal{text-align:left;align-items:flex-start}
   .foot-links{justify-content:flex-start}
+  /* The mockup is the one thing that genuinely cannot work at this width --
+     a six-tab rail beside a board leaves neither readable -- so the rail sits
+     above its pane instead of beside it. */
+  .win-body{grid-template-columns:1fr}
+  .win-rail{flex-direction:row;overflow-x:auto;border-right:0;
+    border-bottom:1px solid rgba(97,155,225,.12);gap:4px}
+  .rail-i{white-space:nowrap}
+  .win-grid{grid-template-columns:1fr}
+  /* Chips and tags are real copy, not mockup furniture -- 9.5px is a size you
+     read a screenshot at, not a page. The two 9px items left are INSIDE the app
+     window, which is a picture of an app. */
+  .tag{font-size:11px;padding:5px 10px}
+  .pills span{font-size:12px}
+  .ex-k{font-size:12px}
+  .fine,.plan-f,.quote-note{font-size:13px}
+}
+@media (max-width:420px){
+  .plan{padding:18px}
+  .card{padding:16px}
+  .two-side{padding:16px}
 }
 /* Every loop here is decoration. Somebody who has asked the OS to stop moving
    things has asked for exactly this. */
@@ -422,43 +508,51 @@ h2{font-size:clamp(24px,3vw,46px);line-height:1.12;color:var(--ink)}
 .sw{flex:1;aspect-ratio:1;border-radius:6px;border:1px solid var(--line-2);
   background:linear-gradient(135deg,var(--l) 0 50%,var(--d) 50% 100%)}
 
-/* ── the watched board ───────────────────────────────────────────────────── */
-.watch{display:flex;flex-direction:column;gap:14px;align-items:stretch;
-  max-width:420px;margin:0 auto;width:100%}
-.watch-board{display:grid;grid-template-columns:repeat(8,1fr);border-radius:8px;overflow:hidden;
-  border:1px solid rgba(97,155,225,.28);box-shadow:0 30px 70px -30px rgba(0,0,0,.9)}
-.watch-board .sq{aspect-ratio:1;display:flex;align-items:center;justify-content:center;
-  position:relative}
-.watch-board .sq img{width:88%;height:88%}
-.watch-board .sq.trail::before{content:"";position:absolute;inset:0;
-  background:rgba(61,155,255,.28)}
-/* Where he is pointing. The ring is the whole point of the section, so it is
-   the loudest thing on the board. */
-.watch-board .sq.ring::after{content:"";position:absolute;inset:0;
-  box-shadow:inset 0 0 0 3px #ffd166;animation:ringpulse 1.6s ease-in-out infinite}
-@keyframes ringpulse{0%,100%{opacity:1}50%{opacity:.45}}
-.watch-ask{font:600 13px/1 Sora,sans-serif;color:var(--ink-2)}
-.watch-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.watch-btns[hidden]{display:none}
-.watch-btns button{cursor:pointer;border:1px solid var(--line-2);border-radius:9px;padding:10px 6px;
-  background:rgba(9,19,33,.8);color:var(--ink-2);font:600 14px/1.1 Sora,sans-serif;
-  transition:border-color .2s ease,background .2s ease}
-.watch-btns button span{display:block;font:400 10px/1.3 Manrope,sans-serif;color:var(--ink-7);
-  margin-top:4px}
-.watch-btns button:hover{border-color:var(--line-hot);background:rgba(61,155,255,.1)}
-.watch-say{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line-2);
-  border-radius:10px;padding:12px;background:rgba(9,19,33,.75);
-  transition:border-color .3s ease,background .3s ease}
-.watch-say.bad{border-color:rgba(255,107,107,.45);background:rgba(46,16,22,.55)}
-.watch-say.good{border-color:rgba(61,199,127,.45);background:rgba(14,40,28,.55)}
-.watch-av{width:34px;height:34px;border-radius:8px;object-fit:cover;flex:none;
-  border:1px solid rgba(61,155,255,.35)}
-.watch-say p{font-size:12.5px;line-height:1.6;color:#b6c8de}
-.watch-reset{align-self:flex-start;background:none;border:0;cursor:pointer;
-  font:600 12.5px/1 Manrope,sans-serif;color:var(--a);padding:0}
-.watch-reset[hidden]{display:none}
+/* ── two ways to spend an hour ───────────────────────────────────────────────
+   The section says you do not need more videos, you need someone watching.
+   This is that sentence as two columns: the same hour, spent twice.
+
+   Deliberately carries NO numbers. A rising rating line here would be a claim
+   about what happens to the reader, and the only result this page is allowed
+   to claim is the owner's own. */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.6vw,20px)}
+.two-side{border:1px solid var(--line-2);border-radius:14px;padding:clamp(16px,1.8vw,24px);
+  background:linear-gradient(180deg,var(--card-a),var(--card-b))}
+.two-side.dim{opacity:.72}
+.two-side.lit{border-color:rgba(47,209,255,.5);
+  box-shadow:0 22px 60px -28px rgba(47,209,255,.5);
+  background:linear-gradient(180deg,rgba(11,29,52,.95),rgba(6,16,30,.95))}
+.two-h{display:flex;align-items:center;gap:9px;font:600 14px/1.2 Sora,sans-serif;
+  color:var(--ink-3);margin-bottom:16px}
+.two-side.lit .two-h{color:var(--ink)}
+.two-ic{font-size:17px;color:var(--ink-7)}
+.two-side.lit .two-ic{color:var(--a);filter:drop-shadow(0 0 9px rgba(47,209,255,.6))}
+.two-steps{list-style:none;counter-reset:s;margin:0;padding:0;
+  display:flex;flex-direction:column;gap:11px}
+.two-steps li{counter-increment:s;position:relative;padding-left:28px;
+  font-size:13px;line-height:1.5;color:var(--ink-5)}
+.two-side.lit .two-steps li{color:var(--ink-3)}
+.two-steps li::before{content:counter(s);position:absolute;left:0;top:0;
+  width:19px;height:19px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font:600 10px/1 Sora,sans-serif;
+  background:rgba(255,255,255,.05);border:1px solid var(--line-2);color:var(--ink-7)}
+.two-side.lit .two-steps li::before{background:rgba(47,209,255,.14);
+  border-color:rgba(47,209,255,.5);color:var(--a-2)}
+/* The two lines are the only visual difference in the footers: one sags, one
+   climbs. No axis and no numbers -- it is a gesture, not a graph. */
+.two-foot{display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:14px;
+  border-top:1px solid var(--line);font-size:12.5px;line-height:1.5;color:var(--ink-6)}
+.two-side.lit .two-foot{color:var(--ink-4)}
+.two-line{width:46px;height:16px;flex:none;border-radius:2px;
+  background-repeat:no-repeat;background-size:100% 100%}
+.two-line.down{background-image:linear-gradient(to bottom right,transparent calc(50% - 1px),
+  #7a8aa0 calc(50% - 1px),#7a8aa0 calc(50% + 1px),transparent calc(50% + 1px))}
+.two-line.up{background-image:linear-gradient(to top right,transparent calc(50% - 1px),
+  var(--a) calc(50% - 1px),var(--a) calc(50% + 1px),transparent calc(50% + 1px));
+  filter:drop-shadow(0 0 6px rgba(47,209,255,.55))}
+@media (max-width:900px){ .two{grid-template-columns:1fr} }
 
 /* The footer wordmark is quieter than the nav one: same file, smaller, and it
    does not glow. A logo that shouts equally in both places makes the footer
-   look like a second header. */
+   read as a second header. */
 .foot-brand .mark-img{width:21px;height:21px;filter:none}

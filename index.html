@@ -37,20 +37,25 @@
 <div class="glow" id="glow" aria-hidden="true"></div>
 
 <header class="nav">
-  <a class="brand" href="#top">
-<img class="mark-img" src="logo.svg" alt="" aria-hidden="true">
-    <span>Chess<b>Forge</b></span>
+  <a class="brand" href="#top" aria-label="ChessForge, back to top">
+    <img class="mark-img" src="logo.svg" alt="" aria-hidden="true">
   </a>
-  <nav class="links" aria-label="Sections">
+  <!-- Everything else lives behind one control at every width, not just on
+       phones. A row of links that collapses into a burger below some threshold
+       is two different headers to keep working; this is one. -->
+  <button class="burger" id="burger" aria-expanded="false" aria-controls="menu"
+          aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="menu" id="menu" hidden aria-label="Main">
     <a href="#how">How it works</a>
     <a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
+    <hr>
+    <a href="https://app.chessforge.org">Log in</a>
+    <a class="menu-cta" href="https://app.chessforge.org">Start playing &rarr;</a>
   </nav>
-  <div class="navcta">
-    <a class="ghost" href="https://app.chessforge.org">Log in</a>
-    <a class="fill" href="https://app.chessforge.org">Start playing &rarr;</a>
-  </div>
 </header>
 
 <main id="main">
@@ -367,88 +372,35 @@
         </div>
       </div>
     </div>
-    <div class="watch">
-      <!-- Not an ornament. This is the product's actual argument: you cannot
-           get this from a video, because it has to happen to YOUR move. The
-           three lines below are what Stockfish really returns for this
-           position -- Ng5 hangs the knight to Qxg5, Nxe5 trades a knight for a
-           pawn, castling is best. -->
-      <div class="watch-board" id="wboard"><i class="sq d" data-sq="a8"></i>
-<i class="sq l" data-sq="b8"></i>
-<i class="sq d" data-sq="c8"></i>
-<i class="sq l" data-sq="d8"></i>
-<i class="sq d" data-sq="e8"></i>
-<i class="sq l" data-sq="f8"></i>
-<i class="sq d" data-sq="g8"></i>
-<i class="sq l" data-sq="h8"></i>
-<i class="sq l" data-sq="a7"></i>
-<i class="sq d" data-sq="b7"></i>
-<i class="sq l" data-sq="c7"></i>
-<i class="sq d" data-sq="d7"></i>
-<i class="sq l" data-sq="e7"></i>
-<i class="sq d" data-sq="f7"></i>
-<i class="sq l" data-sq="g7"></i>
-<i class="sq d" data-sq="h7"></i>
-<i class="sq d" data-sq="a6"></i>
-<i class="sq l" data-sq="b6"></i>
-<i class="sq d" data-sq="c6"></i>
-<i class="sq l" data-sq="d6"></i>
-<i class="sq d" data-sq="e6"></i>
-<i class="sq l" data-sq="f6"></i>
-<i class="sq d" data-sq="g6"></i>
-<i class="sq l" data-sq="h6"></i>
-<i class="sq l" data-sq="a5"></i>
-<i class="sq d" data-sq="b5"></i>
-<i class="sq l" data-sq="c5"></i>
-<i class="sq d" data-sq="d5"></i>
-<i class="sq l" data-sq="e5"></i>
-<i class="sq d" data-sq="f5"></i>
-<i class="sq l" data-sq="g5"></i>
-<i class="sq d" data-sq="h5"></i>
-<i class="sq d" data-sq="a4"></i>
-<i class="sq l" data-sq="b4"></i>
-<i class="sq d" data-sq="c4"></i>
-<i class="sq l" data-sq="d4"></i>
-<i class="sq d" data-sq="e4"></i>
-<i class="sq l" data-sq="f4"></i>
-<i class="sq d" data-sq="g4"></i>
-<i class="sq l" data-sq="h4"></i>
-<i class="sq l" data-sq="a3"></i>
-<i class="sq d" data-sq="b3"></i>
-<i class="sq l" data-sq="c3"></i>
-<i class="sq d" data-sq="d3"></i>
-<i class="sq l" data-sq="e3"></i>
-<i class="sq d" data-sq="f3"></i>
-<i class="sq l" data-sq="g3"></i>
-<i class="sq d" data-sq="h3"></i>
-<i class="sq d" data-sq="a2"></i>
-<i class="sq l" data-sq="b2"></i>
-<i class="sq d" data-sq="c2"></i>
-<i class="sq l" data-sq="d2"></i>
-<i class="sq d" data-sq="e2"></i>
-<i class="sq l" data-sq="f2"></i>
-<i class="sq d" data-sq="g2"></i>
-<i class="sq l" data-sq="h2"></i>
-<i class="sq l" data-sq="a1"></i>
-<i class="sq d" data-sq="b1"></i>
-<i class="sq l" data-sq="c1"></i>
-<i class="sq d" data-sq="d1"></i>
-<i class="sq l" data-sq="e1"></i>
-<i class="sq d" data-sq="f1"></i>
-<i class="sq l" data-sq="g1"></i>
-<i class="sq d" data-sq="h1"></i></div>
-      <div class="watch-ask">Your move. Which one?</div>
-      <div class="watch-btns" id="wbtns">
-        <button data-mv="Ng5">Ng5<span>attack f7</span></button>
-        <button data-mv="Nxe5">Nxe5<span>win a pawn</span></button>
-        <button data-mv="O-O">O&#8209;O<span>castle</span></button>
+    <!-- Two ways to spend an hour, side by side.
+         Deliberately NOT a rating claim: no numbers, no "average gain", nothing
+         that says what happens to you. The left column loses the thread, the
+         right column keeps it, and that is the whole argument. -->
+    <div class="two" id="two">
+      <div class="two-side dim">
+        <div class="two-h"><span class="two-ic">&#9654;</span>An hour of videos</div>
+        <ol class="two-steps">
+          <li>Watch a 40-minute opening lecture</li>
+          <li>Nod along &mdash; it all makes sense</li>
+          <li>Play. None of it comes up.</li>
+          <li>Hang a piece on move 14, same as last week</li>
+          <li>Close the tab</li>
+        </ol>
+        <div class="two-foot"><span class="two-line down"></span>Nothing about YOUR game
+          was ever in it.</div>
       </div>
-      <div class="watch-say" id="wsay">
-        <img src="gm-forge-ai-chess-coach.png" alt="" class="watch-av" loading="lazy" decoding="async">
-        <p id="wtext">Pick one and I will play it out. This is the part a video cannot
-           do for you &mdash; it has to happen to your move, in your game.</p>
+      <div class="two-side lit">
+        <div class="two-h"><span class="two-ic">&#9822;</span>An hour here</div>
+        <ol class="two-steps">
+          <li>Play one game with GM Forge beside you</li>
+          <li>He stops you on move 14 &mdash; before the piece goes</li>
+          <li>Read the game back, every move graded</li>
+          <li>Drill that exact pattern while you still remember it</li>
+          <li>Play it again and get it right</li>
+        </ol>
+        <div class="two-foot"><span class="two-line up"></span>It happened to YOUR move,
+          in YOUR game.</div>
       </div>
-      <button class="watch-reset" id="wreset" hidden>Try another &#8630;</button>
     </div>
   </div>
 </section>
@@ -710,28 +662,51 @@
   <div class="plans reveal">
     <div class="plan">
       <div class="plan-n">Free</div>
-      <div class="plan-p">$0</div>
+      <div class="plan-p">$0<small>forever, no card</small></div>
+      <p class="plan-lede">Enough to find out whether the coaching works on you.</p>
       <ul class="plan-l">
-        <li>One unaided game a week</li>
-        <li>One coached game a week</li>
-        <li>Five puzzles a day</li>
-        <li>Drills from your own mistakes</li>
-        <li>chess.com import</li>
+        <li class="y"><b>One unaided game a week.</b> The measurement everything else is
+          read from &mdash; your play strength, your accuracy, your drills.</li>
+        <li class="y"><b>One coached game a week.</b> GM Forge beside you for the whole
+          game, stopping you on the moves that matter.</li>
+        <li class="y"><b>Five puzzles a day,</b> taken from positions you actually got
+          wrong rather than a generic set.</li>
+        <li class="y"><b>Drills from your own mistakes,</b> one exercise per pattern.</li>
+        <li class="y"><b>chess.com import.</b> It reads your recent games and knows your
+          weaknesses before you play a move here.</li>
+        <li class="y"><b>Two board themes,</b> yours to keep and switch between.</li>
+        <li class="n">Every game analysed &mdash; free gets one a day</li>
+        <li class="n">Asking GM Forge about any position</li>
+        <li class="n">Spaced repetition that repeats a pattern until it sticks</li>
+        <li class="n">The shop &mdash; boards, finishes and piece sets</li>
       </ul>
       <a class="ghost wide" href="https://app.chessforge.org">Start free</a>
     </div>
     <div class="plan lit">
       <div class="plan-n">Grandmaster</div>
-      <div class="plan-p"><s>$29.99</s> $19.99<small>CAD / month</small></div>
+      <div class="plan-p"><s>$29.99</s> $19.99<small>CAD a month</small></div>
+      <p class="plan-lede">Everything above, with the limits taken off.</p>
       <ul class="plan-l">
-        <li>Unlimited coached games</li>
-        <li>Every game analysed in full</li>
-        <li>Ask GM Forge about any position</li>
-        <li>All puzzles, all drills</li>
-        <li>Boards, finishes and piece sets</li>
+        <li class="y"><b>Unlimited coached games.</b> GM Forge in every game you play, which
+          is where the improvement actually comes from.</li>
+        <li class="y"><b>Unlimited unaided games,</b> so your rating keeps being measured
+          rather than rationed.</li>
+        <li class="y"><b>Every game analysed in full.</b> Each move graded, the moments that
+          decided it named, and the mistakes turned into drills automatically.</li>
+        <li class="y"><b>Ask GM Forge anything,</b> about any position in any of your games.
+          Every move he names comes from the engine &mdash; he cannot invent one.</li>
+        <li class="y"><b>All your puzzles,</b> not the first five. Your games keep producing
+          them and you get all of them.</li>
+        <li class="y"><b>Spaced repetition.</b> A pattern comes back at widening intervals
+          until it is automatic, and comes back sooner if it costs you again.</li>
+        <li class="y"><b>Trap Trainer.</b> The bot steers toward the positions your own
+          weaknesses live in, while still playing real chess.</li>
+        <li class="y"><b>The shop.</b> Boards, marble and grain finishes, and piece sets,
+          bought with XP you earn by playing.</li>
       </ul>
       <a class="fill wide" href="https://app.chessforge.org?upgrade=1">Start the 3&#8209;day trial</a>
-      <p class="plan-f">Card required, cancel any time before it ends.</p>
+      <p class="plan-f">Card required so it can roll straight into the plan. Cancel any time
+        before day three from your account menu and you are charged nothing.</p>
     </div>
   </div>
 </section>

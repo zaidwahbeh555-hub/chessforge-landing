@@ -16,10 +16,14 @@ const fs = require('fs');
 const path = require('path');
 process.chdir(path.join(__dirname, '..'));
 
-const html = fs.readFileSync('index.html', 'utf8');
+const rawHtml = fs.readFileSync('index.html', 'utf8');
+// Comments are not page content. Several of them EXPLAIN the claims this file
+// forbids -- "no average gain", "no invented testimonials" -- and matching a
+// ban against its own rationale is a false positive that teaches you to widen
+// the rule until it stops catching anything.
+const html = rawHtml.replace(/<!--[\s\S]*?-->/g, '');
 const css  = fs.readFileSync('v3-styles.css', 'utf8');
 const js   = fs.readFileSync('v3-app.js', 'utf8');
-const demo = JSON.parse(fs.readFileSync('v3-demo.json', 'utf8'));
 
 let pass = 0, total = 0;
 function check(label, cond, detail) {
@@ -65,23 +69,20 @@ check('and the trial length is the real one', /3(&#8209;|-|\s)day/.test(html),
       'TRIAL_DAYS is 3');
 check('the rating range is the honest one', /300 to 1000/.test(html));
 
-console.log('\nTHE DEMO IS ENGINE OUTPUT, NOT A STORY');
-// Every position and every line in the watched board came from Stockfish at
-// depth 18. If someone edits the copy by hand, this is what notices.
-check('the demo carries a start position and three answers',
-      ['start', 'Ng5', 'Nxe5', 'O-O'].every(k => demo[k]));
-check('each answer names the square GM Forge points at',
-      demo['Ng5'].ring === 'g5' && demo['Nxe5'].ring === 'e5');
-check('Ng5 really loses the knight -- a piece leaves the board',
-      demo['Ng5'].cells.filter(Boolean).length === demo.start.cells.filter(Boolean).length - 1,
-      demo.start.cells.filter(Boolean).length + ' pieces -> '
-      + demo['Ng5'].cells.filter(Boolean).length);
-check('and castling is the one marked good', demo['O-O'].good === true
-      && !demo['Ng5'].good && !demo['Nxe5'].good);
-check('the start position has all 32 pieces',
-      demo.start.cells.filter(Boolean).length === 32);
-check('one king each', demo.start.cells.filter(c => c === 'wK').length === 1
-      && demo.start.cells.filter(c => c === 'bK').length === 1);
+console.log('\nTHE COMPARISON MAKES NO CLAIM ABOUT THE READER');
+// The section argues you need someone watching. It shows the same hour spent
+// two ways -- and carries no numbers on purpose: a rising rating line here
+// would be a claim about what happens to YOU, and the only result this page is
+// allowed to claim is the owner's own.
+check('both sides are there', /class="two-side dim"/.test(html)
+      && /class="two-side lit"/.test(html));
+check('each is a sequence, so the argument is the ORDER not the adjectives',
+      (html.match(/class="two-steps"/g) || []).length === 2);
+check('no rating figure is promised anywhere in it',
+      !/\+\s*\d{2,4}\s*(elo|rating)/i.test(html)
+      && !/gain(ed)? \d+/i.test(html));
+check('and no aggregate about other players came back with it',
+      !/players (improved|gained|report)/i.test(html));
 
 console.log('\nTHE MOCKUP IS THE APP, AND IT ANSWERS');
 check('all six tabs are there', (html.match(/class="rail-i/g) || []).length === 6);
