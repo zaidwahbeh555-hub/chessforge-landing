@@ -228,9 +228,6 @@
       box.classList.add('spoke');
       box.classList.remove('right', 'wrong');
       box.classList.add(m.grade === 'best' || m.grade === 'good' ? 'right' : 'wrong');
-      // The figure changes face the way it does in the app.
-      var dock = $('#forgeDock');
-      if (dock) dock.dataset.expr = (D.expr && D.expr[m.grade]) || 'neutral';
       // The read-out beside the board, in the app's own language.
       $('#evalTxt').textContent = m.mated ? '#' : (m.cp >= 0 ? '+' : '') + (m.cp / 100).toFixed(1);
       $('#evalSub').textContent = m.mated ? 'Checkmate next move'
@@ -331,7 +328,6 @@
       stopFlow();
       restoreIdle();
       $('#coachBox').classList.remove('spoke', 'right', 'wrong');
-      var dock0 = $('#forgeDock'); if (dock0) dock0.dataset.expr = 'neutral';
       $('#evalTxt').textContent = (D.bestCp >= 0 ? '+' : '') + (D.bestCp / 100).toFixed(1);
       $('#evalSub').textContent = 'Level — for one more move';
       $('#moveTxt').textContent = '\u2014';
@@ -365,10 +361,6 @@
       paint(d.start);
       setEval(d.bestCp);
       if (shot) shot.innerHTML = cells(d.start);
-      fetch('forge.svg').then(function (r) { return r.text(); }).then(function (svg) {
-        var dock = $('#forgeDock');
-        if (dock) dock.innerHTML = svg.replace(/<\?xml[^>]*\?>/, '');
-      }).catch(function () {});
       $('#undo').addEventListener('click', function () { reset('Try another one.'); });
       $('#showBest').addEventListener('click', function () {
         var b3 = d.moves.filter(function (m) { return m.san === d.best; })[0];
