@@ -946,3 +946,93 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
   .hero-facts{flex-wrap:wrap;gap:6px 0}
   .hero-facts li{font-size:12px}
 }
+
+/* The copy column is much shorter than the board beside it, and starting both
+   at the same y left it riding high against a tall board. Nudged down -- not
+   centred, which would drop it too far and break the read from the top. */
+/* Only while the hero is actually two columns -- stacked, there is no tall
+   board beside it and the offset is just a gap at the top of the page. */
+@media (min-width:1081px){
+  .hero-copy{padding-top:clamp(28px,11vh,128px)}
+}
+
+/* ══ PHONE ══════════════════════════════════════════════════════════════════
+   Centred, and nothing moved or removed. Two things were actually wrong rather
+   than merely left-aligned: the board sat 22px right of centre because the rank
+   numbers took a grid column of their own, and the loop steps were indented
+   past a connector rail that has nothing to connect on a single column. */
+@media (max-width:700px){
+
+  /* The hero, centred as a block. */
+  .hero-copy{text-align:center;max-width:none;padding-top:0}
+  .hero-copy .sub{margin-left:auto;margin-right:auto;max-width:34ch}
+  .cta-row,.hero-facts,.promo{justify-content:center}
+  .cta-row .btn{width:100%;justify-content:center}
+  .promo{margin-top:18px}
+  .promo-link{margin-left:0}
+  .hero-facts{flex-wrap:wrap;gap:6px 0;margin-top:18px}
+
+  /* The rank numbers move inside the board's left edge instead of taking a
+     column beside it: the board is then both centred AND full width, rather
+     than centred by losing 30px. */
+  .board-wrap{grid-template-columns:minmax(0,1fr)}
+  .board-wrap .board{grid-column:1}
+  .ranks{position:absolute;left:10px;top:8px;bottom:26px;width:14px;
+    grid-column:1;z-index:2;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+  .files{grid-column:1}
+
+  /* Every section heading and its lede on the centre line. */
+  .bl-head,.vs,.feat-more,.quote,.tabs-line,.plans,.faq-wrap .bl-head{text-align:center}
+  .bl-head .lede,.vs-l,.lede{margin-left:auto;margin-right:auto}
+  .eyebrow{text-align:center}
+
+  /* The loop, without a rail to indent past. */
+  .bl{grid-template-columns:minmax(0,1fr)}
+  .bl-rail{display:none}
+  .bl-body{text-align:center;padding-bottom:44px}
+  .bl-body p{margin-left:auto;margin-right:auto;max-width:36ch}
+  .bl-body .btn,.bl-body .link-arrow{justify-content:center}
+  .bl-cta{width:100%}
+
+  /* The four steps read as cards rather than rows. */
+  #process .flow li{grid-template-columns:minmax(0,1fr);justify-items:center;
+    text-align:center;min-height:0;padding:16px 14px}
+  #process .flow .fl-i{margin:0 auto 8px}
+  #process .flow-next{width:100%;max-width:none}
+  .proc-foot{margin-left:auto;margin-right:auto}
+
+  /* Pricing: the parts you read as a header are centred; the feature list keeps
+     its left edge, because a column of ticks down the middle stops being a list
+     you can scan. */
+  .plan{text-align:center}
+  .plan ul{text-align:left;display:inline-block;margin-left:auto;margin-right:auto}
+  .plan .btn{width:100%;justify-content:center}
+  .bill-switch{margin-left:auto;margin-right:auto}
+
+  /* FAQ: the questions centre, the answers do not -- centred prose over four
+     lines is harder to read, and these are the longest paragraphs on the page. */
+  .faq summary{text-align:center;padding-right:0;padding-left:0}
+  .faq summary::after{position:static;display:block;margin:10px auto 0;
+    transform:rotate(45deg)}
+  .faq details[open] summary::after{transform:rotate(225deg)}
+  .faq details p{text-align:left}
+
+  /* The comparison keeps its two labelled sides; only the axis label centres. */
+  .vs-k{justify-content:center;text-align:center}
+
+  .foot-brand{justify-content:center;text-align:center}
+  .foot-links{justify-content:center}
+}
+
+/* Finger-sized. These measured 29-30px tall, and they are the two things a
+   phone user actually taps: the coach's buttons and the billing switch.
+   Apple asks for 44pt, Android for 48dp. */
+@media (max-width:700px){
+  .fc-btn{min-height:44px;padding:0 16px;font-size:13px}
+  .c-act{gap:10px}
+  .c-act .fc-btn{flex:1 1 0}
+  .bs-b{min-height:44px;padding:0 18px;font-size:13.5px}
+  .bill-switch{width:100%;justify-content:stretch}
+  .bill-switch .bs-b{flex:1 1 0}
+  .faq summary{min-height:44px;display:flex;flex-direction:column;justify-content:center}
+}

@@ -453,6 +453,14 @@
 
   function clock() {
     var ms = left();
+    /* The clock belongs to the yearly price. On Monthly there is nothing
+       running out, so a countdown sitting under $19.99 a month is just an
+       unexplained number. */
+    if (interval !== 'yearly') {
+      note.hidden = true;
+      if (tick) { clearInterval(tick); tick = null; }
+      return;
+    }
     if (!live()) {
       /* Over means gone. A clock reading 0d 00h 00m 00s left on the page is
          worse than no clock, and the offer must not stay advertised. */
