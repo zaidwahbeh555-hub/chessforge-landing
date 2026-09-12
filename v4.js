@@ -335,8 +335,95 @@
       $('#coachSay').textContent = msg || D.idle;
     }
 
+    /* ── Dragging ──────────────────────────────────────────────────────────
+       Click-then-click stays exactly as it was; this is the other half of how
+       people expect a board to work. Mouse and pen only: on a touch screen the
+       piece would sit under the finger that is hiding it, and stopping the
+       browser scrolling long enough to allow a drag would cost the page scroll
+       on a 334px board. Tapping already works there.
+
+       Only legal destinations are droppable. The move list is the same one the
+       click path uses -- every position was solved by Stockfish before the page
+       was built, so "legal" here is the real set, not a guess at one. */
+    var drag = null;
+
+    function squareAt(x, y) {
+      var el = document.elementFromPoint(x, y);
+      return el ? el.closest('.sq') : null;
+    }
+    function endDrag(commit) {
+      if (!drag) return;
+      var d0 = drag; drag = null;
+      if (d0.ghost) d0.ghost.remove();
+      if (d0.img) d0.img.style.opacity = '';
+      $$('.sq.over', board).forEach(function (s) { s.classList.remove('over'); });
+      if (commit) { respond(commit); return; }
+      /* A drop on nothing is not a mistake -- the piece stays picked up, so the
+         next click still completes the move. */
+    }
+
+    board.addEventListener('pointerdown', function (e) {
+      if (!D || played || e.button !== 0) return;
+      if (e.pointerType === 'touch') return;
+      var cell = e.target.closest('.sq'); if (!cell) return;
+      var img = cell.querySelector('img'); if (!img) return;
+      var opts = movesFrom(cell.dataset.sq);
+      if (!opts.length) return;                 // nothing legal: nothing to drag
+
+      clearMarks();
+      sel = cell.dataset.sq;
+      cell.classList.add('pick');
+      opts.forEach(function (o) {
+        var t = board.querySelector('[data-sq="' + o.to + '"]');
+        if (t) t.classList.add('target');
+      });
+
+      var r = cell.getBoundingClientRect();
+      var g = img.cloneNode(true);
+      g.className = 'drag-ghost';
+      g.style.width = r.width + 'px';
+      g.style.height = r.height + 'px';
+      document.body.appendChild(g);
+      drag = { from: cell.dataset.sq, img: img, ghost: g, moved: false,
+               x0: e.clientX, y0: e.clientY, size: r.width };
+      g.style.left = (e.clientX - r.width / 2) + 'px';
+      g.style.top  = (e.clientY - r.height / 2) + 'px';
+      board.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+
+    board.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      if (!drag.moved
+          && Math.abs(e.clientX - drag.x0) < 5 && Math.abs(e.clientY - drag.y0) < 5) return;
+      if (!drag.moved) { drag.moved = true; drag.img.style.opacity = '.25'; }
+      drag.ghost.style.left = (e.clientX - drag.size / 2) + 'px';
+      drag.ghost.style.top  = (e.clientY - drag.size / 2) + 'px';
+      var over = squareAt(e.clientX, e.clientY);
+      $$('.sq.over', board).forEach(function (s) { s.classList.remove('over'); });
+      if (over && over.classList.contains('target')) over.classList.add('over');
+    });
+
+    board.addEventListener('pointerup', function (e) {
+      if (!drag) return;
+      var moved = drag.moved, from = drag.from;
+      if (!moved) { endDrag(null); return; }    // a click, not a drag
+      var cell = squareAt(e.clientX, e.clientY);
+      var m = cell && movesFrom(from).filter(function (x) {
+        return x.to === cell.dataset.sq;
+      })[0];
+      suppressClick = true;
+      endDrag(m || null);                       // illegal or off-board: snaps back
+    });
+    board.addEventListener('pointercancel', function () { endDrag(null); });
+
+    var suppressClick = false;
+
     board.addEventListener('click', function (e) {
       if (!D) return;
+      /* The pointerup that finished a drag is followed by a click on the square
+         it started from, which would immediately deselect what just moved. */
+      if (suppressClick) { suppressClick = false; return; }
       var cell = e.target.closest('.sq'); if (!cell) return;
       var sq = cell.dataset.sq;
       if (played) { reset(); return; }          // a click after a move starts over
