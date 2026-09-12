@@ -22,7 +22,7 @@ const path = require('path');
 
 const html = fs.readFileSync('index.html','utf8');
 // The page ships v3-styles.css now; style.css is the retired sheet.
-const css  = fs.readFileSync('v3-styles.css','utf8');
+const css  = fs.readFileSync('v4.css','utf8');
 const icon = fs.readFileSync('logo.svg','utf8');
 
 let pass=0, total=0;

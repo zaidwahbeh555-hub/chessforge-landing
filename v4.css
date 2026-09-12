@@ -1,0 +1,893 @@
+/* ChessForge landing v4 — the dark, cinematic layout.
+   Design follows the supplied reference; the CONTENT is the real product. The
+   reference carried a five-star testimonial from "@chesslover247" and a
+   "players love ChessForge" banner: invented people and an aggregate claim, so
+   that band holds the owner's own signed quote instead. */
+:root{
+  --bg:#05080e; --bg-2:#070c14; --bg-3:#0a111c;
+  --panel:rgba(14,22,36,.72); --panel-2:rgba(18,28,45,.9);
+  --line:rgba(120,170,235,.12); --line-2:rgba(120,170,235,.22);
+  --a:#2FD1FF; --a-2:#7ce0ff; --a-deep:#1287c9;
+  --ink:#f3f8ff; --ink-2:#dbe6f5; --ink-3:#9fb3cc;
+  --ink-4:#75899f; --ink-5:#56687e;
+  --bad:#ff6b6b; --good:#3dc97f;
+  --gut:clamp(20px,4vw,64px);
+  --wide:clamp(1040px,88vw,1420px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink-2);
+  font:400 15.5px/1.6 Manrope,system-ui,sans-serif;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,.brand-word,.btn,.pp,.fc-n,.eyebrow,.kicker{font-family:Sora,system-ui,sans-serif}
+h1,h2,h3{margin:0;letter-spacing:-.035em;color:var(--ink);text-wrap:pretty}
+p{margin:0;text-wrap:pretty}
+a{color:var(--a);text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:rgba(47,209,255,.3)}
+.skip{position:absolute;left:-9999px;top:0;background:var(--a);color:#04101f;padding:10px 16px;z-index:200}
+.skip:focus{left:0}
+/* One gradient for every accented half-sentence, so the emphasis reads the
+   same everywhere it appears. */
+.grad{background:linear-gradient(100deg,var(--a) 0%,var(--a-2) 55%,#a9ecff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ── nav ─────────────────────────────────────────────────────────────────── */
+.nav{position:fixed;inset:0 0 auto;z-index:90;height:72px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;padding:0 var(--gut);
+  background:rgba(5,8,14,.7);backdrop-filter:blur(18px);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav.stuck{border-bottom-color:var(--line);background:rgba(5,8,14,.92)}
+.brand{display:flex;align-items:center;gap:11px;color:var(--ink)}
+.mark{width:30px;height:30px;filter:drop-shadow(0 0 14px rgba(47,209,255,.45))}
+.brand-word{font-size:17px;font-weight:600;letter-spacing:-.02em}
+.links{display:flex;gap:clamp(18px,2.4vw,38px)}
+.links a{font-size:14px;font-weight:500;color:var(--ink-3);transition:color .2s}
+.links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:0;
+  font-size:14.5px;font-weight:600;border-radius:999px;padding:12px 22px;
+  transition:transform .2s var(--ease),box-shadow .3s,background .3s,border-color .3s}
+.btn span{transition:transform .25s var(--ease)}
+.btn:hover span{transform:translateX(3px)}
+.btn-pill{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.btn-pill:hover{border-color:var(--a);color:var(--a-2)}
+.btn-fill{background:linear-gradient(180deg,var(--a-2),var(--a));color:#04121c;
+  box-shadow:0 14px 40px -14px rgba(47,209,255,.75)}
+.btn-fill:hover{box-shadow:0 18px 50px -14px rgba(47,209,255,.95);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:var(--a);color:var(--ink)}
+.btn.wide{width:100%;justify-content:center;padding:14px}
+.play{width:26px;height:26px;border-radius:50%;border:1px solid var(--line-2);
+  display:inline-flex;flex:none;position:relative}
+.play::after{content:"";position:absolute;left:9px;top:7.5px;border-left:7px solid var(--a);
+  border-top:5px solid transparent;border-bottom:5px solid transparent}
+.burger{display:none;width:42px;height:42px;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;background:none;border:1px solid var(--line-2);
+  border-radius:12px;cursor:pointer}
+.burger span{width:17px;height:1.5px;background:var(--ink-2);border-radius:2px;
+  transition:transform .25s var(--ease),opacity .2s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.menu{position:fixed;top:72px;right:var(--gut);z-index:89;min-width:210px;display:flex;
+  flex-direction:column;padding:10px;border-radius:16px;background:rgba(8,14,24,.97);
+  border:1px solid var(--line-2);backdrop-filter:blur(18px);
+  box-shadow:0 30px 70px -26px rgba(0,0,0,.9)}
+.menu[hidden]{display:none}
+.menu a{padding:12px 14px;border-radius:10px;font-size:14.5px;color:var(--ink-2)}
+.menu a:hover{background:rgba(47,209,255,.1);color:var(--a-2)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:8px 4px}
+.menu-cta{background:linear-gradient(180deg,var(--a-2),var(--a));color:#04121c!important;
+  font-weight:700;text-align:center}
+
+/* ── hero ────────────────────────────────────────────────────────────────── */
+.hero{position:relative;padding:calc(72px + clamp(20px,3vw,48px)) var(--gut) clamp(50px,7vw,110px);
+  overflow:hidden;
+  background:radial-gradient(1200px 620px at 72% 8%,#0e2136 0%,transparent 62%),var(--bg)}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+/* A single shaft of light across the board, the way the reference lights it. */
+.beam{position:absolute;top:-30%;right:4%;width:52%;height:150%;
+  background:linear-gradient(197deg,rgba(47,209,255,.16) 0%,rgba(47,209,255,0) 62%);
+  transform:rotate(-8deg);filter:blur(30px)}
+.haze{position:absolute;left:-12%;bottom:-30%;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(18,135,201,.22),transparent 66%);filter:blur(70px)}
+/* Two columns, and the screen fills the second one.
+   Stacked, the copy ran to the fold and the board began at y=660 in a 757px
+   window -- 15% of it visible, with the whole right half of the screen empty.
+   The point of this hero is that you play the board, and you cannot play what
+   you cannot see. Side by side, both are on screen when the page loads. */
+.hero-in{position:relative;max-width:var(--wide);margin:0 auto;display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  gap:clamp(24px,2.6vw,44px);align-items:start}
+.hero-copy{max-width:58ch}
+.hero-copy .sub{max-width:44ch}
+.kicker{font-family:Sora,system-ui,sans-serif}
+h1,h2,h3{margin:0;letter-spacing:-.035em;color:var(--ink);text-wrap:pretty}
+p{margin:0;text-wrap:pretty}
+a{color:var(--a);text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:rgba(47,209,255,.3)}
+.skip{position:absolute;left:-9999px;top:0;background:var(--a);color:#04101f;padding:10px 16px;z-index:200}
+.skip:focus{left:0}
+/* One gradient for every accented half-sentence, so the emphasis reads the
+   same everywhere it appears. */
+.grad{background:linear-gradient(100deg,var(--a) 0%,var(--a-2) 55%,#a9ecff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ── nav ─────────────────────────────────────────────────────────────────── */
+.nav{position:fixed;inset:0 0 auto;z-index:90;height:72px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;padding:0 var(--gut);
+  background:rgba(5,8,14,.7);backdrop-filter:blur(18px);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav.stuck{border-bottom-color:var(--line);background:rgba(5,8,14,.92)}
+.brand{display:flex;align-items:center;gap:11px;color:var(--ink)}
+.mark{width:30px;height:30px;filter:drop-shadow(0 0 14px rgba(47,209,255,.45))}
+.brand-word{font-size:17px;font-weight:600;letter-spacing:-.02em}
+.links{display:flex;gap:clamp(18px,2.4vw,38px)}
+.links a{font-size:14px;font-weight:500;color:var(--ink-3);transition:color .2s}
+.links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:0;
+  font-size:14.5px;font-weight:600;border-radius:999px;padding:12px 22px;
+  transition:transform .2s var(--ease),box-shadow .3s,background .3s,border-color .3s}
+.btn span{transition:transform .25s var(--ease)}
+.btn:hover span{transform:translateX(3px)}
+.btn-pill{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.btn-pill:hover{border-color:var(--a);color:var(--a-2)}
+.btn-fill{background:linear-gradient(180deg,var(--a-2),var(--a));color:#04121c;
+  box-shadow:0 14px 40px -14px rgba(47,209,255,.75)}
+.btn-fill:hover{box-shadow:0 18px 50px -14px rgba(47,209,255,.95);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:var(--a);color:var(--ink)}
+.btn.wide{width:100%;justify-content:center;padding:14px}
+.play{width:26px;height:26px;border-radius:50%;border:1px solid var(--line-2);
+  display:inline-flex;flex:none;position:relative}
+.play::after{content:"";position:absolute;left:9px;top:7.5px;border-left:7px solid var(--a);
+  border-top:5px solid transparent;border-bottom:5px solid transparent}
+.burger{display:none;width:42px;height:42px;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;background:none;border:1px solid var(--line-2);
+  border-radius:12px;cursor:pointer}
+.burger span{width:17px;height:1.5px;background:var(--ink-2);border-radius:2px;
+  transition:transform .25s var(--ease),opacity .2s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.menu{position:fixed;top:72px;right:var(--gut);z-index:89;min-width:210px;display:flex;
+  flex-direction:column;padding:10px;border-radius:16px;background:rgba(8,14,24,.97);
+  border:1px solid var(--line-2);backdrop-filter:blur(18px);
+  box-shadow:0 30px 70px -26px rgba(0,0,0,.9)}
+.menu[hidden]{display:none}
+.menu a{padding:12px 14px;border-radius:10px;font-size:14.5px;color:var(--ink-2)}
+.menu a:hover{background:rgba(47,209,255,.1);color:var(--a-2)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:8px 4px}
+.menu-cta{background:linear-gradient(180deg,var(--a-2),var(--a));color:#04121c!important;
+  font-weight:700;text-align:center}
+
+/* ── hero ────────────────────────────────────────────────────────────────── */
+.hero{position:relative;padding:calc(72px + clamp(20px,3vw,48px)) var(--gut) clamp(50px,7vw,110px);
+  overflow:hidden;
+  background:radial-gradient(1200px 620px at 72% 8%,#0e2136 0%,transparent 62%),var(--bg)}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+/* A single shaft of light across the board, the way the reference lights it. */
+.beam{position:absolute;top:-30%;right:4%;width:52%;height:150%;
+  background:linear-gradient(197deg,rgba(47,209,255,.16) 0%,rgba(47,209,255,0) 62%);
+  transform:rotate(-8deg);filter:blur(30px)}
+.haze{position:absolute;left:-12%;bottom:-30%;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(18,135,201,.22),transparent 66%);filter:blur(70px)}
+/* One column, not two.
+   The coached screen is itself three columns -- what he is saying, the board,
+   the read-out -- and squeezing that into half the hero left the board at
+   294px, which is a thumbnail of the product rather than the product. The copy
+   sits above it and the screen runs the full width, the way a product shot
+   should. */
+.hero-in{position:relative;max-width:var(--wide);margin:0 auto}
+.hero-copy{max-width:min(760px,100%);margin-bottom:clamp(32px,4vw,56px)}
+.hero-copy .sub{max-width:62ch}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--a);margin-bottom:18px}
+h1{font-size:clamp(34px,4.1vw,60px);line-height:1.04;margin-bottom:18px}
+.sub{font-size:clamp(15px,1.15vw,17px);line-height:1.65;color:var(--ink-3);max-width:46ch;
+  margin-bottom:30px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.fine{font-size:13px;color:var(--ink-5);margin-top:14px;max-width:52ch;line-height:1.6}
+
+/* ── free now, promo on top ──────────────────────────────────────────────────
+   Two separate facts that kept being collapsed into one button. */
+.promo{display:flex;align-items:flex-start;gap:10px;margin-top:18px;
+  font-size:13.5px;line-height:1.55;color:var(--ink-3)}
+.promo a{color:var(--a-2);text-decoration:none;white-space:nowrap}
+.promo a:hover{text-decoration:underline}
+.promo-tag{flex:none;font:700 9.5px/1 Sora,sans-serif;letter-spacing:.11em;
+  text-transform:uppercase;color:#0a1420;background:var(--a);
+  padding:5px 9px;border-radius:999px;margin-top:1px}
+
+/* The glow behind the screen. Nothing else here survives the old hero: the
+   board carried a perspective tilt, which foreshortened it so the squares
+   measured differently row to row -- and the app's board is flat, because it
+   is a board you click rather than a photograph of one. */
+.stage{position:relative;isolation:isolate}
+.stage-glow{position:absolute;inset:-6% -4% -12%;border-radius:28px;pointer-events:none;
+  background:radial-gradient(circle at 50% 42%,rgba(47,209,255,.2),transparent 62%);
+  filter:blur(46px)}
+
+/* ── the hero: the coached screen ────────────────────────────────────────────
+   Three columns, the way the app lays them out: what he is saying with the
+   figure docked under it, the board, and the read-out. */
+/* One column. Two narrow things side by side is what "cramped" was: a 253px
+   rail next to a 449px board. The rail's contents now sit on the board. */
+.coached{position:relative;z-index:1}
+.c-say{border:1px solid var(--line-2);border-radius:14px;padding:13px 15px;
+  background:var(--panel-2);backdrop-filter:blur(14px);
+  transition:border-color .35s,box-shadow .35s}
+.c-say.spoke{border-color:rgba(47,209,255,.5);
+  box-shadow:0 20px 50px -26px rgba(47,209,255,.6)}
+.c-who{display:flex;align-items:center;gap:9px;font:600 12px/1 Sora,sans-serif;
+  color:var(--a-2);margin-bottom:8px}
+.c-say p{font-size:13px;line-height:1.6;color:var(--ink-3)}
+/* His lines differ in length, so the box was resizing under the chip and the
+   buttons every time he spoke. Held at the height of the longest one. */
+.c-say{min-height:172px;display:flex;flex-direction:column}
+.grade{font:700 9.5px/1 Sora,sans-serif;letter-spacing:.09em;text-transform:uppercase;
+  padding:4px 8px;border-radius:999px}
+.grade:empty{display:none}
+.grade.best{color:#8ff0c4;background:rgba(61,201,127,.14);border:1px solid rgba(61,201,127,.45)}
+.grade.good{color:#a9ecff;background:rgba(47,209,255,.12);border:1px solid rgba(47,209,255,.4)}
+.grade.inaccuracy{color:#e8d9a8;background:rgba(229,167,61,.14);border:1px solid rgba(229,167,61,.42)}
+.grade.mistake,.grade.blunder{color:#ffb3b3;background:rgba(255,107,107,.14);
+  border:1px solid rgba(255,107,107,.45)}
+/* "Considering" — the app's own chip, showing the move and the answer to it. */
+.c-cand{display:flex;align-items:center;gap:9px;border:1px solid var(--line);
+  border-radius:12px;padding:9px 12px;background:rgba(10,18,30,.7);
+  min-height:34px;box-sizing:border-box}
+ /* Reserved rather than removed. As display:none these appeared on the first
+    move and shoved the whole rail down -- pressing a button should not move the
+    thing you pressed. */
+.c-cand[hidden],.c-act[hidden]{opacity:0;pointer-events:none}
+.c-cand[hidden]{display:flex}
+.c-cand-l{font:600 9.5px/1 Sora,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-5)}
+.c-cand-v{font:600 13px/1 Sora,sans-serif;color:var(--ink)}
+.c-act{display:flex;gap:8px;flex-wrap:wrap}
+.c-act[hidden]{display:flex;visibility:hidden}
+.c-cand,.c-act{transition:opacity .25s}
+.fc-btn{background:rgba(47,209,255,.12);border:1px solid rgba(47,209,255,.4);color:var(--a-2);
+  font:600 11.5px/1 Manrope,sans-serif;border-radius:999px;padding:8px 13px;cursor:pointer;
+  transition:background .2s}
+.fc-btn:hover{background:rgba(47,209,255,.24)}
+.fc-btn.ghost{background:transparent;border-color:var(--line-2);color:var(--ink-3)}
+.fc-btn.ghost:hover{border-color:var(--a);color:var(--ink)}
+/* He stands on the background with no card around him, the way he does in the
+   app -- a box would make him an illustration rather than someone in the room. */
+.c-forge{margin-top:auto;padding-top:10px;display:flex;justify-content:flex-end;
+  pointer-events:none}
+/* Pushed right and allowed past the gap so he is shoulder-to-shoulder with the
+   board frame. Bottom-aligned with the board, so he stands at it. */
+.c-forge svg{width:100%;max-width:min(230px,100%);height:auto;display:block;
+  margin-right:clamp(-26px,-1.6vw,-10px);margin-bottom:-4px}
+.c-forge .forge-face{display:none}
+.c-forge[data-expr="neutral"]   .forge-face[data-expr="neutral"],
+.c-forge[data-expr="concerned"] .forge-face[data-expr="concerned"],
+.c-forge[data-expr="impressed"] .forge-face[data-expr="impressed"]{display:block}
+
+.c-main{min-width:0}
+.c-who-row{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;
+  color:var(--ink-3);margin-bottom:5px}
+.c-who-row.you{margin:5px 0 0}
+.pip{width:15px;height:15px;border-radius:50%;flex:none}
+.pip.w{background:linear-gradient(140deg,#e6eef8,#9fb3cc)}
+.pip.b{background:linear-gradient(140deg,#2b3a52,#131d2c)}
+.board-wrap{position:relative;border-radius:14px;padding:8px;
+  background:linear-gradient(160deg,rgba(47,209,255,.2),rgba(47,209,255,0) 55%),
+             linear-gradient(0deg,rgba(10,17,28,.92),rgba(10,17,28,.92));
+  box-shadow:0 44px 100px -44px rgba(0,0,0,.95),0 0 0 1px rgba(120,170,235,.14),
+             0 0 80px -40px rgba(47,209,255,.45)}
+.board{display:grid;grid-template-columns:repeat(8,1fr);border-radius:8px;overflow:hidden}
+.sq{aspect-ratio:1;position:relative;display:flex;align-items:center;justify-content:center;
+  cursor:pointer}
+/* Storm Marble -- the app's house board. Named, so a change in one place is
+   visible in the other. */
+:root{--sq-l:#bccedb;--sq-d:#4a7191}
+.sq.l{background:var(--sq-l)}
+.sq.d{background:var(--sq-d)}
+.sq img{width:88%;height:88%;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.sq.pick::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 3px var(--a);
+  background:rgba(47,209,255,.2)}
+.sq.target::after{content:"";position:absolute;left:50%;top:50%;width:22%;height:22%;
+  transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.55);
+  box-shadow:0 0 10px rgba(0,0,0,.35);transition:width .15s,height .15s,background .15s}
+.sq.target:hover::after{width:36%;height:36%;background:rgba(47,209,255,.9)}
+.sq.from::after{content:"";position:absolute;inset:0;background:rgba(47,209,255,.26)}
+.sq.to::after{content:"";position:absolute;inset:0;background:rgba(61,201,127,.34);
+  box-shadow:inset 0 0 0 3px var(--good)}
+.sq.bad::after{content:"";position:absolute;inset:0;background:rgba(255,107,107,.34);
+  box-shadow:inset 0 0 0 3px var(--bad)}
+.evalbar{height:6px;border-radius:999px;background:#0b1320;overflow:hidden;margin-top:9px}
+.evalbar span{display:block;height:100%;width:66%;border-radius:999px;
+  transition:width .5s var(--ease),background .3s;
+  background:linear-gradient(90deg,var(--a-deep),var(--a))}
+.evalbar span.bad{background:linear-gradient(90deg,#8d2b2b,var(--bad))}
+
+.c-badge{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;
+  border:1px solid rgba(47,209,255,.4);background:rgba(47,209,255,.1);border-radius:999px;
+  padding:6px 12px;font:600 11px/1 Sora,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--a-2)}
+.ph-dot{width:7px;height:7px;border-radius:50%;background:var(--a);flex:none;
+  box-shadow:0 0 10px var(--a);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.c-read{border:1px solid var(--line);border-radius:12px;padding:12px 13px;
+  background:rgba(10,18,30,.65)}
+.c-k{display:block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-5)}
+.c-v{display:block;font:700 22px/1.1 Sora,sans-serif;color:var(--ink);margin-top:5px;
+  letter-spacing:-.02em}
+.c-sub{display:block;font-size:11.5px;color:var(--ink-4);margin-top:4px}
+.c-foot{grid-column:1 / -1;font-size:11px;line-height:1.5;color:var(--ink-5)}
+/* The footnote and the running panel swap places; holding them in one cell
+   keeps the column exactly as tall either way. */
+.c-foot[hidden]{display:block;visibility:hidden;height:0;margin:0;overflow:hidden}
+
+/* ── bands ───────────────────────────────────────────────────────────────── */
+.band{padding:clamp(64px,8vw,130px) var(--gut);background:var(--bg-2);
+  border-top:1px solid var(--line)}
+.band.alt{background:var(--bg-3)}
+.band > *{max-width:var(--wide);margin:0 auto}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--a);margin-bottom:16px}
+h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
+.lede{font-size:15px;line-height:1.7;color:var(--ink-3);margin-top:18px;max-width:52ch}
+.lede.mid{margin-left:auto;margin-right:auto}
+.center{text-align:center}
+.link-arrow{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-weight:600;
+  font-size:14.5px}
+.link-arrow span{transition:transform .25s var(--ease)}
+.link-arrow:hover span{transform:translateX(4px)}
+
+.feat{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.6fr);
+  gap:clamp(28px,4vw,72px);align-items:start}
+.feat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(12px,1.4vw,18px)}
+.fcard{border:1px solid var(--line);border-radius:16px;padding:clamp(18px,1.8vw,24px);
+  background:var(--panel);transition:border-color .3s,transform .3s var(--ease),box-shadow .3s}
+.fcard:hover{border-color:rgba(47,209,255,.45);transform:translateY(-3px);
+  box-shadow:0 24px 60px -30px rgba(47,209,255,.6)}
+.ficon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;
+  justify-content:center;background:rgba(47,209,255,.12);border:1px solid rgba(47,209,255,.3);
+  margin-bottom:16px}
+.ficon svg{width:19px;height:19px;fill:none;stroke:var(--a);stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round}
+.fcard h3{font-size:15.5px;font-weight:600;margin-bottom:8px}
+.fcard p{font-size:13px;line-height:1.6;color:var(--ink-4)}
+
+.action{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.5fr);
+  gap:clamp(28px,4vw,64px);align-items:center}
+.shot{border-radius:18px;overflow:hidden;border:1px solid var(--line-2);
+  background:linear-gradient(180deg,#0c1624,#070d17);
+  box-shadow:0 50px 110px -46px rgba(0,0,0,.95),0 0 80px -40px rgba(47,209,255,.35)}
+.shot-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:rgba(9,16,27,.9)}
+.shot-bar span{width:9px;height:9px;border-radius:50%;background:#22354c}
+.shot-bar b{margin-left:8px;font:600 12px/1 Sora,sans-serif;color:var(--ink-3)}
+.shot-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);gap:14px;padding:14px}
+.shot-board{display:grid;grid-template-columns:repeat(8,1fr);border-radius:8px;overflow:hidden;
+  border:1px solid var(--line);align-self:start}
+.shot-side{display:flex;flex-direction:column;gap:10px;min-width:0}
+.tabs{display:flex;gap:14px;border-bottom:1px solid var(--line);padding-bottom:9px;font-size:11.5px}
+.tabs b{color:var(--a-2);font-weight:600;position:relative}
+.tabs b::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:2px;background:var(--a)}
+.tabs span{color:var(--ink-5)}
+.mistake{border:1px solid rgba(255,107,107,.35);background:rgba(40,15,20,.6);
+  border-radius:10px;padding:11px}
+.mistake p{font-size:11.5px;line-height:1.5;color:var(--ink-3)}
+.mistake b{color:var(--ink)}
+.bestrow{display:flex;align-items:baseline;gap:8px;border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;background:rgba(10,18,30,.7)}
+.bestrow .k{font-size:11px;color:var(--ink-5)}
+.bestrow .v{font:700 15px/1 Sora,sans-serif;color:var(--a)}
+.bestrow .sc{margin-left:auto;font-size:11px;color:var(--good)}
+.movelist{display:flex;flex-direction:column;gap:5px;font-size:11.5px}
+.movelist div{display:grid;grid-template-columns:26px 1fr 1fr;gap:8px;padding:6px 9px;
+  border-radius:7px;background:rgba(10,18,30,.6)}
+.movelist i{font-style:normal;color:var(--ink-5)}
+.movelist b{color:var(--ink)}
+.movelist span{color:var(--ink-4)}
+
+/* ── pricing ─────────────────────────────────────────────────────────────── */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:clamp(14px,1.8vw,24px);margin-top:clamp(30px,4vw,54px)}
+.plan{border:1px solid var(--line);border-radius:18px;padding:clamp(22px,2.2vw,32px);
+  background:var(--panel)}
+.plan.lit{border-color:rgba(47,209,255,.45);
+  box-shadow:0 30px 80px -34px rgba(47,209,255,.55);
+  background:linear-gradient(180deg,rgba(14,32,52,.9),rgba(8,16,28,.9))}
+.pn{font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--a-2)}
+.pp{font-size:clamp(30px,3vw,42px);font-weight:700;color:var(--ink);margin:14px 0 20px;
+  letter-spacing:-.03em}
+.pp s{color:var(--ink-5);font-size:.5em;font-weight:500;margin-right:10px}
+.pp small{display:block;font:500 12.5px/1 Manrope,sans-serif;color:var(--ink-5);margin-top:9px}
+.plan ul{list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:11px}
+.plan li{font-size:13px;line-height:1.55;color:var(--ink-3);padding-left:27px;position:relative}
+.plan li::before{position:absolute;left:0;top:1px;width:17px;height:17px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.plan li.y::before{content:"\2713";background:rgba(47,209,255,.14);
+  border:1px solid rgba(47,209,255,.5);color:var(--a-2)}
+/* Shown, not omitted: a reader comparing two columns needs to see the gap. */
+.plan li.n{color:var(--ink-5)}
+.plan li.n::before{content:"\2715";background:rgba(255,107,107,.1);
+  border:1px solid rgba(255,107,107,.3);color:#ff9a9a}
+.pf{font-size:12px;color:var(--ink-5);margin-top:14px;text-align:center}
+
+/* ── the quote band ──────────────────────────────────────────────────────── */
+.quote-band{position:relative;padding:clamp(70px,9vw,140px) var(--gut);overflow:hidden;
+  border-top:1px solid var(--line)}
+.quote-bg{position:absolute;inset:0;
+  background:radial-gradient(900px 500px at 50% 0%,#12283f 0%,transparent 65%),#060b13}
+.quote-bg::after{content:"";position:absolute;inset:0;opacity:.5;
+  background:linear-gradient(transparent 60%,rgba(5,8,14,.9))}
+.quote{position:relative;max-width:820px;margin:0 auto;text-align:center}
+.q{font:500 clamp(21px,2.6vw,34px)/1.4 Sora,sans-serif;color:var(--ink);letter-spacing:-.02em}
+.q-more{font-size:15px;line-height:1.7;color:var(--ink-3);margin-top:22px}
+.q-by{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:32px;
+  text-align:left}
+.q-mark{width:34px;height:34px;opacity:.85}
+.q-by b{display:block;font-size:14px;color:var(--ink)}
+.q-by span{display:block;font-size:12.5px;color:var(--ink-5);max-width:42ch;margin-top:3px}
+
+.closer{padding:clamp(56px,7vw,110px) var(--gut);background:var(--bg-2);
+  border-top:1px solid var(--line)}
+.closer-in{max-width:760px;margin:0 auto;text-align:center}
+.closer p{color:var(--ink-3);margin:14px 0 30px}
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.foot{padding:clamp(34px,4vw,56px) var(--gut);background:var(--bg);
+  border-top:1px solid var(--line);display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px;align-items:start}
+.foot-brand{display:flex;gap:12px;align-items:center}
+.foot-brand b{display:block;font:600 15px/1.2 Sora,sans-serif;color:var(--ink)}
+.foot-brand span{font-size:12.5px;color:var(--ink-5)}
+.foot-links{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+.foot-links a{font-size:13px;color:var(--ink-3)}
+.foot-links a:hover{color:var(--a-2)}
+.foot-legal{text-align:right}
+.foot-legal button{background:none;border:0;color:var(--ink-3);font:400 13px/1 Manrope,sans-serif;
+  cursor:pointer;padding:0;margin-left:16px}
+.foot-legal button:hover{color:var(--a-2)}
+.foot-legal p{font-size:12px;color:var(--ink-5);margin-top:12px}
+
+/* ── modals ──────────────────────────────────────────────────────────────── */
+.modal{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;
+  padding:var(--gut);background:rgba(3,6,11,.78);backdrop-filter:blur(10px)}
+.modal[hidden]{display:none}
+.modal-in{position:relative;max-width:70ch;width:100%;max-height:82vh;overflow-y:auto;
+  background:#0b1421;border:1px solid var(--line-2);border-radius:18px;padding:clamp(24px,3vw,38px)}
+.modal-x{position:absolute;top:14px;right:18px;background:none;border:0;color:var(--ink-4);
+  font-size:28px;line-height:1;cursor:pointer}
+.modal-in h2{font-size:22px;margin-bottom:16px}
+.modal-in h3{font-size:14px;font-weight:600;color:var(--ink-2);margin:20px 0 6px}
+.modal-in p{font-size:13.5px;line-height:1.7;color:var(--ink-3);margin-bottom:10px}
+.modal-in code{font-size:12.5px;background:rgba(47,209,255,.12);padding:1px 5px;border-radius:4px;
+  color:var(--a-2)}
+
+/* ── scroll motion ───────────────────────────────────────────────────────────
+   Every block fading up 26px over 0.9s is the house style of a generated page:
+   uniform distance, uniform duration, uniform easing, applied to headings, body
+   copy and cards alike. It reads as a template because it is one.
+
+   Three different treatments instead, each matched to what it is moving:
+
+     headings  wipe up from behind their own baseline, which is a typographic
+               move rather than a card move -- no fade, so the type never
+               renders at half opacity;
+     body      does not move at all. Prose that slides is prose you cannot start
+               reading until it has finished arriving;
+     cards     rise 8px in 380ms with a 55ms stagger. Short and close, so it
+               reads as the row settling rather than as six separate entrances.
+
+   Under 700ms and under 10px is the difference between "this responded to me"
+   and "this is performing for me". */
+.reveal h2{display:block;overflow:hidden}
+.reveal h2 > span,.reveal h2{will-change:transform}
+.reveal h2{clip-path:inset(0 0 110% 0);transform:translateY(.14em);
+  transition:clip-path .62s var(--ease),transform .62s var(--ease)}
+.reveal.in h2{clip-path:inset(0 0 -20% 0);transform:none}
+/* The eyebrow is a label, so it draws its rule in rather than sliding. */
+.reveal .eyebrow{position:relative;opacity:0;transition:opacity .3s ease .1s}
+.reveal.in .eyebrow{opacity:1}
+.reveal .lede,.reveal .link-arrow,.reveal p{opacity:0;transition:opacity .5s ease .18s}
+.reveal.in .lede,.reveal.in .link-arrow,.reveal.in p{opacity:1}
+/* Cards are their own reveal, so a grid settles rather than the band arriving. */
+.fcard,.plan{opacity:0;transform:translateY(8px);
+  transition:opacity .38s var(--ease),transform .38s var(--ease),
+             border-color .3s,box-shadow .3s}
+.fcard.in,.plan.in{opacity:1;transform:none}
+/* Anything else still tagged .reveal gets the quiet version. */
+.reveal{opacity:1}
+.shot,.quote,.closer-in{opacity:0;transform:translateY(10px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.shot.in,.quote.in,.closer-in.in{opacity:1;transform:none}
+
+@media (max-width:1320px) and (min-width:1081px){
+  /* The copy has nothing left to say by this width; the board still needs room. */
+  .hero-in{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+  .hero-copy .sub{max-width:38ch}
+}
+@media (max-width:1080px){
+  .feat,.action{grid-template-columns:1fr}
+  .hero-in{grid-template-columns:1fr}
+  .coached{grid-template-columns:minmax(0,1fr)}
+    .c-forge svg{max-width:150px}
+  .feat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stage{margin-top:36px}
+}
+@media (max-width:860px){
+  .links,.nav > .btn-pill{display:none}
+  .burger{display:flex}
+  .shot-body{grid-template-columns:1fr}
+  .foot-legal{text-align:left}
+  .foot-links{justify-content:flex-start}
+}
+@media (max-width:620px){
+  .feat-grid{grid-template-columns:1fr}
+  .stage-glow{display:none}
+  .board-wrap{transform:none}
+  .cta-row .btn{width:100%;justify-content:center}
+  .q-by{flex-direction:column;text-align:center}
+}
+/* Every loop here is decoration. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .reveal,.float{opacity:1;transform:none}
+}
+
+/* ── board coordinates ───────────────────────────────────────────────────────
+   Files and ranks outside the board, the way the app draws them: somebody
+   being asked to find a move needs to be able to name the squares the coach is
+   talking about. */
+.board-wrap{display:grid;grid-template-columns:auto minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr) auto;gap:4px 6px}
+.board-wrap .board{grid-column:2;grid-row:1}
+.ranks,.files{display:grid;font:600 10.5px/1 Sora,sans-serif;color:var(--ink-5)}
+.ranks{grid-column:1;grid-row:1;grid-template-rows:repeat(8,1fr);align-items:center;
+  justify-items:center;width:16px}
+.files{grid-column:2;grid-row:2;grid-template-columns:repeat(8,1fr);justify-items:center}
+.ranks i,.files i{font-style:normal}
+
+/* ── what happens next ───────────────────────────────────────────────────────
+   The loop, running. Four steps, each filling its own bar and handing on. A
+   static list of four features says the same words and demonstrates none of
+   them, which is the difference this whole hero is built around. */
+.flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+ /* Never removed from flow. As display:none it appeared on the first move,
+    grew the column by 404px and moved the board 84px up the screen -- you
+    pressed a square and the board jumped. */
+.flow[hidden]{display:flex}
+.flow li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;
+  padding:10px 11px;border:1px solid var(--line);border-radius:11px;
+  background:rgba(10,18,30,.6);opacity:.42;
+  transition:opacity .3s,border-color .3s,background .3s}
+.flow li.run{opacity:1;border-color:rgba(47,209,255,.45);background:rgba(13,28,45,.8)}
+.flow li.done{opacity:1}
+.fl-i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line-2);
+  position:relative;transition:border-color .3s,background .3s}
+.flow li.run .fl-i{border-color:var(--a)}
+.flow li.run .fl-i::after{content:"";position:absolute;inset:3px;border-radius:50%;
+  background:var(--a);animation:pulse 1s ease-in-out infinite}
+.flow li.done .fl-i{border-color:var(--good);background:var(--good)}
+/* The tick is drawn, not a glyph, so it does not depend on a font. */
+.flow li.done .fl-i::after{content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;
+  border:solid #06210f;border-width:0 2px 2px 0;transform:rotate(42deg);animation:none}
+.flow b{display:block;font:600 12px/1.3 Sora,sans-serif;color:var(--ink-2)}
+.flow i{font-style:normal;font-size:11px;line-height:1.45;color:var(--ink-5)}
+.fl-bar{grid-column:2;height:3px;border-radius:999px;background:rgba(120,170,235,.14);
+  overflow:hidden;margin-top:8px}
+.fl-bar > span{display:block;height:100%;width:0;border-radius:999px;background:var(--a)}
+.flow li.run .fl-bar > span{width:100%;transition:width .62s linear}
+.flow li.done .fl-bar > span{width:100%;background:var(--good);transition:background .3s}
+@media (prefers-reduced-motion:reduce){
+  .flow li{opacity:1}
+  .flow li .fl-bar > span{width:100%}
+}
+
+/* ── the loop section ────────────────────────────────────────────────────────
+   Sized like the thing it describes. The rail between the steps fills as you
+   scroll past each one, so the page itself performs the sequence instead of
+   listing it. */
+.sep-line{height:1px;border:0;margin:0 0 clamp(44px,5vw,76px);
+  background:linear-gradient(90deg,transparent,var(--line-2) 18%,var(--a) 50%,
+             var(--line-2) 82%,transparent);opacity:.65}
+.bl-head{max-width:820px;margin:0 auto clamp(44px,5vw,72px);text-align:center}
+.bl-head h2{font-size:clamp(32px,4.6vw,60px);line-height:1.04;margin:14px 0 20px}
+.bl-head .lede{margin:0 auto;max-width:62ch}
+
+.bigloop{list-style:none;margin:0;padding:0;max-width:1000px;
+  margin-inline:auto;counter-reset:none}
+.bl{display:grid;grid-template-columns:auto minmax(0,1fr);
+  gap:clamp(20px,2.6vw,40px)}
+/* the connector */
+.bl-rail{position:relative;width:2px;background:var(--line);border-radius:2px;
+  justify-self:center}
+.bl-rail.last{background:linear-gradient(180deg,var(--line) 0 58%,transparent)}
+.bl-rail::after{content:"";position:absolute;inset:0;border-radius:2px;
+  background:linear-gradient(180deg,var(--a),rgba(47,209,255,.15));
+  transform:scaleY(0);transform-origin:top;transition:transform .9s cubic-bezier(.32,.72,0,1)}
+.bl.in .bl-rail::after{transform:scaleY(1)}
+.bl-dot{position:absolute;left:50%;top:18px;width:13px;height:13px;border-radius:50%;
+  transform:translate(-50%,-50%) scale(.35);background:var(--a);opacity:0;
+  box-shadow:0 0 0 5px rgba(47,209,255,.14),0 0 22px rgba(47,209,255,.75);
+  transition:transform .5s cubic-bezier(.32,.72,0,1),opacity .4s}
+.bl.in .bl-dot{transform:translate(-50%,-50%) scale(1);opacity:1}
+.bl-body{padding-bottom:clamp(48px,5.5vw,86px)}
+.bl:last-child .bl-body{padding-bottom:0}
+/* The numeral is the "bigger, cooler" part: set in the display face, filled
+   with the accent gradient, and large enough to be the landmark you scroll to. */
+.bl-n{display:block;font:800 clamp(40px,5.6vw,76px)/1 Sora,sans-serif;letter-spacing:-.04em;
+  background:linear-gradient(120deg,var(--a),#8f7bff 70%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:6px;opacity:.22;transition:opacity .6s .1s}
+.bl.in .bl-n{opacity:1}
+.bl-body h3{font-size:clamp(24px,3.2vw,42px);line-height:1.08;letter-spacing:-.02em;
+  margin-bottom:14px}
+.bl-body p{font-size:clamp(15px,1.15vw,17.5px);line-height:1.62;color:var(--ink-3);
+  max-width:60ch;margin-bottom:22px}
+.bl-cta{font-size:14.5px}
+
+.feat-more{max-width:var(--wide);margin:clamp(64px,7vw,110px) auto 0;
+  border-top:1px solid var(--line);padding-top:clamp(36px,4vw,60px)}
+.feat-more .eyebrow{text-align:center;margin-bottom:clamp(28px,3vw,44px)}
+
+@media (max-width:720px){
+  .bl{grid-template-columns:14px minmax(0,1fr);gap:18px}
+  .bl-body p{margin-bottom:18px}
+  .bl-cta{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .bl-rail::after{transform:scaleY(1)}
+  .bl-dot{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .bl-n{opacity:1}
+}
+
+/* ── the comparison ──────────────────────────────────────────────────────────
+   Three columns rather than the usual two-with-crosses: naming the dimension
+   on the left is what stops it reading as marketing. */
+.vs{max-width:1040px;margin:clamp(70px,7.5vw,120px) auto 0;text-align:center}
+.vs-h{font-size:clamp(28px,3.9vw,50px);line-height:1.06;margin:14px 0 18px}
+.vs-l{max-width:60ch;margin:0 auto clamp(32px,3.6vw,52px)}
+.vs-grid{display:grid;grid-template-columns:minmax(110px,.62fr) 1fr 1fr;
+  gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;
+  overflow:hidden;text-align:left}
+.vs-grid>*{background:var(--bg);padding:clamp(13px,1.3vw,19px) clamp(13px,1.4vw,20px);
+  font-size:14.5px;line-height:1.55}
+.vs-head{font:700 11px/1 Sora,sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  padding-top:16px;padding-bottom:16px}
+.vs-head.a{grid-column:2;color:var(--ink-5)}
+.vs-head.b{color:var(--a);background:rgba(47,209,255,.07)}
+.vs-k{font:600 12px/1.4 Sora,sans-serif;letter-spacing:.02em;color:var(--ink-4);
+  display:flex;align-items:center}
+.vs-a{color:var(--ink-5)}
+.vs-b{color:var(--ink-2);background:rgba(47,209,255,.05);
+  box-shadow:inset 2px 0 0 rgba(47,209,255,.35)}
+.vs-foot{font-size:13px;color:var(--ink-5);margin-top:18px;line-height:1.6}
+@media (max-width:760px){
+  .vs-grid{grid-template-columns:1fr}
+  .vs-head.a{grid-column:1}
+  .vs-k{border-top:1px solid var(--line);padding-top:16px;
+    color:var(--ink-3);font-size:12.5px}
+  .vs-grid>.vs-k:first-of-type{border-top:0}
+  .vs-a::before{content:"Everywhere else — ";color:var(--ink-6,#5b6a80);font-weight:600}
+  .vs-b::before{content:"ChessForge — ";color:var(--a);font-weight:600}
+  .vs-head{display:none}
+}
+
+.faq-wrap{max-width:900px}
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:20px 42px 20px 0;position:relative;
+  font:600 clamp(15px,1.35vw,18px)/1.45 Sora,sans-serif;color:var(--ink);
+  transition:color .18s}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--a-2)}
+.faq summary::after{content:"";position:absolute;right:6px;top:50%;width:10px;height:10px;
+  border-right:1.6px solid var(--a);border-bottom:1.6px solid var(--a);
+  transform:translateY(-70%) rotate(45deg);transition:transform .25s cubic-bezier(.32,.72,0,1)}
+.faq details[open] summary::after{transform:translateY(-20%) rotate(225deg)}
+.faq details p{padding:0 8px 22px 0;font-size:15px;line-height:1.68;color:var(--ink-3);
+  max-width:70ch}
+
+/* the hand-off out of the hero */
+.flow-next{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+  margin-top:12px;padding:12px 16px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(47,209,255,.45);background:rgba(47,209,255,.1);
+  color:var(--a-2);font:600 13px/1 Manrope,sans-serif;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .4s,transform .4s cubic-bezier(.32,.72,0,1),background .2s}
+ /* Reserved, not removed, for the same reason. */
+.flow-next[aria-hidden="true"]{opacity:0;pointer-events:none}
+.flow-next.in{opacity:1;transform:none}
+.flow-next:hover{background:rgba(47,209,255,.22)}
+.flow-next svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;animation:fnb 1.8s ease-in-out infinite}
+@keyframes fnb{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.flow-next svg{animation:none}}
+
+/* The section container the new blocks sit in. Was never defined -- the inner
+   blocks each cap their own width, so nothing overflowed, but a bare class name
+   in the markup is a trap for the next edit. */
+.wrap{max-width:var(--wide);margin:0 auto}
+
+/* ══ hero board: everything rides on the board ══════════════════════════════
+   The coach card takes the top-right corner and GM Forge the bottom-right.
+   Both are safe in THIS position: from Black's side the files run h..a left to
+   right, so the right-hand corners are a1/b1/c1 and a8/b8/c8 -- the queenside
+   rooks and bishops, none of which appear in the mate. Everything the coach
+   talks about (f7, f3, e5, c4, c6) is left of centre and stays uncovered. */
+/* Capped against the viewport height, not just its width. Freed of the rail
+   the board wanted 682px, which is a better board and an invisible one: on a
+   1512x757 laptop its foot landed at 877, past the bottom of the screen. */
+/* Centred on the BOARD GROUP, not on the board. The coach card hangs 11% off
+   the right edge, so centring .c-main left the whole thing sitting 28px right
+   of the column's middle -- which is what "not centred" was. Half the overhang
+   back the other way puts the visible mass on the axis. */
+.c-main{min-width:0;margin:0 auto;transform:translateX(-5.5%);
+  max-width:min(700px,100%,calc(100vh - 228px))}
+.board-wrap{position:relative}
+
+/* Hung off the right edge rather than sitting wholly inside it: the same
+   corner, about half the squares covered. */
+.c-say{position:absolute;top:-2%;right:-11%;z-index:3;
+  width:min(52%,272px);min-height:0;
+  background:rgba(9,16,27,.88);backdrop-filter:blur(18px) saturate(1.3);
+  border-color:rgba(120,170,235,.28);
+  box-shadow:0 26px 60px -30px rgba(0,0,0,.95)}
+.c-say p{font-size:12.5px}
+/* Held at the two-line height so the card does not resize under your cursor
+   when he answers with a shorter line. */
+.c-say{--say-min:152px;min-height:var(--say-min)}
+.c-act{margin-top:auto;padding-top:10px}
+
+.c-forge{position:absolute;right:-9%;bottom:-2%;z-index:2;margin:0;padding:0;
+  width:min(29%,164px);pointer-events:none;
+  filter:drop-shadow(0 18px 34px rgba(0,0,0,.75))}
+.c-forge svg{width:100%;max-width:none;height:auto;display:block;margin:0}
+
+/* "Try me" -- the board reads as a screenshot until something says otherwise. */
+.tryme{position:absolute;left:-6px;bottom:26%;z-index:4;display:flex;
+  align-items:center;gap:2px;transform:translateX(-100%);
+  transition:opacity .35s,transform .35s cubic-bezier(.32,.72,0,1)}
+.tryme.gone{opacity:0;transform:translateX(-100%) translateY(8px);pointer-events:none}
+.tryme-t{font:600 14px/1 Sora,sans-serif;color:var(--a);white-space:nowrap;
+  animation:tmb 2.2s ease-in-out infinite}
+.tryme-a{width:62px;height:47px;fill:none;stroke:var(--a);stroke-width:2.4;
+  stroke-linecap:round;stroke-linejoin:round;transform:scaleX(-1);
+  animation:tmb 2.2s ease-in-out infinite}
+@keyframes tmb{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.tryme-a{animation-name:tmba}
+@keyframes tmba{0%,100%{transform:scaleX(-1) translateX(0)}
+                50%{transform:scaleX(-1) translateX(-5px)}}
+
+/* the read-outs, now a row under the board instead of a third column */
+/* One line, everything on it. As a two-row block this was 138px tall and the
+   board paid for every one of them. */
+.c-strip{display:flex;flex-wrap:nowrap;align-items:stretch;gap:7px;margin-top:6px}
+.c-strip>*{display:flex;align-items:baseline;gap:7px;padding:7px 10px;min-height:0;
+  white-space:nowrap;overflow:hidden}
+.c-strip .c-read{flex:1 1 0;min-width:0}
+.c-strip .c-read .c-k{margin:0;flex:none}
+.c-strip .c-read .c-v{font-size:15px;line-height:1.2;flex:none}
+.c-strip .c-read .c-sub{font-size:10.5px;line-height:1.2;min-width:0;
+  overflow:hidden;text-overflow:ellipsis}
+.c-strip .c-badge{flex:none;align-items:center}
+.c-strip .c-cand{flex:1 1 0;min-width:0}
+.c-strip .c-cand-v{overflow:hidden;text-overflow:ellipsis}
+@media (max-width:1180px){.c-strip .c-read .c-sub{display:none}}
+@media (max-width:700px){.c-strip{flex-wrap:wrap}.c-strip>*{flex:1 1 auto}}
+
+/* the footnote now sits under the panel it describes */
+.proc-foot{text-align:center;max-width:60ch;margin:22px auto 0;font-size:11.5px}
+
+/* Narrow: the two overlays come off the board and stack around it. They must
+   be placed EXPLICITLY -- .board-wrap is a grid, so turning them static without
+   a grid-row made them auto-placed items, which took the board's cell and left
+   it 0px wide. */
+@media (max-width:860px){
+  .c-main{transform:none}
+  .board-wrap{grid-template-rows:auto auto auto auto}
+  .c-say{position:static;width:auto;min-height:0;margin:0 0 10px;
+    grid-column:1 / -1;grid-row:1}
+  .board-wrap .board{grid-row:2}
+  .ranks{grid-row:2}
+  .files{grid-row:3}
+  .c-forge{position:static;width:150px;margin:12px auto 0;
+    grid-column:1 / -1;grid-row:4}
+  .tryme{left:50%;bottom:auto;top:-34px;transform:translateX(-50%)}
+  .tryme.gone{transform:translateX(-50%) translateY(8px)}
+  .tryme-a{display:none}
+}
+
+/* ══ the shine on the trial line ════════════════════════════════════════════
+   The React component animates background-position from 150% to -50% across a
+   200%-wide gradient; that is exactly what this keyframe does, so no runtime is
+   needed. Blue rather than the component's grey/white, to match the accent. */
+.shiny{display:inline-block;font-weight:700;
+  --shine-base:#5AB4E0; --shine-hi:#EAFCFF;
+  background-image:linear-gradient(120deg,
+    var(--shine-base) 0%,var(--shine-base) 35%,
+    var(--shine-hi) 50%,
+    var(--shine-base) 65%,var(--shine-base) 100%);
+  background-size:200% auto;background-repeat:no-repeat;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:shiny 2s linear infinite}
+@keyframes shiny{from{background-position:150% center}
+                 to{background-position:-50% center}}
+.shiny:hover{animation-play-state:paused}
+/* Without a painted colour the text is invisible if the animation is off, so
+   the reduced-motion case restores a real one rather than just stopping it. */
+@media (prefers-reduced-motion:reduce){
+  .shiny{animation:none;-webkit-text-fill-color:#7FD3F2;color:#7FD3F2;
+    background-image:none}
+}
+
+/* the three facts, one line, uniform */
+.hero-facts{display:flex;flex-wrap:wrap;gap:8px 0;list-style:none;padding:0;
+  margin:0 0 26px}
+.hero-facts li{position:relative;font-size:13px;color:var(--ink-4);
+  padding-right:16px;margin-right:16px}
+.hero-facts li:not(:last-child)::after{content:"";position:absolute;right:0;top:50%;
+  width:3px;height:3px;border-radius:50%;background:var(--a);transform:translateY(-50%)}
+
+/* ══ the process section ════════════════════════════════════════════════════ */
+#process .flow{flex-direction:row;max-width:1100px;margin:0 auto;gap:12px}
+#process .flow li{flex:1 1 0;min-width:0;min-height:114px}
+#process .flow-next{max-width:340px;margin:26px auto 0}
+#process .bl-head{margin-bottom:clamp(32px,3.6vw,52px)}
+/* The lede is rewritten to name your move, and the replacement is shorter --
+   which pulled the panel 25px up the page just as you arrived at it. */
+#process .lede{min-height:81px}
+@media (max-width:760px){#process .lede{min-height:0}}
+@media (max-width:860px){#process .flow{flex-direction:column}}
+
+/* ══ hero copy: centred, board pushed right ═════════════════════════════════
+   Centred as a block rather than paragraph-only -- a centred paragraph under a
+   left-aligned headline reads as a bug, not a choice. */
+/* Left-aligned. Centred, the headline lost its edge and the column read as a
+   poster rather than something you start at the top-left of. */
+.hero-copy{text-align:left}
+.hero-copy .sub{margin-left:0;margin-right:0}
+.hero-facts,.cta-row,.promo{justify-content:flex-start}
+.promo>span{max-width:52ch}
+.fine{margin-left:0;margin-right:0}
+
+/* Pushed off centre towards the right edge of its column. The shift is capped
+   by the coach card, which already hangs 11% past the board: too far right and
+   the card leaves the column. */
+/* Full push only where the column has room for the card's overhang. At 1100px
+   it left an 18px margin to the window edge, which is a clip waiting for a
+   scrollbar. */
+.c-main{transform:translateX(1.5%)}
+@media (min-width:1500px){.c-main{transform:translateX(6%)}}
+@media (max-width:860px){.c-main{transform:none}}
+
+/* Below 1500 the copy column takes enough of the row that an 11% overhang puts
+   the coach card past the right edge of the WINDOW -- it measured -16px at
+   1100. Narrower screens get a smaller overhang and no push. */
+@media (max-width:1499px){
+  .c-say{right:-4%}
+  .c-forge{right:-3%}
+  .c-main{transform:none}
+}
+
+/* Motion off: the reveals must not leave the page blank. */
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+}
+/* GM Forge as a real image, and the tab list under the feature cards */
+.proc-forge{display:block;width:clamp(76px,7vw,110px);height:auto;margin:0 auto 14px;
+  border-radius:50%;background:rgba(47,209,255,.08);padding:6px}
+.tabs-line{text-align:center;font-size:13px;color:var(--ink-5);margin:-14px 0 26px}
+.tabs-line .rail-i{display:inline-block;font:600 12px/1 Sora,sans-serif;color:var(--ink-3);
+  border:1px solid var(--line);border-radius:999px;padding:5px 11px;margin:3px 2px}
+.q-mark{border-radius:50%;object-fit:cover}
+
+/* One mark, two weights: it glows in the nav and sits quiet in the footer. */
+.mark-img{width:34px;height:34px;filter:drop-shadow(0 0 14px rgba(47,209,255,.45))}
+.foot-brand .mark-img{width:21px;height:21px;filter:none}

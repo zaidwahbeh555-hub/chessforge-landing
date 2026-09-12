@@ -22,8 +22,8 @@ const rawHtml = fs.readFileSync('index.html', 'utf8');
 // ban against its own rationale is a false positive that teaches you to widen
 // the rule until it stops catching anything.
 const html = rawHtml.replace(/<!--[\s\S]*?-->/g, '');
-const css  = fs.readFileSync('v3-styles.css', 'utf8');
-const js   = fs.readFileSync('v3-app.js', 'utf8');
+const css  = fs.readFileSync('v4.css', 'utf8');
+const js   = fs.readFileSync('v4.js', 'utf8');
 
 let pass = 0, total = 0;
 function check(label, cond, detail) {
@@ -74,10 +74,20 @@ console.log('\nTHE COMPARISON MAKES NO CLAIM ABOUT THE READER');
 // two ways -- and carries no numbers on purpose: a rising rating line here
 // would be a claim about what happens to YOU, and the only result this page is
 // allowed to claim is the owner's own.
-check('both sides are there', /class="two-side dim"/.test(html)
-      && /class="two-side lit"/.test(html));
-check('each is a sequence, so the argument is the ORDER not the adjectives',
-      (html.match(/class="two-steps"/g) || []).length === 2);
+/* v4 argues this dimension by dimension rather than as two ordered flows: a
+   labelled column for each side, and a named axis on every row. The promise is
+   the same -- both sides stated, and the claim tied to something specific
+   rather than to adjectives. */
+check('both sides are there', /class="vs-head a"/.test(html)
+      && /class="vs-head b"/.test(html));
+check('every row names the dimension it compares, so the argument is never '
+      + 'just an adjective',
+      (html.match(/class="vs-k"/g) || []).length >= 5
+      && (html.match(/class="vs-k"/g) || []).length
+         === (html.match(/class="vs-a"/g) || []).length
+      && (html.match(/class="vs-a"/g) || []).length
+         === (html.match(/class="vs-b"/g) || []).length,
+      'a row with only one side filled in is a claim, not a comparison');
 check('no rating figure is promised anywhere in it',
       !/\+\s*\d{2,4}\s*(elo|rating)/i.test(html)
       && !/gain(ed)? \d+/i.test(html));
@@ -86,10 +96,17 @@ check('and no aggregate about other players came back with it',
 
 console.log('\nTHE MOCKUP IS THE APP, AND IT ANSWERS');
 check('all six tabs are there', (html.match(/class="rail-i/g) || []).length === 6);
-check('and each one has a pane to show',
-      (html.match(/class="pane"/g) || []).length === 6);
-check('pressing a tab switches the pane, rather than moving a highlight',
-      /p\.hidden = p\.dataset\.pane !== i/.test(js));
+/* The clickable six-pane preview is gone: v4 puts a REAL board in the hero
+   instead, so the page demonstrates the product rather than picturing it. What
+   has to survive is the naming -- the six tabs are what a reader is buying. */
+check('and they are the app\'s actual six, named',
+      ['Dashboard', 'Play &amp; Coach', 'Training', 'Analysis', 'Puzzles', 'Shop']
+        .every(function (t) { return html.indexOf('>' + t + '<') > -1; }),
+      'Progress and Lessons were deleted; naming them would sell what is not there');
+check('and the hero board it replaced them with is really playable',
+      /id="board"/.test(html) && /\.sq\[data-sq=|dataset\.sq/.test(js)
+      && /v4-hero\.json/.test(js),
+      'every legal move pre-analysed by Stockfish, not a scripted single answer');
 check('the board uses the app\'s real colours',
       /--sq-l:#bccedb/i.test(css) && /--sq-d:#4a7191/i.test(css),
       'Storm Marble, the house board');
