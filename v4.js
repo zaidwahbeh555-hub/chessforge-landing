@@ -224,7 +224,10 @@
       $('#coachSay').textContent = line(m);
       $('#coachAct').hidden = false;
       $('#showBest').hidden = m.grade === 'best';
-      $('#coachBox').classList.add('spoke');
+      var box = $('#coachBox');
+      box.classList.add('spoke');
+      box.classList.remove('right', 'wrong');
+      box.classList.add(m.grade === 'best' || m.grade === 'good' ? 'right' : 'wrong');
       // The figure changes face the way it does in the app.
       var dock = $('#forgeDock');
       if (dock) dock.dataset.expr = (D.expr && D.expr[m.grade]) || 'neutral';
@@ -272,9 +275,17 @@
          where you cannot see it would be running it for nobody. Scrolled to on
          every move rather than only the best one: 23 of the 31 legal moves here
          are mate, so gating this on a correct answer would hide it from most
-         people who touch the board. */
-      var sec = document.getElementById('process');
-      if (sec) sec.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
+         people who touch the board.
+
+         Held first. Scrolling the instant the move lands takes his answer off
+         the screen before it can be read -- and his answer is the reason the
+         board is on the page. A wrong move gets longer, because the line
+         explaining what it ran into is the longer one. */
+      var hold = RM ? 0 : (m.grade === 'best' || m.grade === 'good' ? 2400 : 3400);
+      flowTimers.push(setTimeout(function () {
+        var sec = document.getElementById('process');
+        if (sec) sec.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
+      }, hold));
       var lede = $('#procLede');
       if (lede) lede.textContent = m.mated
         ? 'You played ' + m.san + ', and it is mate next move. Here is what ChessForge does '
@@ -305,7 +316,7 @@
               if (fn) { fn.removeAttribute('aria-hidden'); fn.classList.add('in'); }
             }
           }, 620));
-        }, 700 + i * 700));
+        }, hold + 420 + i * 700));
       });
     }
 
@@ -319,7 +330,7 @@
       $('#candBox').hidden = true;
       stopFlow();
       restoreIdle();
-      $('#coachBox').classList.remove('spoke');
+      $('#coachBox').classList.remove('spoke', 'right', 'wrong');
       var dock0 = $('#forgeDock'); if (dock0) dock0.dataset.expr = 'neutral';
       $('#evalTxt').textContent = (D.bestCp >= 0 ? '+' : '') + (D.bestCp / 100).toFixed(1);
       $('#evalSub').textContent = 'Level — for one more move';
@@ -384,4 +395,93 @@
     if (e.target.closest('[data-close]') || (open && e.target === open)) shut();
   });
   addEventListener('keydown', function (e) { if (e.key === 'Escape') shut(); });
+})();
+
+/* ══ Yearly / monthly, and the clock on the launch offer ════════════════════
+   $19.99 a month, or $40 for a whole year while the offer runs.
+
+   The deadline below is the same epoch second the app ships in billing.py, so
+   the two cannot drift apart -- but it is only the fallback. If the app
+   answers, its figures win, which means the offer can be extended or ended
+   from Railway without touching this file. And it is measured against the
+   SERVER's clock: a laptop with a wrong date would otherwise see the offer
+   already over, or keep it running for weeks after it closed. */
+(function () {
+  var API = 'https://app.chessforge.org/plan/pricing';
+  var P = { monthly: 19.99, monthly_was: 29.99, yearly: 40, yearly_off_pct: 83,
+            ends: 1791057883, now: Math.floor(Date.now() / 1000),
+            yearly_available: true };
+  var interval = 'yearly', skew = 0, tick = null;
+
+  var sw    = document.getElementById('billSwitch');
+  var price = document.getElementById('planPrice');
+  var note  = document.getElementById('offerNote');
+  if (!sw || !price || !note) return;
+
+  function left() { return P.ends ? (P.ends * 1000) - (Date.now() + skew) : 0; }
+  function live()  { return !!P.yearly_available && left() > 0; }
+
+  function fmt(ms) {
+    var s = Math.max(0, Math.floor(ms / 1000)), p = function (n) { return n < 10 ? '0' + n : '' + n; };
+    return Math.floor(s / 86400) + 'd ' + p(Math.floor(s % 86400 / 3600)) + 'h '
+         + p(Math.floor(s % 3600 / 60)) + 'm ' + p(s % 60) + 's';
+  }
+  function weeksLeft() {
+    var w = Math.ceil(left() / (7 * 864e5));
+    return w <= 1 ? 'Last week' : 'Only here for ' + w + ' more weeks';
+  }
+
+  function render() {
+    var on = live();
+    if (!on && interval === 'yearly') interval = 'monthly';
+    sw.hidden = !on;
+    Array.prototype.forEach.call(sw.querySelectorAll('.bs-b'), function (b) {
+      b.classList.toggle('on', b.dataset.interval === interval);
+      b.setAttribute('aria-pressed', b.dataset.interval === interval ? 'true' : 'false');
+    });
+
+    if (interval === 'yearly') {
+      price.innerHTML = '$' + P.yearly.toFixed(0)
+        + '<span class="save">' + P.yearly_off_pct + '% off</span>'
+        + '<small>CAD for the year &mdash; $' + (P.yearly / 12).toFixed(2) + ' a month</small>';
+    } else {
+      price.innerHTML = '<s>$' + P.monthly_was.toFixed(2) + '</s>$' + P.monthly.toFixed(2)
+        + '<small>CAD a month</small>';
+    }
+    clock();
+  }
+
+  function clock() {
+    var ms = left();
+    if (!live()) {
+      /* Over means gone. A clock reading 0d 00h 00m 00s left on the page is
+         worse than no clock, and the offer must not stay advertised. */
+      note.hidden = true;
+      if (tick) { clearInterval(tick); tick = null; }
+      if (P.yearly_available && ms <= 0) { P.yearly_available = false; render(); }
+      return;
+    }
+    note.hidden = false;
+    note.innerHTML = weeksLeft() + ' &mdash; ends in <b>' + fmt(ms) + '</b>';
+    if (!tick) tick = setInterval(clock, 1000);
+  }
+
+  sw.addEventListener('click', function (e) {
+    var b = e.target.closest('.bs-b'); if (!b) return;
+    interval = b.dataset.interval; render();
+  });
+
+  render();
+  if (window.fetch) {
+    fetch(API, { mode: 'cors' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || typeof d.monthly !== 'number') return;
+        P = d;
+        skew = (d.now * 1000) - Date.now();
+        if (!d.yearly_available) interval = 'monthly';
+        render();
+      })
+      .catch(function () {});
+  }
 })();

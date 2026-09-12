@@ -891,3 +891,58 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
 /* One mark, two weights: it glows in the nav and sits quiet in the footer. */
 .mark-img{width:34px;height:34px;filter:drop-shadow(0 0 14px rgba(47,209,255,.45))}
 .foot-brand .mark-img{width:21px;height:21px;filter:none}
+
+/* ── yearly / monthly, and the clock on the offer ───────────────────────────
+   Both hide themselves when the offer is over; nothing below should ever be
+   visible advertising a price that cannot be charged. */
+.bill-switch{display:inline-flex;gap:2px;padding:3px;margin:0 0 14px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px}
+.bill-switch[hidden]{display:none}
+.bs-b{border:0;background:transparent;color:var(--ink-4);cursor:pointer;
+  font:600 12.5px/1 Manrope,sans-serif;padding:8px 15px;border-radius:999px;
+  transition:background .12s cubic-bezier(.32,.72,0,1),color .12s cubic-bezier(.32,.72,0,1)}
+.bs-b:hover{color:var(--ink)}
+.bs-b.on{background:var(--a);color:#07101a}
+.pp .save{display:inline-block;font:700 10.5px/1 Sora,sans-serif;letter-spacing:.08em;
+  text-transform:uppercase;color:#07101a;background:var(--a);
+  padding:5px 9px;border-radius:999px;margin-left:10px;vertical-align:middle}
+.offer-note{font-size:12.5px;line-height:1.5;color:var(--ink-4);margin:-6px 0 16px}
+.offer-note[hidden]{display:none}
+.offer-note b{color:var(--a);font-weight:700;font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+
+/* A right answer is marked on the card and held there for a beat before the
+   page moves -- green for correct, the existing accent glow for everything
+   else. The outline is on the card, not the board: the board still has to be
+   readable underneath it. */
+.c-say.right{border-color:#3BE38B;
+  box-shadow:0 0 0 1px rgba(59,227,139,.55),0 0 34px -6px rgba(59,227,139,.75),
+             0 26px 60px -30px rgba(0,0,0,.95)}
+.c-say.right .c-who{color:#8BF0BE}
+@media (prefers-reduced-motion:no-preference){
+  .c-say.right{animation:rightpulse 1.1s cubic-bezier(.32,.72,0,1) 2}
+}
+@keyframes rightpulse{
+  0%,100%{box-shadow:0 0 0 1px rgba(59,227,139,.55),0 0 34px -6px rgba(59,227,139,.75),
+                     0 26px 60px -30px rgba(0,0,0,.95)}
+  50%    {box-shadow:0 0 0 2px rgba(59,227,139,.9),0 0 46px -2px rgba(59,227,139,.95),
+                     0 26px 60px -30px rgba(0,0,0,.95)}
+}
+
+/* The whole trial line is one target, and it goes to the prices. */
+.promo-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  padding:7px 12px 7px 7px;margin-left:-7px;border-radius:999px;
+  border:1px solid transparent;transition:border-color .18s,background .18s}
+.promo-link:hover{border-color:rgba(47,209,255,.4);background:rgba(47,209,255,.07)}
+.promo{margin-top:16px}
+.promo .shiny{font-size:15px}
+
+/* The three facts sit under the button on ONE line. nowrap on the row and on
+   each item, so a long word cannot break one of them onto a second line. */
+.hero-facts{flex-wrap:nowrap;margin:16px 0 0;gap:0}
+.hero-facts li{white-space:nowrap;font-size:clamp(11.5px,.85vw,13px);
+  padding-right:clamp(10px,1vw,16px);margin-right:clamp(10px,1vw,16px)}
+@media (max-width:520px){
+  .hero-facts{flex-wrap:wrap;gap:6px 0}
+  .hero-facts li{font-size:12px}
+}

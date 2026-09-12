@@ -64,26 +64,23 @@
       <p class="kicker">AI-powered chess improvement</p>
       <h1>You are one move <span class="grad">from being mated.</span></h1>
       <!-- The side copy is about the product, not about the position -- the
-           board to the right already explains itself, and spending the only
-           paragraph in the hero narrating it said nothing about what you get. -->
+           board to the right already explains itself. -->
       <p class="sub">A chess coach that works during the game, not after it. GM Forge stops
         you before the mistake, then drills it from your own position.</p>
-      <ul class="hero-facts">
-        <li>AI and Stockfish powered</li>
-        <li>Built from your games</li>
-        <li>Imports from chess.com</li>
-      </ul>
       <div class="cta-row">
         <a class="btn btn-fill" href="https://app.chessforge.org">Play free &mdash; no card <span>&rarr;</span></a>
       </div>
-      <!-- The free plan is not a trial: it does not end. So the button is the
-           free plan, and the trial is a promotion sitting beside it. -->
-      <p class="promo"><span class="promo-tag">On now</span>
-        <span><b class="shiny" data-shiny>3 days of Grandmaster, free</b> &mdash; every limit
-          off, cancel any time. Card required for the trial.
-          <a href="#pricing">What is in it &rarr;</a></span></p>
-      <p class="fine">The free plan is permanent and needs no card: one coached game a week,
-        one analysed game a day, and drills built from your own losses.</p>
+      <!-- One claim, and it is a link: what it is offering is priced in the
+           cards further down, which is where anyone who wants it is going
+           next. The terms live there rather than here. -->
+      <p class="promo"><a class="promo-link" href="#pricing">
+        <span class="promo-tag">On now</span>
+        <b class="shiny" data-shiny>3 days of Grandmaster, free</b></a></p>
+      <ul class="hero-facts">
+        <li>AI and Stockfish powered</li>
+        <li>Built from your games</li>
+        <li>chess.com import</li>
+      </ul>
     </div>
 
     <!-- The board is a real position with a real forced mate in it: Rh8+ Ng8
@@ -137,7 +134,7 @@
             <!-- "Try me". Without it people read the board as a screenshot and
                  never touch it, which loses the entire point of the hero. -->
             <div class="tryme" id="tryme" aria-hidden="true">
-              <span class="tryme-t">Try me</span>
+              <span class="tryme-t">Play a move</span>
               <svg class="tryme-a" viewBox="0 0 120 90">
                 <path d="M112 10C92 4 52 6 30 30c-9 10-13 22-12 34"/>
                 <path d="M8 52l10 16 16-9" fill="none"/>
@@ -415,7 +412,17 @@
     </div>
     <div class="plan lit">
       <div class="pn">Grandmaster</div>
-      <div class="pp"><s>$29.99</s>$19.99<small>CAD a month</small></div>
+      <!-- Yearly first: it is the offer, and burying it behind the default
+           would be the only reason to have it. The switch and the clock are
+           both rendered from the app's /plan/pricing, and both remove
+           themselves when the offer closes -- a price this page advertises
+           that Stripe cannot charge is a checkout that fails after the click. -->
+      <div class="bill-switch" id="billSwitch" role="group" aria-label="Billing period" hidden>
+        <button type="button" class="bs-b on" data-interval="yearly">Yearly</button>
+        <button type="button" class="bs-b" data-interval="monthly">Monthly</button>
+      </div>
+      <div class="pp" id="planPrice"><s>$29.99</s>$19.99<small>CAD a month</small></div>
+      <p class="offer-note" id="offerNote" hidden></p>
       <ul>
         <li class="y">Unlimited coached and unaided games</li>
         <li class="y">Every game analysed in full, every mistake drilled</li>
@@ -426,7 +433,8 @@
         <li class="y">Boards, finishes and piece sets</li>
       </ul>
       <a class="btn btn-fill wide" href="https://app.chessforge.org?upgrade=1">Start the 3-day trial</a>
-      <p class="pf">Cancel any time before day three and you are charged nothing.</p>
+      <p class="pf">A card is taken up front. Cancel any time before day three and you are
+        charged nothing.</p>
     </div>
   </div>
 </section>
