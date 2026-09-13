@@ -185,13 +185,6 @@
     }
     function movesFrom(sq) { return D.moves.filter(function (m) { return m.from === sq; }); }
 
-    function setEval(cp) {
-      var f = $('#evalFill'); if (!f) return;
-      // Clamped: past about six pawns the bar stops meaning anything.
-      var pct = 50 + Math.max(-50, Math.min(50, (cp / 600) * 50));
-      f.style.width = pct.toFixed(1) + '%';
-      f.className = cp >= 0 ? 'good' : 'bad';
-    }
 
     var GRADE_WORD = { best: 'Best move', good: 'Good', inaccuracy: 'Inaccuracy',
                        mistake: 'Mistake', blunder: 'Blunder' };
@@ -217,7 +210,6 @@
       var b2 = board.querySelector('[data-sq="' + m.to + '"]');
       if (a) a.classList.add('from');
       if (b2) b2.classList.add(m.grade === 'blunder' || m.grade === 'mistake' ? 'bad' : 'to');
-      setEval(m.cp);
       var g = $('#grade');
       g.textContent = GRADE_WORD[m.grade] || '';
       g.className = 'grade ' + m.grade;
@@ -228,16 +220,6 @@
       box.classList.add('spoke');
       box.classList.remove('right', 'wrong');
       box.classList.add(m.grade === 'best' || m.grade === 'good' ? 'right' : 'wrong');
-      // The read-out beside the board, in the app's own language.
-      $('#evalTxt').textContent = m.mated ? '#' : (m.cp >= 0 ? '+' : '') + (m.cp / 100).toFixed(1);
-      $('#evalSub').textContent = m.mated ? 'Checkmate next move'
-        : m.cp > 120 ? 'You are better' : m.cp > -120 ? 'Roughly level' : 'You are worse';
-      $('#moveTxt').textContent = m.san;
-      $('#moveSub').textContent = m.grade === 'best' ? 'nothing keeps more'
-        : 'gives up ' + (Math.abs(m.loss) / 100).toFixed(1) + ' of a pawn';
-      var cb = $('#candBox');
-      if (cb) { cb.hidden = false; $('#candV').textContent = m.san
-        + (m.reply ? '  \u2192  ' + m.reply : ''); }
       var tm = $('#tryme');
       if (tm) tm.classList.add('gone');
       runFlow(m);
@@ -278,8 +260,13 @@
          the screen before it can be read -- and his answer is the reason the
          board is on the page. A wrong move gets longer, because the line
          explaining what it ran into is the longer one. */
-      var hold = RM ? 0 : (m.grade === 'best' || m.grade === 'good' ? 2400 : 3400);
-      flowTimers.push(setTimeout(function () {
+      var right = m.grade === 'best' || m.grade === 'good';
+      var hold = RM ? 0 : (right ? 2400 : 3400);
+      /* Only a right answer takes you down the page. Moving someone off a board
+         they just blundered on, before they have read why, is taking the answer
+         away at the moment it matters -- the button below the panel is there
+         for them instead. */
+      if (right) flowTimers.push(setTimeout(function () {
         var sec = document.getElementById('process');
         if (sec) sec.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
       }, hold));
@@ -321,17 +308,11 @@
       played = null; sel = null;
       paint(D.start);
       clearMarks();
-      setEval(D.bestCp);
       $('#grade').textContent = ''; $('#grade').className = 'grade';
       $('#coachAct').hidden = true;
-      $('#candBox').hidden = true;
       stopFlow();
       restoreIdle();
       $('#coachBox').classList.remove('spoke', 'right', 'wrong');
-      $('#evalTxt').textContent = (D.bestCp >= 0 ? '+' : '') + (D.bestCp / 100).toFixed(1);
-      $('#evalSub').textContent = 'Level — for one more move';
-      $('#moveTxt').textContent = '\u2014';
-      $('#moveSub').textContent = 'pick up a piece';
       $('#coachSay').textContent = msg || D.idle;
     }
 
@@ -446,7 +427,6 @@
       D = d;
       coords();
       paint(d.start);
-      setEval(d.bestCp);
       if (shot) shot.innerHTML = cells(d.start);
       $('#undo').addEventListener('click', function () { reset('Try another one.'); });
       $('#showBest').addEventListener('click', function () {

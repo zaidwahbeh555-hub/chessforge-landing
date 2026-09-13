@@ -728,7 +728,7 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
    of the column's middle -- which is what "not centred" was. Half the overhang
    back the other way puts the visible mass on the axis. */
 .c-main{min-width:0;margin:0 auto;transform:translateX(-5.5%);
-  max-width:min(700px,100%,calc(100vh - 228px))}
+  max-width:min(780px,100%,calc(100vh - 168px))}
 .board-wrap{position:relative}
 
 /* Hung off the right edge rather than sitting wholly inside it: the same
@@ -749,20 +749,28 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
   filter:drop-shadow(0 18px 34px rgba(0,0,0,.75))}
 .c-forge svg{width:100%;max-width:none;height:auto;display:block;margin:0}
 
-/* "Try me" -- the board reads as a screenshot until something says otherwise. */
-.tryme{position:absolute;left:-6px;bottom:26%;z-index:4;display:flex;
-  align-items:center;gap:2px;transform:translateX(-100%);
-  transition:opacity .35s,transform .35s cubic-bezier(.32,.72,0,1)}
-.tryme.gone{opacity:0;transform:translateX(-100%) translateY(8px);pointer-events:none}
-.tryme-t{font:600 14px/1 Sora,sans-serif;color:var(--a);white-space:nowrap;
-  animation:tmb 2.2s ease-in-out infinite}
-.tryme-a{width:62px;height:47px;fill:none;stroke:var(--a);stroke-width:2.4;
-  stroke-linecap:round;stroke-linejoin:round;transform:scaleX(-1);
-  animation:tmb 2.2s ease-in-out infinite}
-@keyframes tmb{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
-.tryme-a{animation-name:tmba}
-@keyframes tmba{0%,100%{transform:scaleX(-1) translateX(0)}
-                50%{transform:scaleX(-1) translateX(-5px)}}
+/* The board reads as a screenshot until something says otherwise. A caption
+   under it, not a sticker on top of it: the cursor mimes a click, and the whole
+   thing retires the moment a piece is picked up. */
+.cue{position:absolute;left:50%;bottom:-14px;transform:translate(-50%,100%);
+  z-index:4;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
+  padding:9px 16px 9px 13px;border-radius:999px;
+  background:rgba(9,16,27,.82);border:1px solid rgba(120,170,235,.26);
+  backdrop-filter:blur(14px);
+  font:600 13px/1 Manrope,sans-serif;color:var(--ink-3);
+  box-shadow:0 14px 34px -18px rgba(0,0,0,.9);
+  transition:opacity .4s,transform .4s cubic-bezier(.32,.72,0,1)}
+.cue.gone{opacity:0;transform:translate(-50%,100%) translateY(8px);pointer-events:none}
+.cue-i{width:16px;height:16px;flex:none;fill:var(--a);
+  animation:cueclick 2.6s cubic-bezier(.32,.72,0,1) infinite}
+/* A small press-and-release, twice the size of a nudge and half the size of a
+   bounce -- enough to read as "this is clickable" without becoming decoration. */
+@keyframes cueclick{
+  0%,62%,100%{transform:translate(0,0) scale(1)}
+  70%        {transform:translate(1px,1px) scale(.86)}
+  80%        {transform:translate(0,0) scale(1)}
+}
+@media (prefers-reduced-motion:reduce){.cue-i{animation:none}}
 
 /* the read-outs, now a row under the board instead of a third column */
 /* One line, everything on it. As a two-row block this was 138px tall and the
@@ -798,10 +806,7 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
   .files{grid-row:3}
   .c-forge{position:static;width:150px;margin:12px auto 0;
     grid-column:1 / -1;grid-row:4}
-  .tryme{left:50%;bottom:auto;top:-34px;transform:translateX(-50%)}
-  .tryme.gone{transform:translateX(-50%) translateY(8px)}
-  .tryme-a{display:none}
-}
+  }
 
 /* ══ the shine on the trial line ════════════════════════════════════════════
    The React component animates background-position from 150% to -50% across a
@@ -817,8 +822,8 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
   animation:shiny 2s linear infinite}
-@keyframes shiny{from{background-position:150% center}
-                 to{background-position:-50% center}}
+@keyframes shiny{from{background-position:100% center}
+                 to{background-position:0% center}}
 .shiny:hover{animation-play-state:paused}
 /* Without a painted colour the text is invisible if the animation is off, so
    the reduced-motion case restores a real one rather than just stopping it. */
@@ -995,9 +1000,22 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
   .bl-cta{width:100%}
 
   /* The four steps read as cards rather than rows. */
-  #process .flow li{grid-template-columns:minmax(0,1fr);justify-items:center;
-    text-align:center;min-height:0;padding:16px 14px}
-  #process .flow .fl-i{margin:0 auto 8px}
+  /* One column, and EVERY child has to be told so. .fl-bar carries
+     grid-column:2 from the desktop layout; against a single-column grid that
+     conjures an implicit second column, which is what threw the ticks and the
+     captions out of line with each other. */
+  /* flex:1 1 0 governs the MAIN axis. In the desktop row that is the width;
+     the moment this becomes a column it is the height, and each card collapsed
+     to 38px around 117px of content -- the icons and captions then sat on top
+     of one another, which is what looked broken. */
+  #process .flow li{flex:0 0 auto;
+    grid-template-columns:minmax(0,1fr);justify-items:center;
+    align-items:center;text-align:center;min-height:0;padding:18px 14px;gap:9px}
+  #process .flow li > *{grid-column:1}
+  #process .flow .fl-i{margin:0}
+  #process .flow .fl-bar{width:min(190px,72%);justify-self:center;margin:2px 0 0}
+  #process .flow b{font-size:13.5px}
+  #process .flow i{font-size:12px}
   #process .flow-next{width:100%;max-width:none}
   .proc-foot{margin-left:auto;margin-right:auto}
 
@@ -1070,3 +1088,11 @@ h1{font-size:clamp(36px,4.35vw,64px)}
   .sq:has(img){cursor:grab}
   .sq:active{cursor:grabbing}
 }
+
+/* Another step up on the hero copy. */
+h1{font-size:clamp(38px,4.6vw,68px)}
+.sub{font-size:clamp(16px,1.3vw,19px)}
+.kicker{font-size:13px}
+.hero-facts li{font-size:clamp(12.5px,.95vw,14px)}
+.promo .shiny{font-size:17px}
+.cta-row .btn{font-size:16px;padding:15px 26px}

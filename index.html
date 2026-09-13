@@ -108,13 +108,11 @@
       <div class="stage-glow" aria-hidden="true"></div>
       <div class="coached">
         <div class="c-main">
-          <div class="c-who-row"><span class="pip b"></span>Bot &middot; 1450</div>
-
-          <!-- The rail is gone. It held the coach card, the chip, the buttons
-               and the figure in a 253px column beside a 449px board, which is
-               what made this feel cramped: two narrow things instead of one
-               big one. Those four now ride on the board itself, anchored to
-               corners that hold no piece in this position. -->
+          <!-- The board and what the coach is saying, and nothing else. The
+               player names, the Coached badge, the evaluation, the move
+               read-out and the Considering chip were all scaffolding around a
+               thing that explains itself, and every one of them was height the
+               board could have had instead. -->
           <div class="board-wrap" id="boardWrap">
             <div class="ranks" id="ranks" aria-hidden="true"></div>
             <div class="board" id="board"></div>
@@ -130,36 +128,16 @@
               </div>
             </div>
 
-
-            <!-- "Try me". Without it people read the board as a screenshot and
-                 never touch it, which loses the entire point of the hero. -->
-            <div class="tryme" id="tryme" aria-hidden="true">
-              <span class="tryme-t">Play a move</span>
-              <svg class="tryme-a" viewBox="0 0 120 90">
-                <path d="M112 10C92 4 52 6 30 30c-9 10-13 22-12 34"/>
-                <path d="M8 52l10 16 16-9" fill="none"/>
+            <!-- The interactivity cue. A hand-drawn arrow reading "Play a move"
+                 was doing this before and looked like a sticker on a product
+                 shot. This is the same signal as a caption: a cursor that
+                 clicks, and a line telling you the board is yours. It retires
+                 the moment you touch a piece. -->
+            <div class="cue" id="tryme" aria-hidden="true">
+              <svg class="cue-i" viewBox="0 0 24 24">
+                <path d="M6 3.5 18.2 12.1 12.6 13.2 15.4 19.1 13 20.2 10.2 14.3 6.4 18.2Z"/>
               </svg>
-            </div>
-          </div>
-
-          <div class="c-who-row you"><span class="pip b"></span>You &middot; Black to play</div>
-          <div class="evalbar" aria-hidden="true"><span id="evalFill"></span></div>
-
-          <div class="c-strip">
-            <div class="c-badge"><span class="ph-dot" aria-hidden="true"></span>Coached</div>
-            <div class="c-read">
-              <span class="c-k">Evaluation</span>
-              <b class="c-v" id="evalTxt">0.0</b>
-              <span class="c-sub" id="evalSub">Level &mdash; for one more move</span>
-            </div>
-            <div class="c-read">
-              <span class="c-k">Your move</span>
-              <b class="c-v" id="moveTxt">&mdash;</b>
-              <span class="c-sub" id="moveSub">pick up a black piece</span>
-            </div>
-            <div class="c-cand" id="candBox" hidden>
-              <span class="c-cand-l">Considering</span>
-              <span class="c-cand-v" id="candV"></span>
+              <span>Your move &mdash; pick up a piece</span>
             </div>
           </div>
         </div>
