@@ -112,8 +112,8 @@ check('the board uses the app\'s real colours',
       'Storm Marble, the house board');
 
 console.log('\nTHE LEGAL AND LICENSING BITS SURVIVED THE REBUILD');
-check('Terms, Privacy and Credits all open', /data-legal="terms"/.test(html)
-      && /data-legal="privacy"/.test(html) && /data-legal="credits"/.test(html));
+check('Terms, Privacy and Attribution all open', /data-legal="terms"/.test(html)
+      && /data-legal="privacy"/.test(html) && /data-legal="attribution"/.test(html));
 check('Cburnett is credited by name', /Colin M\.L\. Burnett/.test(html));
 check('under the licence actually relied on', /3-clause BSD/.test(html));
 check('and the licence file ships beside the pieces',
