@@ -458,6 +458,13 @@
 
 <section class="quote-band" id="about">
   <div class="quote-bg" aria-hidden="true"></div>
+  <!-- Filled from the app's /reviews/public. Everything in here is written by
+       strangers and published without a human reading it first, so it is put on
+       the page with textContent and never as markup. -->
+  <div class="reviews" id="reviews" hidden>
+    <p class="eyebrow">What players say</p>
+    <div class="rev-grid" id="revGrid"></div>
+  </div>
   <div class="quote reveal">
     <p class="q">&ldquo;I built this because my own games kept ending the same way, and I could
       never see it happening while it happened.&rdquo;</p>
@@ -468,8 +475,8 @@
       <img src="gm-forge-ai-chess-coach.png" alt="" class="q-mark" loading="lazy" decoding="async">
       <div><b>the person who built ChessForge</b>
         <span>There are <span class="stat-n" data-count="34" data-live="users"
-        data-live-users>34</span> players here. When enough of them have
-        written a review, theirs will be on this page instead of mine.</span></div>
+        data-live-users>34</span> players here.<span id="revPromise"> When enough of them have
+        written a review, theirs will be on this page instead of mine.</span></span></div>
     </div>
   </div>
 </section>

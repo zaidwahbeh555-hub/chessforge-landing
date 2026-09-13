@@ -736,25 +736,26 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
   filter:drop-shadow(0 18px 34px rgba(0,0,0,.75))}
 .c-forge svg{width:100%;max-width:none;height:auto;display:block;margin:0}
 
-/* The board reads as a screenshot until something says otherwise. A caption
-   under it, not a sticker on top of it: the cursor mimes a click, and the whole
-   thing retires the moment a piece is picked up. */
-.cue{position:absolute;left:50%;bottom:-14px;transform:translate(-50%,100%);
-  z-index:4;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
-  padding:9px 16px 9px 13px;border-radius:999px;
-  background:rgba(9,16,27,.82);border:1px solid rgba(120,170,235,.26);
-  backdrop-filter:blur(14px);
-  font:600 13px/1 Manrope,sans-serif;color:var(--ink-3);
-  box-shadow:0 14px 34px -18px rgba(0,0,0,.9);
+/* The board reads as a screenshot until something says otherwise.
+
+   This was a bordered, blurred pill, which is the default shape every one of
+   these ends up as -- and it breaks the rule the rest of the page follows,
+   that a border appears on hover or focus and not before. So: no box. It is
+   set exactly like the rank and file letters around the board, 10.5px Sora in
+   the dimmest ink, letter-spaced and upper-case, so it reads as part of the
+   board's own furniture rather than a chip floating over a screenshot. The
+   cursor is the only thing in accent, and the only thing that moves. */
+.cue{position:absolute;left:50%;bottom:-10px;transform:translate(-50%,100%);
+  z-index:4;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  font:600 10.5px/1 Sora,sans-serif;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-5);
   transition:opacity .4s,transform .4s cubic-bezier(.32,.72,0,1)}
-.cue.gone{opacity:0;transform:translate(-50%,100%) translateY(8px);pointer-events:none}
-.cue-i{width:16px;height:16px;flex:none;fill:var(--a);
+.cue.gone{opacity:0;transform:translate(-50%,100%) translateY(6px);pointer-events:none}
+.cue-i{width:13px;height:13px;flex:none;fill:var(--a);
   animation:cueclick 2.6s cubic-bezier(.32,.72,0,1) infinite}
-/* A small press-and-release, twice the size of a nudge and half the size of a
-   bounce -- enough to read as "this is clickable" without becoming decoration. */
 @keyframes cueclick{
   0%,62%,100%{transform:translate(0,0) scale(1)}
-  70%        {transform:translate(1px,1px) scale(.86)}
+  70%        {transform:translate(1px,1px) scale(.8)}
   80%        {transform:translate(0,0) scale(1)}
 }
 @media (prefers-reduced-motion:reduce){.cue-i{animation:none}}
@@ -1132,4 +1133,29 @@ h1{font-size:clamp(38px,4.6vw,68px)}
   .foot-cta{width:100%;justify-content:center;min-height:48px}
   .foot-col a,.foot-col button{justify-content:center;min-height:32px}
   .foot-bottom{flex-direction:column;justify-content:center;text-align:center}
+}
+
+/* ══ Player reviews ═════════════════════════════════════════════════════════
+   Hidden until there is at least one; the founder's note stands alone until
+   then, which is the honest state rather than an empty heading. */
+.reviews{max-width:var(--wide);margin:0 auto clamp(44px,5vw,72px);text-align:center}
+.reviews[hidden]{display:none}
+.reviews .eyebrow{margin-bottom:clamp(22px,2.4vw,34px)}
+/* Cards keep a readable width instead of stretching to fill the row, so one
+   or two reviews centre at a normal size rather than becoming a single
+   letterbox that announces how few there are. */
+.rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,330px));
+  justify-content:center;gap:clamp(14px,1.5vw,20px);max-width:1060px;margin:0 auto}
+.rev{margin:0;padding:22px;border:1px solid var(--line);border-radius:16px;
+  background:var(--panel-2);text-align:left;display:flex;flex-direction:column;gap:12px}
+.rev-stars{display:flex;gap:4px}
+.rev-star{width:14px;height:14px;background:var(--line-2);
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.rev-star.on{background:var(--a)}
+.rev blockquote{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2);
+  overflow-wrap:anywhere}
+.rev figcaption{font:600 12.5px/1 Sora,sans-serif;color:var(--ink-5)}
+@media (max-width:700px){
+  .rev{text-align:center;align-items:center}
+  .rev-stars{justify-content:center}
 }

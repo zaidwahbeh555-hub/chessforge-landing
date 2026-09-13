@@ -552,3 +552,59 @@
       .catch(function () {});
   }
 })();
+
+/* ══ Reviews ════════════════════════════════════════════════════════════════
+   What players actually wrote, straight from the app. These are published
+   without anyone reading them first, so every value below goes in as text and
+   never as markup -- a review is a stranger's words, and the one thing that
+   must never happen on a page that also takes card details is a <script> that
+   arrived through a comment box. */
+(function () {
+  var wrap = document.getElementById('reviews');
+  var grid = document.getElementById('revGrid');
+  if (!wrap || !grid || !window.fetch) return;
+
+  function stars(n) {
+    var s = document.createElement('div');
+    s.className = 'rev-stars';
+    s.setAttribute('aria-label', n + ' out of 5');
+    for (var i = 1; i <= 5; i++) {
+      var b = document.createElement('i');
+      b.className = 'rev-star' + (i <= n ? ' on' : '');
+      s.appendChild(b);
+    }
+    return s;
+  }
+
+  fetch('https://app.chessforge.org/reviews/public', { mode: 'cors' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      var list = (d && d.reviews) || [];
+      if (!list.length) return;               // the founder's note stands alone
+      /* Six, newest first, all on screen at once.
+         Not a carousel: a rotating strip shows one review at a time and hides
+         the rest behind a wait, and people do not wait. Not "best first"
+         either -- nothing under three stars is published in the first place,
+         so ranking what is left is choosing between good and good, and the
+         only thing it would add is the suspicion that it was cherry-picked.
+         Newest also keeps the section alive on its own as people write. */
+      list.slice(0, 6).forEach(function (rv) {
+        var card = document.createElement('figure');
+        card.className = 'rev';
+        card.appendChild(stars(Math.max(0, Math.min(5, rv.stars | 0))));
+        var q = document.createElement('blockquote');
+        q.textContent = rv.comment || '';     // text, never markup
+        card.appendChild(q);
+        var by = document.createElement('figcaption');
+        by.textContent = rv.username || 'a player';
+        card.appendChild(by);
+        grid.appendChild(card);
+      });
+      wrap.hidden = false;
+      /* "When enough of them have written a review, theirs will be on this
+         page instead of mine." It is no longer a promise once it is true. */
+      var promise = document.getElementById('revPromise');
+      if (promise) promise.remove();
+    })
+    .catch(function () {});
+})();
