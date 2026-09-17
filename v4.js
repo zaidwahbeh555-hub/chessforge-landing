@@ -456,19 +456,19 @@
   addEventListener('keydown', function (e) { if (e.key === 'Escape') shut(); });
 })();
 
-/* ══ Yearly / monthly, and the clock on the launch offer ════════════════════
-   $19.99 a month, or $40 for a whole year while the offer runs.
+/* ══ Yearly / monthly ═══════════════════════════════════════════════════════
+   $4.99 a month, or $29.99 for the whole year -- half the price, and not a
+   countdown: yearly is a permanent option, so nothing here expires.
 
-   The deadline below is the same epoch second the app ships in billing.py, so
-   the two cannot drift apart -- but it is only the fallback. If the app
-   answers, its figures win, which means the offer can be extended or ended
-   from Railway without touching this file. And it is measured against the
-   SERVER's clock: a laptop with a wrong date would otherwise see the offer
-   already over, or keep it running for weeks after it closed. */
+   The figures below are only the fallback. If the app answers, its numbers
+   win, which means a price change on Railway reaches this page without
+   touching this file -- and the page can never advertise a price Stripe has
+   not been told about. `ends` is kept because the route still returns it: a
+   future limited offer sets it and the clock comes back on its own. */
 (function () {
   var API = 'https://app.chessforge.org/plan/pricing';
-  var P = { monthly: 19.99, monthly_was: 29.99, yearly: 40, yearly_off_pct: 83,
-            ends: 1791057883, now: Math.floor(Date.now() / 1000),
+  var P = { monthly: 4.99, monthly_was: 9.99, yearly: 29.99, yearly_off_pct: 50,
+            ends: 0, now: Math.floor(Date.now() / 1000),
             yearly_available: true };
   var interval = 'yearly', skew = 0, tick = null;
 
@@ -478,7 +478,8 @@
   if (!sw || !price || !note) return;
 
   function left() { return P.ends ? (P.ends * 1000) - (Date.now() + skew) : 0; }
-  function live()  { return !!P.yearly_available && left() > 0; }
+  /* No deadline means no deadline. Yearly is on whenever the app says it is. */
+  function live()  { return !!P.yearly_available && (!P.ends || left() > 0); }
 
   function fmt(ms) {
     var s = Math.max(0, Math.floor(ms / 1000)), p = function (n) { return n < 10 ? '0' + n : '' + n; };
@@ -500,9 +501,10 @@
     });
 
     if (interval === 'yearly') {
-      price.innerHTML = '$' + P.yearly.toFixed(0)
-        + '<span class="save">' + P.yearly_off_pct + '% off</span>'
-        + '<small>CAD for the year &mdash; $' + (P.yearly / 12).toFixed(2) + ' a month</small>';
+      price.innerHTML = '$' + P.yearly.toFixed(2)
+        + '<span class="save">save ' + P.yearly_off_pct + '%</span>'
+        + '<small>CAD for the year &mdash; $' + (P.yearly / 12).toFixed(2)
+        + ' a month, billed once</small>';
     } else {
       price.innerHTML = '<s>$' + P.monthly_was.toFixed(2) + '</s>$' + P.monthly.toFixed(2)
         + '<small>CAD a month</small>';
@@ -512,23 +514,24 @@
 
   function clock() {
     var ms = left();
-    /* The clock belongs to the yearly price. On Monthly there is nothing
-       running out, so a countdown sitting under $19.99 a month is just an
-       unexplained number. */
-    if (interval !== 'yearly') {
+    /* The note belongs to the yearly price. On Monthly there is nothing to
+       explain, so anything sitting under $4.99 a month is just an unexplained
+       line. */
+    if (interval !== 'yearly' || !live()) {
       note.hidden = true;
       if (tick) { clearInterval(tick); tick = null; }
-      return;
-    }
-    if (!live()) {
-      /* Over means gone. A clock reading 0d 00h 00m 00s left on the page is
-         worse than no clock, and the offer must not stay advertised. */
-      note.hidden = true;
-      if (tick) { clearInterval(tick); tick = null; }
-      if (P.yearly_available && ms <= 0) { P.yearly_available = false; render(); }
+      if (P.ends && P.yearly_available && ms <= 0) { P.yearly_available = false; render(); }
       return;
     }
     note.hidden = false;
+    if (!P.ends) {
+      /* The permanent case, which is the one that ships. No clock, because
+         nothing is running out -- just the saving, stated plainly. */
+      note.innerHTML = 'Save <b>' + P.yearly_off_pct + '%</b> against paying monthly. '
+        + 'One payment, cancel any time.';
+      if (tick) { clearInterval(tick); tick = null; }
+      return;
+    }
     note.innerHTML = weeksLeft() + ' &mdash; ends in <b>' + fmt(ms) + '</b>';
     if (!tick) tick = setInterval(clock, 1000);
   }

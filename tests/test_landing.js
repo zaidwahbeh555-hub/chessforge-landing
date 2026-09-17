@@ -61,10 +61,22 @@ check('it does not sell PGN upload as the product',
 check('the loop on the page is the loop in the app',
       /Play a game/i.test(html) && /See what broke/i.test(html)
       && /Drill it/i.test(html));
-check('the free plan is described as it actually is',
-      /One unaided game a week/.test(html) && /One coached game a week/.test(html),
-      'weekly, not daily -- SOLO_WINDOW is 7 days');
-check('the price is the real one', /\$19\.99/.test(html) && /\$29\.99/.test(html));
+// The free plan is a FRACTION of the paid one, stated in the real counts, and
+// both cards carry the same six rows so the two columns read as a diff.
+check('the free plan says what fraction of the product it is',
+      /1 of 14/.test(html) && /6 of 252/.test(html) && /5 of 43/.test(html)
+      && /4 of 24/.test(html),
+      'the numbers come from data.js: 14 openings, 252 replies, 43 positions, 24 endgames');
+check('and what it does not include, in the same words',
+      (html.match(/class="v lk">Locked/g) || []).length >= 2);
+check('the paid card answers each of those rows',
+      /all 14/.test(html) && /all 252/.test(html) && /all 43/.test(html)
+      && /all 24/.test(html));
+check('and says how much more that is',
+      /14&times;/.test(html) && /42&times;/.test(html),
+      'a multiplier is the argument; "unlimited" is a word');
+check('the price is the real one', /\$4\.99/.test(html) && /\$9\.99/.test(html),
+      'PRO_PRICE 4.99, PRO_PRICE_WAS 9.99');
 check('and the trial length is the real one', /3(&#8209;|-|\s)day/.test(html),
       'TRIAL_DAYS is 3');
 check('the rating range is the honest one', /300 to 1000/.test(html));

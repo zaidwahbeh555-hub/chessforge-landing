@@ -899,7 +899,7 @@ h2{font-size:clamp(28px,3.4vw,46px);line-height:1.12}
 .pp .save{display:inline-block;font:700 10.5px/1 Sora,sans-serif;letter-spacing:.08em;
   text-transform:uppercase;color:#07101a;background:var(--a);
   padding:5px 9px;border-radius:999px;margin-left:10px;vertical-align:middle}
-.offer-note{font-size:12.5px;line-height:1.5;color:var(--ink-4);margin:-6px 0 16px}
+.offer-note{font-size:12.5px;line-height:1.5;color:var(--ink-4);margin:-8px 0 16px}
 .offer-note[hidden]{display:none}
 .offer-note b{color:var(--a);font-weight:700;font-variant-numeric:tabular-nums;
   white-space:nowrap}
@@ -1158,4 +1158,46 @@ h1{font-size:clamp(38px,4.6vw,68px)}
 @media (max-width:700px){
   .rev{text-align:center;align-items:center}
   .rev-stars{justify-content:center}
+}
+
+
+/* ── the two plan cards, as a diff ─────────────────────────────────────────
+   Same six rows in the same order on both, so the columns line up and the only
+   thing that moves between them is the number. The number is the argument:
+   "1 of 14" next to "all 14" says more than any adjective. */
+.plans{align-items:stretch}
+.plan{display:flex;flex-direction:column}
+.plan ul{gap:0;flex:1}
+.plan li{display:flex;align-items:baseline;gap:14px;padding:9px 0;
+  border-top:1px solid rgba(255,255,255,.05);font-size:13px;line-height:1.4;
+  color:var(--ink-3);min-height:38px}
+.plan li:first-child{border-top:0}
+.plan li::before{content:none}
+.plan li{padding-left:0}
+.plan li .k{flex:1;min-width:0}
+.plan li .v{flex:none;font:700 13.5px/1.2 Sora,sans-serif;color:var(--ink);
+  text-align:right;white-space:nowrap}
+.plan li .v em{display:inline-block;margin-left:8px;padding:4px 7px;border-radius:999px;
+  font:700 9.5px/1 Sora,sans-serif;letter-spacing:.08em;text-transform:uppercase;
+  font-style:normal;color:#07101a;background:var(--a);vertical-align:middle}
+.plan li.off .k{color:var(--ink-5)}
+.plan li .v.lk{color:var(--ink-5);font-weight:600;position:relative;padding-left:18px}
+/* a drawn padlock: an escaped glyph in a stylesheet has printed itself over
+   the text here before */
+.plan li .v.lk::before{content:"";position:absolute;left:0;top:2px;
+  width:11px;height:8px;border-radius:2px;background:var(--ink-5)}
+.plan li .v.lk::after{content:"";position:absolute;left:2.5px;top:-2.5px;
+  width:6px;height:6px;border:1.6px solid var(--ink-5);border-bottom:0;
+  border-radius:4px 4px 0 0}
+
+/* the free card carries the switch's twin in the same slot, so both cards are
+   the same height and the two prices sit on one line across */
+.bill-static{display:inline-flex;gap:2px;padding:3px;margin:0 0 14px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px}
+.bill-static span{display:block;font:600 12.5px/1 Manrope,sans-serif;color:var(--ink-5);
+  padding:8px 15px;border-radius:999px}
+@media (max-width:640px){
+  .bill-static{width:100%;justify-content:center;margin-left:auto;margin-right:auto}
+  .bill-static span{flex:1;min-height:44px;font-size:13.5px;padding:0 18px;
+    display:flex;align-items:center;justify-content:center}
 }
