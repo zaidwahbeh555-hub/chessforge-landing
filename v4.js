@@ -138,313 +138,47 @@
       }).catch(function () {});
   })();
 
-  /* ── the hero: a board you actually play ──────────────────────────────────
-     The pitch is "a coach who is there while you play", so the hero lets you
-     play. Every legal move in this position was analysed by Stockfish when the
-     page was built (v4-hero.json: 37 moves, each with its evaluation, the
-     opponent's best reply, and how much it loses against the best move), which
-     is why this needs no engine in the browser and still answers honestly.
+  /* ── the endgame judgement ────────────────────────────────────────────────
+     What replaced the coached-play board. That demo let you play a move and had
+     a coach grade it, which was the old product: there is no coach in the app
+     now, and grading a move is not what it does.
 
-     Only eight moves have a hand-written line, and those name a real idea --
-     the knight on f3 is the only guard on d1, so moving it hangs the queen to
-     Bxd1. Everything else is phrased from the numbers, so no move can be given
-     a verdict the analysis does not support. */
-  (function hero() {
-    var board = $('#board'), shot = $('#shotBoard');
-    if (!board || !window.fetch) return;
-    var D = null, sel = null, played = null;
+     This is the moment every endgame in the app opens on, and the answer is not
+     ours -- it is what Stockfish said at depth when the position was built.
+     Nothing is fetched and no engine runs here; there is one fact and it is
+     already known. */
+  (function () {
+    var wrap = $('#judge');
+    if (!wrap) return;
+    var ask = $('#judgeAsk'), said = $('#judgeSaid');
+    var TRUTH = 'win';           // verified: white wins, mate in 13
 
-    /* The data is written a8-first; the player is Black here, so the board is
-       drawn from Black's side -- you cannot ask somebody to find a move while
-       looking at it upside down. */
-    function cells(list) {
-      var flip = D && D.side === 'black';
-      return (flip ? list.slice().reverse() : list).map(function (p, i) {
-        var f = flip ? 7 - (i % 8) : i % 8;
-        var rank = flip ? 1 + Math.floor(i / 8) : 8 - Math.floor(i / 8);
-        var sq = 'abcdefgh'[f] + rank;
-        return '<i class="sq ' + ((f + rank) % 2 ? 'l' : 'd') + '" data-sq="' + sq + '">'
-             + (p ? '<img loading="lazy" decoding="async" src="pieces/' + p + '.svg" alt="">' : '')
-             + '</i>';
-      }).join('');
-    }
-    function paint(list) { board.innerHTML = cells(list); }
-
-    /* The labels have to follow the board.
-       Drawn from Black's side, h1 sits bottom-left -- so the files read h to a
-       and the ranks 1 to 8. Static a-h / 8-1 labels would name every square
-       wrong, which is worse than no labels at all when the coach is telling you
-       to look at f7. */
-    function coords() {
-      var flip = D && D.side === 'black';
-      var f = 'abcdefgh'.split(''), r = '87654321'.split('');
-      if (flip) { f.reverse(); r.reverse(); }
-      var fe = $('#files'), re = $('#ranks');
-      if (fe) fe.innerHTML = f.map(function (c) { return '<i>' + c + '</i>'; }).join('');
-      if (re) re.innerHTML = r.map(function (c) { return '<i>' + c + '</i>'; }).join('');
-    }
-    function clearMarks() {
-      $$('.sq', board).forEach(function (s) {
-        s.classList.remove('pick', 'target', 'from', 'to', 'bad');
-      });
-    }
-    function movesFrom(sq) { return D.moves.filter(function (m) { return m.from === sq; }); }
-
-
-    var GRADE_WORD = { best: 'Best move', good: 'Good', inaccuracy: 'Inaccuracy',
-                       mistake: 'Mistake', blunder: 'Blunder' };
-
-    function line(m) {
-      if (D.says[m.san]) return D.says[m.san];
-      if (m.mated && D.says.__mated) return D.says.__mated;
-      var pawns = (Math.abs(m.loss) / 100).toFixed(1);
-      if (m.grade === 'best') return m.san + ' is the move. Nothing else here keeps as much.';
-      if (m.grade === 'good')
-        return m.san + ' is playable — it gives up about ' + pawns + ' of a pawn against the best move, '
-             + 'which is not the kind of gap that decides a game.';
-      return m.san + ' costs you about ' + pawns + ' of a pawn'
-           + (m.reply ? ', and the answer is ' + m.reply + '.' : '.')
-           + ' That is the sort of move that decides the game two moves from now.';
+    function answer(pick) {
+      var right = pick === TRUTH;
+      $('#jVerdict').textContent = right
+        ? 'Right \u2014 it is a win.'
+        : 'Not quite. It is a win.';
+      $('#jVerdict').className = 'j-verdict ' + (right ? 'good' : 'bad');
+      $('#jWhy').textContent = right
+        ? 'One pawn and the kings, and it is winning for the side to move \u2014 but '
+          + 'only played in the right order. Most players push the pawn here and draw it.'
+        : 'This one IS winnable, and that matters: a player who thinks it is drawn '
+          + 'stops trying and draws it. The pawn is not the problem \u2014 the order is.';
+      ask.hidden = true;
+      said.hidden = false;
+      said.classList.remove('in'); void said.offsetWidth; said.classList.add('in');
     }
 
-    function respond(m) {
-      played = m;
-      paint(m.cells);
-      clearMarks();
-      var a = board.querySelector('[data-sq="' + m.from + '"]');
-      var b2 = board.querySelector('[data-sq="' + m.to + '"]');
-      if (a) a.classList.add('from');
-      if (b2) b2.classList.add(m.grade === 'blunder' || m.grade === 'mistake' ? 'bad' : 'to');
-      var g = $('#grade');
-      g.textContent = GRADE_WORD[m.grade] || '';
-      g.className = 'grade ' + m.grade;
-      $('#coachSay').textContent = line(m);
-      $('#coachAct').hidden = false;
-      $('#showBest').hidden = m.grade === 'best';
-      var box = $('#coachBox');
-      box.classList.add('spoke');
-      box.classList.remove('right', 'wrong');
-      box.classList.add(m.grade === 'best' || m.grade === 'good' ? 'right' : 'wrong');
-      var tm = $('#tryme');
-      if (tm) tm.classList.add('gone');
-      runFlow(m);
-    }
-
-    /* ── what the app does with that move ─────────────────────────────────
-       Not a diagram of the loop: it runs. Each step fills its own bar and
-       hands to the next, and the captions name what actually came out of the
-       move you played -- the pattern, the position, the interval. A static
-       list of four features says the same words and proves none of it. */
-    var flowTimers = [];
-    function stopFlow() {
-      flowTimers.forEach(clearTimeout); flowTimers = [];
-      var f = $('#flow');
-      if (f) $$('li', f).forEach(function (li) { li.className = ''; });
-      var fn = $('#flowNext');
-      if (fn) { fn.classList.remove('in'); fn.setAttribute('aria-hidden', 'true'); }
-    }
-    /* Only when the board goes back to the start -- stopFlow also runs at the
-       top of every move, where undoing these would cancel them instantly. */
-    function restoreIdle() {
-      var tm = $('#tryme'); if (tm) tm.classList.remove('gone');
-      var l = $('#procLede');
-      if (l) l.textContent = 'Play a move on the board above and watch what the app does '
-        + 'with it. Nothing here is a mock-up of a loading bar: these are the four things '
-        + 'ChessForge actually runs after every game you finish.';
-    }
-    function runFlow(m) {
-      var f = $('#flow'); if (!f) return;
-      stopFlow();
-      /* The panel is a section of its own now, below the fold, so running it
-         where you cannot see it would be running it for nobody. Scrolled to on
-         every move rather than only the best one: 23 of the 31 legal moves here
-         are mate, so gating this on a correct answer would hide it from most
-         people who touch the board.
-
-         Held first. Scrolling the instant the move lands takes his answer off
-         the screen before it can be read -- and his answer is the reason the
-         board is on the page. A wrong move gets longer, because the line
-         explaining what it ran into is the longer one. */
-      var right = m.grade === 'best' || m.grade === 'good';
-      var hold = RM ? 0 : (right ? 2400 : 3400);
-      /* Only a right answer takes you down the page. Moving someone off a board
-         they just blundered on, before they have read why, is taking the answer
-         away at the moment it matters -- the button below the panel is there
-         for them instead. */
-      if (right) flowTimers.push(setTimeout(function () {
-        var sec = document.getElementById('process');
-        if (sec) sec.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
-      }, hold));
-      var lede = $('#procLede');
-      if (lede) lede.textContent = m.mated
-        ? 'You played ' + m.san + ', and it is mate next move. Here is what ChessForge does '
-          + 'with that \u2014 for real, on every game you finish.'
-        : 'You played ' + m.san + '. Here is what ChessForge does with it \u2014 for real, '
-          + 'on every game you finish.';
-      /* The panel is on the page from the start, dimmed, so you can see what is
-         about to happen -- and so revealing it does not resize the column and
-         shove the board you are looking at. The footnote stays too: it is still
-         true after you move, and hiding it was another 17px of movement. */
-      var pattern = m.mated ? 'Back-rank and f7 mates'
-                  : m.grade === 'best' || m.grade === 'good' ? 'Defending the mating square'
-                  : 'Missed defence';
-      $('#flAnalyse').textContent = m.san + ' graded, and the 30 alternatives with it';
-      $('#flPuzzle').textContent = m.mated
-        ? 'the position one move before Qxf7#'
-        : 'the position you just played from';
-      $('#flLesson').textContent = pattern + ' — the pattern, not this one board';
-      $('#flDone').textContent = 'back tomorrow, then in three days, then a week';
-      var steps = $$('li', f);
-      steps.forEach(function (li, i) {
-        flowTimers.push(setTimeout(function () {
-          li.className = 'run';
-          flowTimers.push(setTimeout(function () {
-            li.className = 'done';
-            if (i === steps.length - 1) {
-              var fn = $('#flowNext');
-              if (fn) { fn.removeAttribute('aria-hidden'); fn.classList.add('in'); }
-            }
-          }, 620));
-        }, hold + 420 + i * 700));
-      });
-    }
-
-    function reset(msg) {
-      played = null; sel = null;
-      paint(D.start);
-      clearMarks();
-      $('#grade').textContent = ''; $('#grade').className = 'grade';
-      $('#coachAct').hidden = true;
-      stopFlow();
-      restoreIdle();
-      $('#coachBox').classList.remove('spoke', 'right', 'wrong');
-      $('#coachSay').textContent = msg || D.idle;
-    }
-
-    /* ── Dragging ──────────────────────────────────────────────────────────
-       Click-then-click stays exactly as it was; this is the other half of how
-       people expect a board to work. Mouse and pen only: on a touch screen the
-       piece would sit under the finger that is hiding it, and stopping the
-       browser scrolling long enough to allow a drag would cost the page scroll
-       on a 334px board. Tapping already works there.
-
-       Only legal destinations are droppable. The move list is the same one the
-       click path uses -- every position was solved by Stockfish before the page
-       was built, so "legal" here is the real set, not a guess at one. */
-    var drag = null;
-
-    function squareAt(x, y) {
-      var el = document.elementFromPoint(x, y);
-      return el ? el.closest('.sq') : null;
-    }
-    function endDrag(commit) {
-      if (!drag) return;
-      var d0 = drag; drag = null;
-      if (d0.ghost) d0.ghost.remove();
-      if (d0.img) d0.img.style.opacity = '';
-      $$('.sq.over', board).forEach(function (s) { s.classList.remove('over'); });
-      if (commit) { respond(commit); return; }
-      /* A drop on nothing is not a mistake -- the piece stays picked up, so the
-         next click still completes the move. */
-    }
-
-    board.addEventListener('pointerdown', function (e) {
-      if (!D || played || e.button !== 0) return;
-      if (e.pointerType === 'touch') return;
-      var cell = e.target.closest('.sq'); if (!cell) return;
-      var img = cell.querySelector('img'); if (!img) return;
-      var opts = movesFrom(cell.dataset.sq);
-      if (!opts.length) return;                 // nothing legal: nothing to drag
-
-      clearMarks();
-      sel = cell.dataset.sq;
-      cell.classList.add('pick');
-      opts.forEach(function (o) {
-        var t = board.querySelector('[data-sq="' + o.to + '"]');
-        if (t) t.classList.add('target');
-      });
-
-      var r = cell.getBoundingClientRect();
-      var g = img.cloneNode(true);
-      g.className = 'drag-ghost';
-      g.style.width = r.width + 'px';
-      g.style.height = r.height + 'px';
-      document.body.appendChild(g);
-      drag = { from: cell.dataset.sq, img: img, ghost: g, moved: false,
-               x0: e.clientX, y0: e.clientY, size: r.width };
-      g.style.left = (e.clientX - r.width / 2) + 'px';
-      g.style.top  = (e.clientY - r.height / 2) + 'px';
-      board.setPointerCapture(e.pointerId);
-      e.preventDefault();
+    $$('[data-judge]', wrap).forEach(function (b) {
+      b.addEventListener('click', function () { answer(b.getAttribute('data-judge')); });
     });
-
-    board.addEventListener('pointermove', function (e) {
-      if (!drag) return;
-      if (!drag.moved
-          && Math.abs(e.clientX - drag.x0) < 5 && Math.abs(e.clientY - drag.y0) < 5) return;
-      if (!drag.moved) { drag.moved = true; drag.img.style.opacity = '.25'; }
-      drag.ghost.style.left = (e.clientX - drag.size / 2) + 'px';
-      drag.ghost.style.top  = (e.clientY - drag.size / 2) + 'px';
-      var over = squareAt(e.clientX, e.clientY);
-      $$('.sq.over', board).forEach(function (s) { s.classList.remove('over'); });
-      if (over && over.classList.contains('target')) over.classList.add('over');
+    var again = $('#jAgain');
+    if (again) again.addEventListener('click', function () {
+      said.hidden = true; ask.hidden = false;
+      ask.classList.remove('in'); void ask.offsetWidth; ask.classList.add('in');
     });
-
-    board.addEventListener('pointerup', function (e) {
-      if (!drag) return;
-      var moved = drag.moved, from = drag.from;
-      if (!moved) { endDrag(null); return; }    // a click, not a drag
-      var cell = squareAt(e.clientX, e.clientY);
-      var m = cell && movesFrom(from).filter(function (x) {
-        return x.to === cell.dataset.sq;
-      })[0];
-      suppressClick = true;
-      endDrag(m || null);                       // illegal or off-board: snaps back
-    });
-    board.addEventListener('pointercancel', function () { endDrag(null); });
-
-    var suppressClick = false;
-
-    board.addEventListener('click', function (e) {
-      if (!D) return;
-      /* The pointerup that finished a drag is followed by a click on the square
-         it started from, which would immediately deselect what just moved. */
-      if (suppressClick) { suppressClick = false; return; }
-      var cell = e.target.closest('.sq'); if (!cell) return;
-      var sq = cell.dataset.sq;
-      if (played) { reset(); return; }          // a click after a move starts over
-      if (sel) {
-        var m = movesFrom(sel).filter(function (x) { return x.to === sq; })[0];
-        if (m) { respond(m); return; }
-      }
-      var opts = movesFrom(sq);
-      clearMarks();
-      if (!opts.length) { sel = null; return; }
-      sel = sq;
-      cell.classList.add('pick');
-      opts.forEach(function (o) {
-        var t = board.querySelector('[data-sq="' + o.to + '"]');
-        if (t) t.classList.add('target');
-      });
-    });
-
-    fetch('v4-hero.json').then(function (r) { return r.json(); }).then(function (d) {
-      D = d;
-      coords();
-      paint(d.start);
-      if (shot) shot.innerHTML = cells(d.start);
-      $('#undo').addEventListener('click', function () { reset('Try another one.'); });
-      $('#showBest').addEventListener('click', function () {
-        var b3 = d.moves.filter(function (m) { return m.san === d.best; })[0];
-        if (b3) respond(b3);
-      });
-      var fnext = $('#flowNext');
-      if (fnext) fnext.addEventListener('click', function () {
-        var t = document.getElementById('features');
-        if (t) t.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
-      });
-    }).catch(function () {});
   })();
+
 
   /* modals */
   var open = null;
@@ -567,55 +301,9 @@
    never as markup -- a review is a stranger's words, and the one thing that
    must never happen on a page that also takes card details is a <script> that
    arrived through a comment box. */
-(function () {
-  var wrap = document.getElementById('reviews');
-  var grid = document.getElementById('revGrid');
-  if (!wrap || !grid || !window.fetch) return;
+/* The published-reviews block lived here. It filled a section that has been
+   removed from the page, so it fetched, parsed and rendered into nothing. */
 
-  function stars(n) {
-    var s = document.createElement('div');
-    s.className = 'rev-stars';
-    s.setAttribute('aria-label', n + ' out of 5');
-    for (var i = 1; i <= 5; i++) {
-      var b = document.createElement('i');
-      b.className = 'rev-star' + (i <= n ? ' on' : '');
-      s.appendChild(b);
-    }
-    return s;
-  }
-
-  fetch('https://app.chessforge.org/reviews/public', { mode: 'cors' })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (d) {
-      var list = (d && d.reviews) || [];
-      if (!list.length) return;               // the founder's note stands alone
-      /* Six, newest first, all on screen at once.
-         Not a carousel: a rotating strip shows one review at a time and hides
-         the rest behind a wait, and people do not wait. Not "best first"
-         either -- nothing under three stars is published in the first place,
-         so ranking what is left is choosing between good and good, and the
-         only thing it would add is the suspicion that it was cherry-picked.
-         Newest also keeps the section alive on its own as people write. */
-      list.slice(0, 6).forEach(function (rv) {
-        var card = document.createElement('figure');
-        card.className = 'rev';
-        card.appendChild(stars(Math.max(0, Math.min(5, rv.stars | 0))));
-        var q = document.createElement('blockquote');
-        q.textContent = rv.comment || '';     // text, never markup
-        card.appendChild(q);
-        var by = document.createElement('figcaption');
-        by.textContent = rv.username || 'a player';
-        card.appendChild(by);
-        grid.appendChild(card);
-      });
-      wrap.hidden = false;
-      /* "When enough of them have written a review, theirs will be on this
-         page instead of mine." It is no longer a promise once it is true. */
-      var promise = document.getElementById('revPromise');
-      if (promise) promise.remove();
-    })
-    .catch(function () {});
-})();
 
 /* ── the staged positions ────────────────────────────────────────────────────
    Three real positions out of the app's library, painted from FEN. Static, and

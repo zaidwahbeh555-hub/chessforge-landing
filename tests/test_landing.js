@@ -137,10 +137,27 @@ check('and no deleted screen is still being sold',
       !['Dashboard', 'Play &amp; Coach', 'Trap Trainer', 'GM Forge', 'Progress', 'Lessons']
         .some(function (t) { return html.indexOf(t) > -1; }),
       'every one of these was removed from the product');
-check('and the hero board it replaced them with is really playable',
-      /id="board"/.test(html) && /\.sq\[data-sq=|dataset\.sq/.test(js)
-      && /v4-hero\.json/.test(js),
-      'every legal move pre-analysed by Stockfish, not a scripted single answer');
+/* The playable board was the old product's demo: you played a move and a coach
+   graded it. There is no coach in the app now and grading a move is not what it
+   does, so it was replaced by the thing every endgame in the app opens on -- one
+   judgement, made before you are told anything.
+
+   What has to hold is that the page still DEMONSTRATES rather than describes,
+   and that the demo is answerable without an engine because the answer was
+   settled at depth before it shipped. */
+check('the page demonstrates the app rather than describing it',
+      /data-judge="win"/.test(html) && /data-judge="draw"/.test(html),
+      'one judgement, asked before anything is revealed');
+check('a wrong answer is corrected with what believing it would cost',
+      /stops trying and draws it/.test(js),
+      'a correction with no consequence attached is just a score');
+check('and the method arrives only after the judgement',
+      html.indexOf('data-judge=') < html.indexOf('class="j-steps"'),
+      'telling you the method first is answering your own question');
+check('real positions are drawn from FEN, not pictured',
+      (html.match(/data-fen="/g) || []).length >= 4
+      && /function boardHTML\(fen\)/.test(js),
+      'the boards are the app\'s own positions, painted, not screenshots');
 check('the board uses the app\'s real colours',
       /--sq-l:#bccedb/i.test(css) && /--sq-d:#4a7191/i.test(css),
       'Storm Marble, the house board');

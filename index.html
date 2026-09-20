@@ -251,53 +251,63 @@
 </section>
 
 <!-- ═══ TRY IT ══════════════════════════════════════════════════════════════
-     The playable board, kept. Every legal move in this position was analysed by
-     Stockfish before the page loaded, so it answers all 31 rather than scripting
-     one. It was in the hero; the hero now belongs to the three phases, and a
-     demo this good deserves a section rather than a corner. -->
+     The demo that was here let you play a move and had a coach grade it, which
+     was the old product and is not in the app any more. This is the moment the
+     app actually opens an endgame on: one judgement, made before you are told
+     anything, because getting that judgement wrong is how won endings get drawn
+     and drawn ones get resigned.
+
+     No engine needed at runtime -- the answer is what Stockfish said at depth
+     when this position was built for the app. -->
 <section class="band" id="tryit">
   <div class="wrap">
     <div class="bl-head reveal">
       <p class="eyebrow">Try it here</p>
-      <h2>Play a move.<br><span class="grad">See what it says.</span></h2>
-      <p class="lede">You are White. Black has just played a move with an idea behind it.
-        Find it &mdash; or walk into it, which teaches the same thing faster.</p>
+      <h2>Before you move,<br><span class="grad">decide.</span></h2>
+      <p class="lede">This is how every endgame in the app opens. Not &ldquo;find the
+        move&rdquo; &mdash; something harder, and the thing that actually decides
+        these games.</p>
     </div>
 
-    <div class="try-wrap reveal">
-      <div class="c-main">
-        <!-- The board and what the coach is saying, and nothing else. Every
-             legal move here was analysed by Stockfish before the page loaded,
-             so it answers all 31 rather than scripting one. -->
-        <div class="board-wrap" id="boardWrap">
-          <div class="ranks" id="ranks" aria-hidden="true"></div>
-          <div class="board" id="board"></div>
-          <div class="files" id="files" aria-hidden="true"></div>
+    <div class="judge reveal" id="judge">
+      <figure class="judge-fig pos" data-fen="8/8/8/3K4/3P4/3k4/8/8">
+        <div class="pos-b" aria-hidden="true"></div>
+      </figure>
 
-          <div class="c-say" id="coachBox">
-            <span class="c-who">Coach<span class="grade" id="grade"></span></span>
-            <p id="coachSay">Look at his bishop on h5 before you move. What is it aimed at,
-              and what is standing in the way?</p>
-            <div class="c-act" id="coachAct" hidden>
-              <button type="button" class="fc-btn" id="undo">Take it back</button>
-              <button type="button" class="fc-btn ghost" id="showBest">Show me the move</button>
-            </div>
-            <div class="cands" id="candBox" hidden></div>
-          </div>
-
-          <!-- The interactivity cue: a cursor that clicks, and a line telling
-               you the board is yours. It retires the moment you touch a piece. -->
-          <div class="cue" id="tryme" aria-hidden="true">
-            <svg class="cue-i" viewBox="0 0 24 24">
-              <path d="M6 3.5 18.2 12.1 12.6 13.2 15.4 19.1 13 20.2 10.2 14.3 6.4 18.2Z"/>
-            </svg>
-            <span>Your move &mdash; pick up a piece</span>
-          </div>
+      <div class="judge-ask" id="judgeAsk">
+        <p class="j-side">You are White. It is your move.</p>
+        <h3 class="j-q">Can this be won?</h3>
+        <p class="j-note">Not &ldquo;can I find a good move&rdquo;. Can this position be
+          won at all, against the best defence there is?</p>
+        <div class="j-acts">
+          <button type="button" class="btn btn-fill" data-judge="win">This is a win</button>
+          <button type="button" class="btn btn-ghost" data-judge="draw">This is only a draw</button>
         </div>
       </div>
-      <p class="c-foot" id="cFoot">All 31 legal moves in this position were checked by
-        Stockfish before this page loaded. Play any of them &mdash; it answers all 31.</p>
+
+      <div class="judge-said" id="judgeSaid" hidden>
+        <p class="j-verdict" id="jVerdict"></p>
+        <p class="j-why" id="jWhy"></p>
+        <p class="j-rule"><b>The method:</b> Your king goes first, in front of the pawn.
+          Push the pawn first and you draw a game you were winning.</p>
+        <ol class="j-steps">
+          <li>Never push the pawn while your king is behind it &mdash; it has nothing
+            to escort it with.</li>
+          <li>Walk the king up until one square separates the kings and it is
+            <i>his</i> move. That is the opposition, and it means he has to give way.</li>
+          <li>He steps aside; you step forward. Repeat.</li>
+          <li>Only now does the pawn move, and it moves with the king in front of it
+            the whole way.</li>
+        </ol>
+        <div class="j-acts">
+          <a class="btn btn-fill" href="https://app.chessforge.org">Play it out in the app</a>
+          <button type="button" class="btn btn-ghost" id="jAgain">Ask me again</button>
+        </div>
+      </div>
     </div>
+
+    <p class="c-foot">Verified at depth before it shipped: this one is a win in 13.
+      Twenty-four endings in the app, and every result checked the same way.</p>
   </div>
 </section>
 

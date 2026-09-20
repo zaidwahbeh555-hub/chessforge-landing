@@ -1482,3 +1482,51 @@ h1{font-size:clamp(38px,4.6vw,68px)}
   .phase:nth-child(even) .ph-fig{grid-column:1;grid-row:auto;order:0}
   .ph-fig .pos-b{max-width:340px}
 }
+
+
+/* ── the endgame judgement ────────────────────────────────────────────────
+   Board on the left, the question beside it. Asymmetric like the rest of the
+   page, and the answer replaces the question in place rather than appearing
+   under it, so the section does not grow a screen taller mid-read. */
+.judge{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr);
+  gap:clamp(28px,4.5vw,64px);align-items:center;
+  margin-top:clamp(36px,4.5vw,56px)}
+.judge-fig{margin:0}
+.judge-fig .pos-b{max-width:380px;margin-inline:auto}
+.j-side{margin:0;font:600 11px/1 Sora,sans-serif;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--a-2)}
+.j-q{margin:16px 0 0;font:600 clamp(26px,3.4vw,42px)/1.14 Sora,sans-serif;
+  letter-spacing:-.03em;color:var(--ink)}
+.j-note{margin:14px 0 0;max-width:44ch;
+  font:400 15px/1.7 Manrope,sans-serif;color:var(--ink-3)}
+.j-acts{display:flex;flex-wrap:wrap;gap:11px;margin-top:26px}
+
+.j-verdict{margin:0;font:600 clamp(20px,2.4vw,27px)/1.25 Sora,sans-serif;
+  letter-spacing:-.02em}
+.j-verdict.good{color:var(--good)}
+.j-verdict.bad{color:var(--ink)}
+.j-why{margin:13px 0 0;max-width:48ch;font:400 14.5px/1.7 Manrope,sans-serif;
+  color:var(--ink-3)}
+.j-rule{margin:20px 0 0;padding-top:18px;border-top:1px solid var(--line);
+  max-width:48ch;font:400 14.5px/1.7 Manrope,sans-serif;color:var(--ink-2)}
+.j-rule b{color:var(--ink);font-weight:600}
+.j-steps{margin:16px 0 0;padding:0 0 0 22px;max-width:50ch}
+.j-steps li{margin-top:9px;font:400 13.6px/1.66 Manrope,sans-serif;color:var(--ink-4)}
+.j-steps li::marker{color:var(--ink-5);font-variant-numeric:tabular-nums}
+.j-steps i{color:var(--ink-2);font-style:italic}
+
+/* The swap between question and answer, so it reads as one panel turning over
+   rather than two panels appearing. */
+#judgeAsk,#judgeSaid{min-width:0}
+#judgeAsk.in,#judgeSaid.in{animation:j-turn .42s cubic-bezier(.22,1,.36,1)}
+@keyframes j-turn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}}
+
+@media (max-width:900px){
+  .judge{grid-template-columns:1fr;gap:28px}
+  .judge-fig .pos-b{max-width:320px}
+}
+@media (prefers-reduced-motion:reduce){
+  #judgeAsk.in,#judgeSaid.in{animation:none}
+}
