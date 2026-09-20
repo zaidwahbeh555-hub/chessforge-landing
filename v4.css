@@ -1212,14 +1212,35 @@ h1{font-size:clamp(38px,4.6vw,68px)}
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* ── the bar ───────────────────────────────────────────────────────────── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:60;padding:14px var(--gut) 0}
+/* The strip behind it is gone.
+
+   Two earlier .nav rules in this file set a full-width background and a bottom
+   border on .stuck, and the rule below never overrode them -- so scrolling put
+   the rounded card inside a dark bar spanning the window. The card is the whole
+   bar now: everything outside it is the page, showing through.
+
+   !important because those earlier rules are duplicated twice over and sit in a
+   block that predates this one; overriding by order alone has already failed
+   here once. */
+.nav,.nav.stuck{background:none!important;backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;border-bottom:0!important;
+  height:auto!important;display:block!important;
+  position:fixed;top:0;left:0;right:0;z-index:60;padding:14px var(--gut) 0}
+
+/* Shorter across, a little taller, a little rounder. The blur stays on the card
+   itself, which is what makes the page visibly pass underneath it. */
 .nav-in{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;
-  width:min(var(--wide),100%);margin:0 auto;padding:9px 10px 9px 16px;
-  border-radius:10px;background:rgba(7,12,20,.78);
-  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  width:min(1040px,100%);margin:0 auto;padding:13px 13px 13px 18px;
+  border-radius:15px;background:rgba(7,12,20,.72);
+  -webkit-backdrop-filter:blur(20px) saturate(135%);
+          backdrop-filter:blur(20px) saturate(135%);
   border:1px solid var(--line);
-  transition:background .3s var(--ease),border-color .3s var(--ease)}
-.nav.stuck .nav-in{background:rgba(6,10,17,.94);border-color:var(--line-2)}
+  transition:background .3s var(--ease),border-color .3s var(--ease),
+             box-shadow .3s var(--ease)}
+/* Once the page moves under it the card lifts slightly off the content, which
+   is the only thing that should change on scroll. */
+.nav.stuck .nav-in{background:rgba(6,10,17,.9);border-color:var(--line-2);
+  box-shadow:0 14px 34px -26px rgba(0,0,0,.95)}
 .nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;
   padding:4px 6px;border-radius:7px;transition:opacity .18s var(--ease)}
 .nav .brand:hover{opacity:.78}
