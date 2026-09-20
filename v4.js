@@ -35,7 +35,12 @@
 
   /* Count a figure up to its data-count once, when it is first seen. */
   function countUp(el) {
-    if (el._ran) return; el._ran = 1;
+    /* liveCount hands this whatever querySelector found, which is null once the
+       figure it counted is no longer on the page. A function that takes an
+       element has to survive not being given one -- this threw on the first
+       line and took the rest of the script with it, which is how deleting a
+       section stopped three chessboards from painting. */
+    if (!el || el._ran) return; el._ran = 1;
     var to = parseInt(el.getAttribute('data-count'), 10) || 0;
     if (RM) { el.textContent = String(to); return; }
     var t0 = 0, D = 900;
@@ -610,4 +615,59 @@
       if (promise) promise.remove();
     })
     .catch(function () {});
+})();
+
+/* ── the staged positions ────────────────────────────────────────────────────
+   Three real positions out of the app's library, painted from FEN. Static, and
+   deliberately so: three boards animating themselves while someone is trying to
+   read a headline is decoration fighting the copy.
+
+   They fade and rise once, on entry, staggered, with a spring settle -- and not
+   at all for anyone who has asked their system to stop animating things. */
+(function () {
+  var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function boardHTML(fen) {
+    var rows = fen.split(' ')[0].split('/'), out = '';
+    for (var r = 0; r < 8; r++) {
+      var file = 0;
+      for (var i = 0; i < rows[r].length; i++) {
+        var ch = rows[r][i];
+        if (ch >= '1' && ch <= '8') {
+          for (var n = 0; n < +ch; n++, file++)
+            out += '<span class="ps ' + (((file + r) % 2) ? 'd' : 'l') + '"></span>';
+        } else {
+          var p = (ch === ch.toUpperCase() ? 'w' : 'b') + ch.toUpperCase();
+          out += '<span class="ps ' + (((file + r) % 2) ? 'd' : 'l') + '">'
+               + '<img src="pieces/' + p + '.svg" alt="" loading="lazy" decoding="async">'
+               + '</span>';
+          file++;
+        }
+      }
+    }
+    return out;
+  }
+
+  /* Every figure carrying a position, not only the three in the hero -- the
+     phase rows each hold one too, and scoping this to .stage3 left those three
+     boards empty. */
+  var figs = [].slice.call(document.querySelectorAll('[data-fen]'));
+  figs.forEach(function (f) {
+    var host = f.querySelector('.pos-b');
+    if (host) host.innerHTML = boardHTML(f.getAttribute('data-fen') || '8/8/8/8/8/8/8/8');
+  });
+
+  if (RM || !('IntersectionObserver' in window)) {
+    figs.forEach(function (f) { f.classList.add('in'); });
+    return;
+  }
+  var io2 = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var i = figs.indexOf(e.target);
+      setTimeout(function () { e.target.classList.add('in'); }, i * 110);
+      io2.unobserve(e.target);
+    });
+  }, { threshold: .18 });
+  figs.forEach(function (f) { io2.observe(f); });
 })();

@@ -33,8 +33,13 @@ const title = decode((/<title>([^<]*)<\/title>/.exec(html) || [])[1] || '');
 check('there is a title', !!title, title);
 check('it is under 60 characters, so it is not truncated',
       title.length <= 60, title.length + ' chars');
+// The rule is the shape, not the words: what someone searched for comes first,
+// the brand comes last. This used to demand the literal "AI Chess Coach", which
+// stopped being what the product is -- and a test that pins marketing copy
+// fails the day the positioning changes, which is exactly when it should not.
 check('the keyword leads, the brand follows',
-      /^AI Chess Coach/.test(title) && /ChessForge$/.test(title));
+      /^Chess\b/i.test(title) && /ChessForge$/.test(title),
+      title);
 const desc = meta('description');
 check('there is a meta description', !!desc);
 check('and it is under 160 characters', desc && desc.length <= 160,
@@ -106,16 +111,20 @@ check('and does not list anchors as if they were pages', !/#/.test(sm),
       'a sitemap full of fragments is a known way to get it ignored');
 
 console.log('\nTHERE IS SOMETHING FOR IMAGE SEARCH TO FIND');
-check('GM Forge is a real file, not only inline SVG',
-      fs.existsSync('gm-forge-ai-chess-coach.png'),
+/* GM Forge was retired with the coaching product he belonged to -- the app has
+   no character in it now, and a page that pictures one is selling something
+   that is not there. The guarantee that survives is the general one: a crawler
+   must find a real image file with alt text that describes it, not only inline
+   SVG, which image search cannot see. */
+check('the page carries a real image file, not only inline SVG',
+      /<img[^>]+src="[^"]+\.(png|jpe?g|webp|svg)"/i.test(html),
       'inline SVG is invisible to image search');
-check('he is on the page with honest alt text',
-      /<img[^>]*gm-forge-ai-chess-coach\.png[^>]*>/.test(html)
-      && /alt="GM Forge, the AI chess coach[^"]{20,}"/.test(html));
-check('the filename says what it is',
-      /gm-forge-ai-chess-coach/.test(html), 'a filename is a ranking signal');
-check('and the sitemap points crawlers at both images',
-      /<image:image>/.test(sm) && /gm-forge-ai-chess-coach\.png/.test(sm)
+check('and every image on the page declares alt text',
+      (html.match(/<img\b/g) || []).length ===
+      (html.match(/<img[^>]*\balt=/g) || []).length,
+      'an img with no alt is a hole for a screen reader and for a crawler');
+check('and the sitemap points crawlers at the share image',
+      /<image:image>/.test(sm)
       && /og\.png/.test(sm),
       'a crawler will not go looking for them otherwise');
 check('the image sitemap namespace is declared',

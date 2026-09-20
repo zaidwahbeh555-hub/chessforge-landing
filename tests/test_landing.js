@@ -36,31 +36,51 @@ check('no testimonials', !/Daniel K\.|Maya S\.|Ethan R\.|testimonial/i.test(html
       'the brief shipped three, with rating gains attached to made-up people');
 check('no aggregate claim about other people',
       !/players improving|average (rating )?gain|1000\+|players coached/i.test(html));
-check('the only quote is the owner\'s, and it says so',
-      /only one I can promise\s+you is real/.test(html.replace(/\s+/g, ' '))
-      || /only one I can promise you is real/.test(html.replace(/\s+/g, ' ')));
-check('and it is signed by role, never by name',
-      /the person who built ChessForge/.test(html)
-      && !/\bZaid\b/i.test(html) && !/\bZaid\b/i.test(js) && !/\bZaid\b/i.test(css));
+/* The founder quote and the player count were removed from the page. What they
+   were there to guarantee still matters, and is now guaranteed by their absence:
+   nothing on this page speaks for anybody. */
+check('no quote is attributed to any person at all',
+      !/<blockquote|class="q-by"|class="quote"/.test(html),
+      'the owner quote is gone; nothing replaced it with someone else\'s');
+/* The one that is not about marketing. The owner is never named on a public
+   page, and that is a standing rule rather than a stylistic choice. */
+check('the owner is never named anywhere',
+      !/\bZaid\b/i.test(html) && !/\bZaid\b/i.test(js) && !/\bZaid\b/i.test(css)
+      && !/wahbeh/i.test(html) && !/wahbeh/i.test(js) && !/wahbeh/i.test(css));
 
-console.log('\nTHE PLAYER COUNT IS READ, NOT TYPED');
-check('the figure is fetched from the app', /public\/stats/.test(js));
-check('with a real fallback in the markup so it degrades to a number',
-      /data-count="\d+"[^>]*data-live="users"/.test(html));
-check('the same number in the prose moves with it', /data-live-users/.test(html)
-      && /data-live-users/.test(js));
-check('the count-up waits for the real figure rather than animating to the '
-      + 'wrong one and correcting itself', /liveCount\(countUp\)/.test(js));
-check('and a hanging request cannot stop the animation for good',
-      /setTimeout\(finish, \d+\)/.test(js));
+console.log('\nNO HEADCOUNT IS CLAIMED');
+/* The live player count came off with the quote that carried it. A number of
+   users is a weak claim while the number is small, and a stale hard-coded one
+   is worse than none -- so the page makes no claim about how many people are
+   here, and this fails if one reappears without being read from the app. */
+check('the page does not state how many players there are',
+      !/data-live-users|class="stat-n"/.test(html));
+check('and no headcount is hard-coded into the prose',
+      !/\b\d{2,}\s*(players|users|members)\b/i.test(html),
+      'a typed figure is out of date the day after it is typed');
+/* The counter code is still in the file, unused, and must stay safe: it is
+   handed whatever querySelector found, which is null now. It dereferenced that
+   on its first line and took the whole script down with it -- three chessboards
+   stopped painting because a section was deleted. */
+check('the counter survives being handed nothing',
+      /function countUp\(el\)\s*\{[\s\S]{0,400}if \(!el \|\| el\._ran\)/.test(js),
+      'a function that takes an element must survive not getting one');
 
 console.log('\nIT SELLS THE PRODUCT THAT EXISTS');
 check('it does not sell PGN upload as the product',
       !/upload (your |a )?(games?|pgn)/i.test(html),
       'the paste-a-PGN loop was removed from the product; the brief still sold it');
+/* The loop changed with the product: it is no longer play -> see what broke ->
+   drill it. It is the three phases of a game, in order, with the app choosing
+   the next step. The page must name all three, because those are the three tabs
+   a reader is signing up for. */
 check('the loop on the page is the loop in the app',
-      /Play a game/i.test(html) && /See what broke/i.test(html)
-      && /Drill it/i.test(html));
+      ['Opening', 'Middlegame', 'Endgame']
+        .every(function (t) { return html.indexOf('>' + t + '<') > -1; }),
+      'the three phases are the product now');
+check('and it says the app chooses the next step, which is the difference',
+      /tells you (the|what to do) next|what to do next|assigned/i.test(html),
+      'a library you browse is the thing this is not');
 // The free plan is a FRACTION of the paid one, stated in the real counts, and
 // both cards carry the same six rows so the two columns read as a diff.
 check('the free plan says what fraction of the product it is',
@@ -79,27 +99,26 @@ check('the price is the real one', /\$4\.99/.test(html) && /\$9\.99/.test(html),
       'PRO_PRICE 4.99, PRO_PRICE_WAS 9.99');
 check('and the trial length is the real one', /3(&#8209;|-|\s)day/.test(html),
       'TRIAL_DAYS is 3');
-check('the rating range is the honest one', /300 to 1000/.test(html));
+// Widened with the product: the old band was set by a coaching loop aimed at
+// people losing to one-move tactics. Openings and endgame technique keep paying
+// further up, so the honest claim moved with it.
+check('the rating range is the honest one', /300 to 1400/.test(html));
 
-console.log('\nTHE COMPARISON MAKES NO CLAIM ABOUT THE READER');
-// The section argues you need someone watching. It shows the same hour spent
-// two ways -- and carries no numbers on purpose: a rising rating line here
-// would be a claim about what happens to YOU, and the only result this page is
-// allowed to claim is the owner's own.
-/* v4 argues this dimension by dimension rather than as two ordered flows: a
-   labelled column for each side, and a named axis on every row. The promise is
-   the same -- both sides stated, and the claim tied to something specific
-   rather than to adjectives. */
-check('both sides are there', /class="vs-head a"/.test(html)
-      && /class="vs-head b"/.test(html));
-check('every row names the dimension it compares, so the argument is never '
-      + 'just an adjective',
-      (html.match(/class="vs-k"/g) || []).length >= 5
-      && (html.match(/class="vs-k"/g) || []).length
-         === (html.match(/class="vs-a"/g) || []).length
-      && (html.match(/class="vs-a"/g) || []).length
-         === (html.match(/class="vs-b"/g) || []).length,
-      'a row with only one side filled in is a claim, not a comparison');
+console.log('\nEVERY CLAIM CARRIES A NUMBER, NOT AN ADJECTIVE');
+/* The two-column comparison band went with the old product. What replaced it is
+   the phase grid, and the promise it has to keep is the one the comparison kept:
+   nothing is argued with adjectives. Each phase states what is actually in it,
+   counted, and those counts are the real ones from the library. */
+check('each phase states what is in it, counted',
+      (html.match(/class="ph-facts"/g) || []).length === 3,
+      'three phases, three sets of figures');
+check('and the figures are the real ones',
+      /\b14\b/.test(html) && /\b252\b/.test(html)
+      && /\b43\b/.test(html) && /\b24\b/.test(html),
+      '14 openings, 252 off-book replies, 43 positions, 24 endgames');
+check('the engine check is stated, since it is the reason to trust any of it',
+      /Stockfish/.test(html) && /995/.test(html),
+      '995 moves verified, and the ones that failed were dropped');
 check('no rating figure is promised anywhere in it',
       !/\+\s*\d{2,4}\s*(elo|rating)/i.test(html)
       && !/gain(ed)? \d+/i.test(html));
@@ -107,14 +126,17 @@ check('and no aggregate about other players came back with it',
       !/players (improved|gained|report)/i.test(html));
 
 console.log('\nTHE MOCKUP IS THE APP, AND IT ANSWERS');
-check('all six tabs are there', (html.match(/class="rail-i/g) || []).length === 6);
-/* The clickable six-pane preview is gone: v4 puts a REAL board in the hero
-   instead, so the page demonstrates the product rather than picturing it. What
-   has to survive is the naming -- the six tabs are what a reader is buying. */
-check('and they are the app\'s actual six, named',
-      ['Dashboard', 'Play &amp; Coach', 'Training', 'Analysis', 'Puzzles', 'Shop']
-        .every(function (t) { return html.indexOf('>' + t + '<') > -1; }),
-      'Progress and Lessons were deleted; naming them would sell what is not there');
+/* Six tabs became three. Naming the old six on the page would sell Dashboard,
+   Play & Coach, Training, Analysis, Puzzles and Shop -- none of which the app
+   has any more, and two of which were deleted before that. What has to hold is
+   that the page names the sections that exist and none that do not. */
+check('the three sections are named',
+      ['Opening', 'Middlegame', 'Endgame']
+        .every(function (t) { return html.indexOf('>' + t + '<') > -1; }));
+check('and no deleted screen is still being sold',
+      !['Dashboard', 'Play &amp; Coach', 'Trap Trainer', 'GM Forge', 'Progress', 'Lessons']
+        .some(function (t) { return html.indexOf(t) > -1; }),
+      'every one of these was removed from the product');
 check('and the hero board it replaced them with is really playable',
       /id="board"/.test(html) && /\.sq\[data-sq=|dataset\.sq/.test(js)
       && /v4-hero\.json/.test(js),

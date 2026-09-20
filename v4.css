@@ -1201,3 +1201,263 @@ h1{font-size:clamp(38px,4.6vw,68px)}
   .bill-static span{flex:1;min-height:44px;font-size:13.5px;padding:0 18px;
     display:flex;align-items:center;justify-content:center}
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TOPBAR AND HERO
+   The accent is ink, not light: it appears on a rule, on small caps and on one
+   button. No gradient text, no ambient beam, no glowing anything -- those read
+   as generated, and on a chess site they compete with the boards, which are the
+   only thing here worth looking at.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── the bar ───────────────────────────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;padding:14px var(--gut) 0}
+.nav-in{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;
+  width:min(var(--wide),100%);margin:0 auto;padding:9px 10px 9px 16px;
+  border-radius:10px;background:rgba(7,12,20,.78);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border:1px solid var(--line);
+  transition:background .3s var(--ease),border-color .3s var(--ease)}
+.nav.stuck .nav-in{background:rgba(6,10,17,.94);border-color:var(--line-2)}
+.nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;
+  padding:4px 6px;border-radius:7px;transition:opacity .18s var(--ease)}
+.nav .brand:hover{opacity:.78}
+.nav .mark-img{width:26px;height:26px;display:block}
+.nav .brand-word{font:700 16px/1 Sora,sans-serif;letter-spacing:-.01em;color:var(--ink)}
+.nav .links{display:flex;justify-content:center;gap:2px}
+.nav .links a{position:relative;padding:9px 14px;border-radius:7px;
+  font:500 13.5px/1 Manrope,sans-serif;color:var(--ink-3);text-decoration:none;
+  transition:color .18s var(--ease),background .18s var(--ease)}
+.nav .links a:hover{color:var(--ink);background:rgba(120,170,235,.06)}
+.nav .links a.on{color:var(--ink)}
+.nav .links a.on::after{content:"";position:absolute;left:14px;right:14px;bottom:5px;
+  height:1.5px;background:var(--a)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;
+  border-radius:8px;font:600 13.5px/1 Manrope,sans-serif;text-decoration:none;
+  color:#04121f;background:var(--a);
+  transition:transform .18s var(--ease),background .18s var(--ease)}
+.nav-cta svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;transition:transform .18s var(--ease)}
+.nav-cta:hover{background:var(--a-2);transform:translateY(-1px)}
+.nav-cta:hover svg{transform:translateX(2px)}
+.nav-cta:active{transform:translateY(1px)}
+
+/* ── the hero ──────────────────────────────────────────────────────────────
+   Asymmetric on purpose: the copy takes five columns of twelve and the boards
+   take the rest, overlapping their own column. Nothing is centred, because a
+   centred column of text above a row of equal cards is the shape every
+   generated page has. */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;
+  padding:150px var(--gut) 90px;overflow:hidden}
+.hero-in{width:min(var(--wide),100%);margin:0 auto;display:grid;
+  grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+  gap:clamp(30px,5vw,80px);align-items:center}
+
+/* a rule, not a pill: the eyebrow is set against a hairline that runs out of it */
+.eyebrow-rule{display:flex;align-items:center;gap:14px;margin:0 0 26px}
+.eyebrow-rule span{flex:none;font:600 11px/1 Sora,sans-serif;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--a-2)}
+.eyebrow-rule::after{content:"";flex:1;height:1px;background:var(--line-2)}
+
+.hero-h{margin:0;font:600 clamp(38px,5.1vw,68px)/1.06 Sora,sans-serif;
+  letter-spacing:-.035em;color:var(--ink)}
+.hero-sub{margin:24px 0 0;max-width:46ch;
+  font:400 clamp(15px,1.35vw,17px)/1.68 Manrope,sans-serif;color:var(--ink-3)}
+.hero-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.hero-fine{margin:18px 0 0;font:400 12.5px/1.5 Manrope,sans-serif;color:var(--ink-5)}
+
+/* ── the three staged positions ────────────────────────────────────────────
+   Different sizes and vertical offsets, overlapping. The opening sits furthest
+   back and smallest and the endgame nearest and largest, so the group reads as
+   a progression rather than as three of a kind. */
+.stage3{position:relative;display:grid;grid-template-columns:repeat(12,1fr);
+  align-items:start}
+.pos{margin:0;position:relative}
+.pos.in{opacity:1;transform:none}
+.pos{opacity:0;transform:translateY(22px) scale(.985);
+  transition:opacity .6s var(--ease),transform .72s cubic-bezier(.22,1.2,.36,1)}
+.pos-b{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
+  aspect-ratio:1/1;width:100%;border-radius:4px;overflow:hidden;
+  border:1px solid rgba(8,14,22,.9);
+  box-shadow:0 30px 60px -34px rgba(0,0,0,.9)}
+.ps{position:relative;display:grid;place-items:center}
+.ps.l{background:var(--sq-l)}
+.ps.d{background:var(--sq-d)}
+.ps img{width:88%;height:88%;display:block}
+
+/* the stagger */
+.pos-a  {grid-column:1 / span 6;  grid-row:1; z-index:1; margin-top:0}
+.pos-b2 {grid-column:5 / span 6;  grid-row:1; z-index:2; margin-top:clamp(52px,7vw,104px)}
+.pos-c  {grid-column:8 / span 5;  grid-row:1; z-index:3; margin-top:clamp(170px,23vw,320px)}
+
+.pos figcaption{display:block;margin-top:11px;padding-left:1px}
+.pos figcaption b{display:block;font:600 12.5px/1 Sora,sans-serif;
+  letter-spacing:.02em;color:var(--ink-2)}
+.pos figcaption span{display:block;margin-top:4px;
+  font:400 11.5px/1.45 Manrope,sans-serif;color:var(--ink-5)}
+/* The two behind are quieter, so the eye is led rather than split three ways. */
+.pos-a{opacity:0}
+.pos-a.in{opacity:.9}
+.pos-b2.in{opacity:.96}
+
+@media (max-width:1040px){
+  .hero{padding-top:128px}
+  .hero-in{grid-template-columns:1fr;gap:clamp(44px,7vw,64px)}
+  .stage3{grid-template-columns:repeat(12,1fr)}
+  .pos-a{grid-column:1 / span 6}
+  .pos-b2{grid-column:6 / span 6;margin-top:clamp(40px,8vw,70px)}
+  .pos-c{grid-column:3 / span 5;margin-top:clamp(120px,26vw,220px)}
+}
+@media (max-width:640px){
+  .stage3{display:flex;flex-direction:column;gap:26px}
+  .pos,.pos-a,.pos-b2,.pos-c{grid-column:auto;margin-top:0;width:100%;opacity:1}
+  .pos-a.in,.pos-b2.in{opacity:1}
+  .nav .links{display:none}
+  .nav-in{padding:8px 8px 8px 12px;gap:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pos{opacity:1;transform:none;transition:none}
+  .pos-a{opacity:.9}
+}
+
+/* ── the three phases ──────────────────────────────────────────────────── */
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px);
+  margin-top:clamp(40px,5vw,60px);align-items:stretch}
+.phase{display:flex;flex-direction:column;padding:clamp(22px,2.4vw,30px);
+  border-radius:16px;background:var(--panel);border:1px solid var(--line);
+  box-shadow:0 26px 60px -46px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.035);
+  transition:border-color .3s var(--ease),transform .3s var(--ease),
+             box-shadow .3s var(--ease)}
+.phase:hover{border-color:var(--line-2);transform:translateY(-2px);
+  box-shadow:0 34px 70px -46px rgba(0,0,0,1),inset 0 1px 0 rgba(255,255,255,.05)}
+.ph-tag{display:inline-block;padding:5px 11px;border-radius:999px;
+  background:rgba(47,209,255,.09);border:1px solid rgba(47,209,255,.22);
+  font:700 10.5px/1 Sora,sans-serif;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--a-2)}
+.phase h3{margin:14px 0 0;font:700 clamp(19px,2.1vw,23px)/1.28 Sora,sans-serif;
+  letter-spacing:-.02em;color:var(--ink);max-width:22ch}
+.phase p{margin:14px 0 0;font:400 14px/1.68 Manrope,sans-serif;color:var(--ink-4);
+  max-width:46ch}
+.phase p b{color:var(--ink-2);font-weight:600}
+.ph-facts{list-style:none;display:flex;gap:clamp(12px,1.6vw,22px);margin:auto 0 0;
+  padding:20px 0 0;border-top:1px solid var(--line)}
+.ph-facts li{display:flex;flex-direction:column;gap:3px}
+.ph-facts b{font:700 20px/1 Sora,sans-serif;letter-spacing:-.02em;color:var(--a-2)}
+.ph-facts span{font:500 10.5px/1.3 Manrope,sans-serif;color:var(--ink-5);max-width:11ch}
+
+/* ── how it works ──────────────────────────────────────────────────────── */
+.steps-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,26px);
+  list-style:none;margin:clamp(40px,5vw,60px) 0 0;padding:0;counter-reset:s3}
+.steps-3 li{position:relative;padding:clamp(22px,2.4vw,28px);border-radius:16px;
+  background:rgba(14,22,36,.5);border:1px solid var(--line);
+  transition:border-color .3s var(--ease),background .3s var(--ease)}
+.steps-3 li:hover{border-color:var(--line-2);background:rgba(16,26,42,.66)}
+.s3-n{font:700 11px/1 Sora,sans-serif;letter-spacing:.16em;color:var(--a);
+  opacity:.75}
+.steps-3 b{display:block;margin:12px 0 0;
+  font:700 clamp(17px,1.9vw,20px)/1.3 Sora,sans-serif;letter-spacing:-.02em;color:var(--ink)}
+.steps-3 p{margin:10px 0 0;font:400 13.6px/1.66 Manrope,sans-serif;color:var(--ink-4);
+  max-width:40ch}
+
+/* ── try it ────────────────────────────────────────────────────────────── */
+.try-wrap{margin-top:clamp(36px,4.5vw,54px)}
+
+/* ── why it sticks ─────────────────────────────────────────────────────── */
+.proof-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;
+  gap:clamp(14px,1.6vw,20px);margin-top:clamp(40px,5vw,60px);align-items:stretch}
+.pf{display:flex;flex-direction:column;padding:clamp(22px,2.4vw,30px);
+  border-radius:16px;background:var(--panel);border:1px solid var(--line);
+  transition:border-color .3s var(--ease)}
+.pf:hover{border-color:var(--line-2)}
+.pf b{font:700 clamp(16px,1.8vw,19px)/1.3 Sora,sans-serif;letter-spacing:-.02em;
+  color:var(--ink)}
+.pf p{margin:11px 0 0;font:400 13.6px/1.66 Manrope,sans-serif;color:var(--ink-4)}
+.pf p i{color:var(--ink-2);font-style:italic}
+/* the schedule, drawn rather than described */
+.pf-sched{display:flex;align-items:center;gap:0;margin-bottom:20px;flex-wrap:nowrap}
+.pf-sched span{flex:none;padding:5px 8px;border-radius:7px;
+  background:rgba(47,209,255,.08);border:1px solid rgba(47,209,255,.18);
+  font:700 11px/1 Sora,sans-serif;color:var(--a-2)}
+.pf-sched i{flex:1;height:1px;min-width:6px;
+  background:linear-gradient(90deg,rgba(47,209,255,.35),rgba(47,209,255,.12))}
+
+@media (max-width:1000px){
+  .phase-grid,.steps-3{grid-template-columns:1fr 1fr}
+  .proof-grid{grid-template-columns:1fr 1fr}
+  .proof-grid .pf:first-child{grid-column:1 / -1}
+}
+@media (max-width:720px){
+  .phase-grid,.steps-3,.proof-grid{grid-template-columns:1fr}
+  .proof-grid .pf:first-child{grid-column:auto}
+  .ph-facts{gap:18px}
+  .pf-sched span{padding:4px 6px;font-size:10px}
+}
+
+
+/* ══ TELLS, REMOVED ═══════════════════════════════════════════════════════
+   Gradient-filled headline words and cyan light spilling out of buttons are
+   the two most recognisable marks of a generated page. The accent stays -- it
+   is the brand -- but it is used as ink now, never as a light source. */
+.grad{background:none!important;-webkit-background-clip:border-box!important;
+  background-clip:border-box!important;color:var(--ink-2)!important}
+/* The emphasis it was carrying moves to the shape of the sentence instead:
+   the second line sits in the lighter ink, which is how a printed subhead has
+   always done it. */
+.btn-fill{box-shadow:none!important}
+.btn-fill:hover{box-shadow:none!important;background:var(--a-2)}
+.phase,.pf,.steps-3 li{box-shadow:none}
+.phase:hover{box-shadow:none;transform:none;border-color:var(--line-2)}
+
+/* ══ THE PHASES, AS AN EDITORIAL LIST ═════════════════════════════════════
+   Three equal floating cards in a row is the layout every SaaS page ships. The
+   same content reads better as a numbered list with a real position beside each
+   one: a rule between the rows, the figure on alternating sides, and the board
+   doing the work the icon grid used to pretend to do. */
+.phase-grid{display:block;margin-top:clamp(40px,5vw,64px)}
+.phase{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);
+  gap:clamp(24px,4vw,70px);align-items:center;
+  padding:clamp(34px,4.4vw,58px) 0;border:0;border-radius:0;background:none;
+  border-top:1px solid var(--line)}
+.phase:first-child{border-top:0;padding-top:0}
+.phase:hover{background:none}
+/* Alternating sides. Not decoration: it stops three long rows scanning as one
+   block, and it puts each board next to the sentence that describes it. */
+.phase:nth-child(even) > header,
+.phase:nth-child(even) .ph-body{order:2}
+.phase:nth-child(even) .ph-fig{order:1}
+.phase > header{grid-column:1;grid-row:1}
+.ph-body{grid-column:1;grid-row:2}
+.ph-fig{grid-column:2;grid-row:1 / span 2}
+.phase:nth-child(even) > header{grid-column:2;grid-row:1}
+.phase:nth-child(even) .ph-body{grid-column:2;grid-row:2}
+.phase:nth-child(even) .ph-fig{grid-column:1;grid-row:1 / span 2}
+
+.ph-tag{display:inline-flex;align-items:center;gap:9px;padding:0;border:0;
+  background:none;font:600 11px/1 Sora,sans-serif;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--a-2)}
+.ph-tag::before{content:attr(data-n);font-variant-numeric:tabular-nums;
+  color:var(--ink-5);letter-spacing:.06em}
+.phase h3{margin:16px 0 0;font:600 clamp(24px,3.1vw,38px)/1.16 Sora,sans-serif;
+  letter-spacing:-.03em;color:var(--ink);max-width:18ch}
+.phase p{margin:16px 0 0;font:400 15px/1.72 Manrope,sans-serif;color:var(--ink-3);
+  max-width:52ch}
+.phase p b{color:var(--ink);font-weight:600}
+.ph-facts{list-style:none;display:flex;gap:clamp(20px,3vw,44px);margin:26px 0 0;
+  padding:0;border:0}
+.ph-facts li{display:flex;flex-direction:column;gap:4px}
+.ph-facts b{font:600 clamp(22px,2.6vw,30px)/1 Sora,sans-serif;letter-spacing:-.03em;
+  color:var(--ink);font-variant-numeric:tabular-nums}
+.ph-facts span{font:400 11px/1.35 Manrope,sans-serif;color:var(--ink-5);max-width:13ch}
+.ph-fig{margin:0}
+.ph-fig .pos-b{max-width:420px;margin-inline:auto}
+.ph-fig figcaption{margin-top:12px;text-align:center;
+  font:400 11.5px/1.5 Manrope,sans-serif;color:var(--ink-5)}
+
+@media (max-width:900px){
+  .phase{grid-template-columns:1fr;gap:26px}
+  .phase > header,.phase .ph-body,.phase .ph-fig,
+  .phase:nth-child(even) > header,.phase:nth-child(even) .ph-body,
+  .phase:nth-child(even) .ph-fig{grid-column:1;grid-row:auto;order:0}
+  .ph-fig .pos-b{max-width:340px}
+}
