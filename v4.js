@@ -367,32 +367,14 @@
 
   /* Returning on the same browser: show what was set up and a way straight
      through, rather than five questions somebody has already answered. */
+  /* Returning on the same browser. It shows the way in and nothing else: the
+     answers were theirs, they do not need them read back, and offering the
+     questions again to somebody who has an account is offering them the one
+     thing they do not want. */
   function showBack(d) {
-    var box = $('#back'), rows = $('#backRows');
-    var band = BANDS.filter(function (b) { return b[0] === +d.band; })[0];
-    [['As White', nameOf(d.white)],
-     ['Against 1.e4', nameOf(d.e4)],
-     ['Against 1.d4', nameOf(d.d4)],
-     ['Starting at', band ? band[1] : String(d.band)]
-    ].forEach(function (r) {
-      var li = document.createElement('li');
-      li.innerHTML = '<span></span><b></b>';
-      $('span', li).textContent = r[0];
-      $('b', li).textContent = r[1];
-      rows.appendChild(li);
-    });
-    /* It still carries the answers, so somebody who never made an account the
-       first time is not asked to build the repertoire a second time. */
     $('#backGo').href = 'https://app.chessforge.org/?ob=' +
       encodeURIComponent([d.band, d.white, d.e4, d.d4].join('.')) + '&auth=login';
-    $('#backAgain').addEventListener('click', function () {
-      forget();
-      box.hidden = true;
-      feed.innerHTML = '';
-      A = {}; at = 0;
-      ask(0);
-    });
-    box.hidden = false;
+    $('#back').hidden = false;
   }
 
   var prev = remembered();

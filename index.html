@@ -75,13 +75,15 @@
          all that is actually known is what is in this browser's storage, which
          is not the same as the person being signed in, and claiming otherwise
          would be wrong the first time somebody shares a laptop. -->
+    <!-- Somebody who has already set this up on this browser does not need to
+         be shown their own answers back, and does not need the questions
+         again. They need the way in, and to be told that the questions are not
+         the front door for them any more. -->
     <div class="back" id="back" hidden>
-      <p class="back-k">You set this up on this browser</p>
-      <ol class="back-rows" id="backRows"></ol>
-      <div class="back-acts">
-        <a class="back-go" id="backGo" href="https://app.chessforge.org">Continue to the app</a>
-        <button type="button" class="back-again" id="backAgain">Answer the questions again</button>
-      </div>
+      <p class="back-k">You have already set this up</p>
+      <a class="back-go" id="backGo" href="https://app.chessforge.org/?auth=login">Continue to the app</a>
+      <p class="back-tip">Next time you can go straight to
+        <b>app.chessforge.org</b> instead of this page.</p>
     </div>
 
     <!-- every question is appended here, one at a time -->
