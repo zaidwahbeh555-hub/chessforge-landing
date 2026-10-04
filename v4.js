@@ -324,7 +324,8 @@
   function handOff() {
     var payload = [A.band, A.white, A.e4, A.d4].join('.');
     remember({ band:+A.band, white:A.white, e4:A.e4, d4:A.d4 });
-    var href = 'https://app.chessforge.org/?ob=' + encodeURIComponent(payload);
+    var href = 'https://app.chessforge.org/?ob=' + encodeURIComponent(payload) +
+               '&auth=register';
 
     var go = $('#go'), rows = $('#goRows'), bar = $('#goBar');
     $('#goLink').href = href;
@@ -383,7 +384,7 @@
     /* It still carries the answers, so somebody who never made an account the
        first time is not asked to build the repertoire a second time. */
     $('#backGo').href = 'https://app.chessforge.org/?ob=' +
-      encodeURIComponent([d.band, d.white, d.e4, d.d4].join('.'));
+      encodeURIComponent([d.band, d.white, d.e4, d.d4].join('.')) + '&auth=login';
     $('#backAgain').addEventListener('click', function () {
       forget();
       box.hidden = true;
