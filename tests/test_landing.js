@@ -141,8 +141,14 @@ check('what is read back is validated before it is offered',
       'a stale entry naming a removed opening must not be handed to the app');
 check('the band is validated too',
       /\[600, 900, 1200\]\.indexOf\(\+d\.band\) < 0/.test(js));
-check('there is a way to start over, and it clears what was stored',
-      /backAgain/.test(js) && /function forget\(\)[\s\S]{0,160}removeItem/.test(js));
+/* The re-answer button was deliberately removed: somebody who has already set
+   this up and has an account does not want the questions again, and the page
+   exists to get them to the app. The consequence, recorded here rather than
+   discovered later, is that re-answering on the same browser now means clearing
+   site data. If that ever needs undoing, forget() is still in the file. */
+check('what is stored can still be cleared in code',
+      /function forget\(\)[\s\S]{0,160}removeItem/.test(js),
+      'no button for it any more, by choice');
 check('and continuing still carries the answers',
       /backGo'\)\.href = 'https:\/\/app\.chessforge\.org\/\?ob='/.test(js),
       'somebody who never made an account should not rebuild the repertoire');
