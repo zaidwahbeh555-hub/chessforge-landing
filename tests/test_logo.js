@@ -80,11 +80,14 @@ check('the brand no longer draws a knight GLYPH -- it draws the file',
 check('the unicode hexagon character is gone everywhere',
       !html.includes('\u2B21'),
       'it renders as whatever font the machine has, so it was a different shape per platform');
-check('the nav and the footer both draw the mark',
-      (html.match(/class="mark-img"/g) || []).length === 2,
-      (html.match(/class="mark-img"/g) || []).length + ' found');
-check('both use the same file',
-      (html.match(/src="logo\.svg"/g) || []).length === 2);
+/* The page is five questions now: there is no nav bar and no footer brand, so
+   the mark is drawn once rather than twice. What still has to hold is that
+   every copy of it comes from the one file -- the drift this guards against is
+   a second, slightly different mark, not a particular count. */
+const marks = (html.match(/<img[^>]*src="logo\.svg"/g) || []).length;
+check('the page draws the mark', marks >= 1, marks + ' found');
+check('and every copy is the same file',
+      marks === (html.match(/<img[^>]*logo\.svg/g) || []).length);
 check('the mark file exists', fs.existsSync('logo.svg'));
 {
   const mark = fs.readFileSync('logo.svg', 'utf8');
@@ -100,11 +103,11 @@ check('the mark file exists', fs.existsSync('logo.svg'));
         /linearGradient/.test(mark) && /#2FD1FF/i.test(mark));
   check('and it names itself for a screen reader', /<title>ChessForge<\/title>/.test(mark));
 }
-check('the mark glows in the nav', /\.mark-img\{[\s\S]{0,140}drop-shadow/.test(css));
-check('and the footer copy of it does not glow -- one mark, two weights',
-      /\.foot-brand \.mark-img\{[^}]*filter:none/.test(css));
-check('the footer mark is quieter than the nav one',
-      /\.foot-brand \.mark-img\{width:21px/.test(css) && /\.mark-img\{width:34px/.test(css));
+/* The nav/footer pair of weights went with the nav and the footer. One mark,
+   one size, and it still carries its own colour rather than the stylesheet's
+   -- which is the part that actually kept the two from drifting. */
+check('the mark is drawn at a real size',
+      /logo\.svg"[^>]*width="\d\d/.test(html), 'an intrinsic size, so it cannot shift on first paint');
 
 // The mark is a filled shape now, not a stroked ring, so there is no filter to
 // warn about and no plate to remove -- the hexagon IS the plate.

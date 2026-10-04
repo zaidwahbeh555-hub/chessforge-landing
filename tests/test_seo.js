@@ -72,9 +72,9 @@ console.log('\nSTRUCTURED DATA THAT MATCHES THE PAGE');
 const ld = JSON.parse((/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(html)||[])[1]);
 const byType = {}; ld['@graph'].forEach(n => byType[n['@type']] = n);
 check('it parses as JSON', !!ld && Array.isArray(ld['@graph']));
-check('it describes the organisation, the site, the app and the FAQ',
-      ['Organization','WebSite','SoftwareApplication','FAQPage']
-        .every(t => byType[t]), Object.keys(byType).join(', '));
+check('it describes the organisation, the site and the app',
+      !!byType.Organization && !!byType.WebSite && !!byType.SoftwareApplication,
+      Object.keys(byType).join(', '));
 
 const app = byType.SoftwareApplication;
 check('the app offers both plans', app.offers.length === 2);
@@ -83,20 +83,33 @@ check('the paid price is the price actually charged', gm.price === '4.99',
       gm.price + ' ' + gm.priceCurrency + ' -- core.py PRO_PRICE is 4.99');
 check('in the currency it is actually charged in', gm.priceCurrency === 'CAD',
       'the backend bills CAD -- a USD figure in a search result is a wrong price');
-check('the price in the structured data is the price on the page',
-      html.includes('$4.99') && gm.price === '4.99');
+/* The page itself no longer prints a price -- it is five questions and a
+   hand-off, and pricing lives in the app. The guarantee is therefore
+   conditional: if a figure ever appears on the page it must be the figure in
+   the structured data, which must be the figure Stripe charges. */
+const visibleText = html.replace(/<script[\s\S]*?<\/script>/g, '')
+                        .replace(/<!--[\s\S]*?-->/g, '');
+check('any price shown to a reader agrees with the structured data',
+      !visibleText.includes('$') ||
+      (visibleText.includes('$4.99') && gm.price === '4.99'),
+      'checked against the rendered text, not the JSON-LD it is compared with');
 check('the free plan is $0', app.offers.find(o => o.name === 'Free').price === '0');
 
-// Google requires the marked-up answer to be the answer a visitor sees.
-const faqs = byType.FAQPage.mainEntity;
+/* Google requires a marked-up answer to be an answer a visitor can see. The
+   FAQ section was removed from the page, so the FAQPage entry was removed with
+   it -- marking up questions that are not on the page is the case the policy
+   calls out, and it risks a manual action against the whole site. What has to
+   hold now is the reverse: neither may exist without the other. */
+const faqNode = byType.FAQPage;
 const visible = [...html.matchAll(/<summary>(.*?)<\/summary>/gs)].map(m =>
   m[1].replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim());
-check('every visible FAQ question is in the structured data',
-      faqs.length === visible.length
-      && visible.every(q => faqs.some(f => f.name === q)),
-      faqs.length + ' marked up, ' + visible.length + ' on the page');
-check('and no answer is empty',
-      faqs.every(f => (f.acceptedAnswer.text || '').length > 40));
+check('FAQ markup and FAQ content exist together or not at all',
+      (!faqNode && visible.length === 0)
+      || (!!faqNode && faqNode.mainEntity.length === visible.length
+          && visible.every(q => faqNode.mainEntity.some(f => f.name === q))),
+      faqNode ? 'schema present' : 'no schema, ' + visible.length + ' on page');
+check('and no marked-up answer is empty',
+      !faqNode || faqNode.mainEntity.every(f => (f.acceptedAnswer.text || '').length > 40));
 
 console.log('\nCRAWLERS ARE TOLD WHERE TO GO');
 check('robots.txt exists and allows the site', fs.existsSync('robots.txt')
