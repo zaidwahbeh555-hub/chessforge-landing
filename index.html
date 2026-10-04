@@ -49,6 +49,15 @@
      that sends people to a paid product, and the modals were already written.
      The chess-piece and Stockfish notices are NOT needed here any more, because
      this page no longer draws a board -- they live in the app, which does. -->
+<!-- A way to the app that is not the questionnaire. chessforge.org cannot tell
+     whether anybody is actually signed in over at app.chessforge.org -- they
+     are separate origins and the cookie does not cross -- so this is a plain
+     link, not a signed-in state, and it never claims to be one. -->
+<a class="top-login" href="https://app.chessforge.org">
+  Log in
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+</a>
+
 <main class="ask" id="main">
   <div class="ask-in">
     <a class="ask-brand" href="/" aria-label="ChessForge">
@@ -60,6 +69,20 @@
          here for a screen reader and for search, because a page with no H1 is
          a page with no stated subject -- it is just not drawn. -->
     <h1 class="sr">Chess training that decides what you study next</h1>
+
+    <!-- Shown instead of the questions when this browser has finished them
+         before. It says "on this browser" and not "welcome back" on purpose:
+         all that is actually known is what is in this browser's storage, which
+         is not the same as the person being signed in, and claiming otherwise
+         would be wrong the first time somebody shares a laptop. -->
+    <div class="back" id="back" hidden>
+      <p class="back-k">You set this up on this browser</p>
+      <ol class="back-rows" id="backRows"></ol>
+      <div class="back-acts">
+        <a class="back-go" id="backGo" href="https://app.chessforge.org">Continue to the app</a>
+        <button type="button" class="back-again" id="backAgain">Answer the questions again</button>
+      </div>
+    </div>
 
     <!-- every question is appended here, one at a time -->
     <div class="ask-feed" id="askFeed"></div>

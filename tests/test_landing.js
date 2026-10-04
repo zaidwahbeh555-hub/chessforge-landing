@@ -122,6 +122,31 @@ check('reduced motion is not redirected without warning',
       /if \(RM\) \{[\s\S]{0,300}return;/.test(js),
       'it shows the repertoire and waits for the link to be clicked');
 
+console.log('\nSOMEBODY WHO ALREADY HAS AN ACCOUNT CAN GET IN');
+check('there is a way to the app that is not the questionnaire',
+      /class="top-login"/.test(html) && /app\.chessforge\.org/.test(html),
+      'the page is always the questions, so a returning user had no route in');
+check('it does not claim to know whether anybody is signed in',
+      !/(welcome back|you are signed in|logged in as)/i.test(text),
+      'separate origins: this page cannot see the app\u2019s session');
+check('and what it remembers is described as this browser, not as you',
+      /on this browser/i.test(html));
+
+console.log('\nREMEMBERING IS A CONVENIENCE, NOT A DEPENDENCY');
+check('every localStorage access is wrapped',
+      (js.match(/try \{[^}]*localStorage/g) || []).length >= 3,
+      'it throws outright in some private modes; the page must still work');
+check('what is read back is validated before it is offered',
+      /function remembered\(\)[\s\S]{0,700}OPENINGS\.some/.test(js),
+      'a stale entry naming a removed opening must not be handed to the app');
+check('the band is validated too',
+      /\[600, 900, 1200\]\.indexOf\(\+d\.band\) < 0/.test(js));
+check('there is a way to start over, and it clears what was stored',
+      /backAgain/.test(js) && /function forget\(\)[\s\S]{0,160}removeItem/.test(js));
+check('and continuing still carries the answers',
+      /backGo'\)\.href = 'https:\/\/app\.chessforge\.org\/\?ob='/.test(js),
+      'somebody who never made an account should not rebuild the repertoire');
+
 console.log('\nIT IS HONEST ABOUT THE FIFTH QUESTION');
 check('the question that the app cannot store says so in the source',
       /not sent anywhere|nowhere to put it/i.test(js),

@@ -182,6 +182,37 @@
   if (!feed) return;
   var A = {}, at = 0;
 
+  /* What this browser answered last time, if anything.
+     Every read and write is wrapped: localStorage throws outright in some
+     private-browsing modes and comes back empty when site data is cleared, and
+     a page that cannot be opened in a private window because of a convenience
+     feature is a worse page. It is a convenience and nothing depends on it. */
+  var LS = 'cf_landing_v1';
+  function remembered() {
+    try {
+      var raw = localStorage.getItem(LS);
+      if (!raw) return null;
+      var d = JSON.parse(raw);
+      /* Validate against the library the same way the app does. A stale entry
+         naming an opening that has since been removed must not be offered. */
+      if (!d || [600, 900, 1200].indexOf(+d.band) < 0) return null;
+      var ok = ['white', 'e4', 'd4'].every(function (slot) {
+        return OPENINGS.some(function (o) { return o.id === d[slot] && o.slot === slot; });
+      });
+      return ok ? d : null;
+    } catch (e) { return null; }
+  }
+  function remember(d) {
+    try { localStorage.setItem(LS, JSON.stringify(d)); } catch (e) {}
+  }
+  function forget() {
+    try { localStorage.removeItem(LS); } catch (e) {}
+  }
+  function nameOf(id) {
+    var o = OPENINGS.filter(function (x) { return x.id === id; })[0];
+    return o ? o.name : id;
+  }
+
   /* Everything whose range starts at or below the band you gave -- the same
      filter the app applies. If that leaves nothing, offer the lot rather than
      an empty question. */
@@ -292,6 +323,7 @@
      and visible the whole time, so a blocked redirect is never a dead end. */
   function handOff() {
     var payload = [A.band, A.white, A.e4, A.d4].join('.');
+    remember({ band:+A.band, white:A.white, e4:A.e4, d4:A.d4 });
     var href = 'https://app.chessforge.org/?ob=' + encodeURIComponent(payload);
 
     var go = $('#go'), rows = $('#goRows'), bar = $('#goBar');
@@ -332,7 +364,38 @@
     setTimeout(function () { location.href = href; }, 3200);
   }
 
-  ask(0);
+  /* Returning on the same browser: show what was set up and a way straight
+     through, rather than five questions somebody has already answered. */
+  function showBack(d) {
+    var box = $('#back'), rows = $('#backRows');
+    var band = BANDS.filter(function (b) { return b[0] === +d.band; })[0];
+    [['As White', nameOf(d.white)],
+     ['Against 1.e4', nameOf(d.e4)],
+     ['Against 1.d4', nameOf(d.d4)],
+     ['Starting at', band ? band[1] : String(d.band)]
+    ].forEach(function (r) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span></span><b></b>';
+      $('span', li).textContent = r[0];
+      $('b', li).textContent = r[1];
+      rows.appendChild(li);
+    });
+    /* It still carries the answers, so somebody who never made an account the
+       first time is not asked to build the repertoire a second time. */
+    $('#backGo').href = 'https://app.chessforge.org/?ob=' +
+      encodeURIComponent([d.band, d.white, d.e4, d.d4].join('.'));
+    $('#backAgain').addEventListener('click', function () {
+      forget();
+      box.hidden = true;
+      feed.innerHTML = '';
+      A = {}; at = 0;
+      ask(0);
+    });
+    box.hidden = false;
+  }
+
+  var prev = remembered();
+  if (prev) showBack(prev); else ask(0);
 
   /* legal modals */
   (function () {
