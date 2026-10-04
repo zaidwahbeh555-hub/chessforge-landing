@@ -1,0 +1,5 @@
+# The five concept prototypes. Kept locally so they can still be compared, and
+# deliberately NOT committed: GitHub Pages serves whatever is in this repo, so
+# committing them would publish five alternative landing pages at
+# chessforge.org/concepts/ for anyone to find.
+concepts/

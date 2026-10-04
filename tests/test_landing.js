@@ -58,12 +58,15 @@ check('the page does not state how many players there are',
 check('and no headcount is hard-coded into the prose',
       !/\b\d{2,}\s*(players|users|members)\b/i.test(html),
       'a typed figure is out of date the day after it is typed');
-/* The counter code is still in the file, unused, and must stay safe: it is
-   handed whatever querySelector found, which is null now. It dereferenced that
-   on its first line and took the whole script down with it -- three chessboards
-   stopped painting because a section was deleted. */
+/* A function handed whatever querySelector found must survive being handed
+   null -- countUp dereferenced it on its first line and took the whole script
+   down with it, and three chessboards stopped painting because a section had
+   been deleted. The guarantee is the guard, not the function: countUp went
+   with the animated figures it served, so this passes either by the function
+   being absent or by it still guarding. */
 check('the counter survives being handed nothing',
-      /function countUp\(el\)\s*\{[\s\S]{0,400}if \(!el \|\| el\._ran\)/.test(js),
+      !/function countUp\(/.test(js)
+      || /function countUp\(el\)\s*\{[\s\S]{0,400}if \(!el \|\| el\._ran\)/.test(js),
       'a function that takes an element must survive not getting one');
 
 console.log('\nIT SELLS THE PRODUCT THAT EXISTS');
@@ -185,10 +188,13 @@ console.log('\nTHE REVEAL FAIL-SAFE IS STILL THERE');
 // section invisible for good: it never intersects, so it never reveals.
 check('a sweep reveals anything already above the fold', /function sweep/.test(js)
       || /var sweep =/.test(js));
+/* Matched loosely on purpose: what matters is that sweep is bound to all
+   three, not whether the call also passes { passive: true }. The strict form
+   failed the day the listeners were made passive, which was an improvement. */
 check('bound to scroll, resize AND hashchange',
-      /addEventListener\('scroll', sweep/.test(js)
-      && /addEventListener\('resize', sweep\)/.test(js)
-      && /addEventListener\('hashchange', sweep\)/.test(js));
+      /addEventListener\('scroll', sweep\b/.test(js)
+      && /addEventListener\('resize', sweep\b/.test(js)
+      && /addEventListener\('hashchange', sweep\b/.test(js));
 
 console.log('\n  ' + pass + '/' + total + ' passed');
 process.exit(pass === total ? 0 : 1);

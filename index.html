@@ -3,453 +3,286 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chess Training, One Step at a Time | ChessForge</title>
-<meta name="description" content="One assigned step at a time across openings, middlegames and endgames. Every line engine-checked, and it all comes back before you forget it.">
+<title>Chess Training That Picks Your Next Step | ChessForge</title>
+<meta name="description" content="Answer four questions and ChessForge builds your repertoire, then decides what you study next. 995 moves, every one checked against Stockfish.">
 <link rel="canonical" href="https://chessforge.org/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#05080e">
 <meta name="author" content="ChessForge">
 <meta property="og:site_name" content="ChessForge">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="ChessForge — Openings, Middlegames and Endgames, One Step at a Time">
+<meta property="og:title" content="ChessForge \u2014 Openings, Middlegames and Endgames, One Step at a Time">
 <meta property="og:description" content="One assigned step at a time across the three phases of a game. Every line engine-checked, and everything you learn comes back before you forget it.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://chessforge.org/">
 <meta property="og:image" content="https://chessforge.org/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="ChessForge — openings, middlegames and endgames, one step at a time">
+<meta property="og:image:alt" content="ChessForge \u2014 openings, middlegames and endgames, one step at a time">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ChessForge — Openings, Middlegames and Endgames, One Step at a Time">
+<meta name="twitter:title" content="ChessForge \u2014 Openings, Middlegames and Endgames, One Step at a Time">
 <meta name="twitter:description" content="One assigned step at a time across the three phases of a game. Every line engine-checked, and everything you learn comes back before you forget it.">
 <meta name="twitter:image" content="https://chessforge.org/og.png">
-<meta name="twitter:image:alt" content="ChessForge — openings, middlegames and endgames, one step at a time">
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://chessforge.org/#org", "name": "ChessForge", "url": "https://chessforge.org/", "logo": "https://chessforge.org/favicon.svg", "email": "chessforgesupport@gmail.com", "description": "Chess training that assigns the next step: openings, middlegames and endgames, one at a time, every line checked against Stockfish."}, {"@type": "WebSite", "@id": "https://chessforge.org/#site", "url": "https://chessforge.org/", "name": "ChessForge", "publisher": {"@id": "https://chessforge.org/#org"}, "inLanguage": "en"}, {"@type": "SoftwareApplication", "@id": "https://chessforge.org/#app", "name": "ChessForge", "applicationCategory": "GameApplication", "applicationSubCategory": "Chess training", "operatingSystem": "Web browser", "url": "https://app.chessforge.org", "publisher": {"@id": "https://chessforge.org/#org"}, "description": "Openings, middlegames and endgames, one assigned step at a time. Every line, position and endgame result is verified against Stockfish before it ships, and everything you practise returns on a spaced schedule before you forget it.", "featureList": ["One assigned step at a time \u2014 no menu to choose from", "14 opening lines, move by move, with the reason under each move", "252 answers for when your opponent leaves the book", "43 middlegame positions built around five questions you learn to ask", "24 endgames played out against the best defence there is", "Spaced review that returns each item before you forget it", "Every line and result verified against Stockfish", "Sign in with Google"], "offers": [{"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "CAD", "description": "One opening with six off-book replies, five middlegame positions and four endgames, kept forever with no card.", "availability": "https://schema.org/InStock", "url": "https://app.chessforge.org"}, {"@type": "Offer", "name": "Grandmaster", "price": "4.99", "priceCurrency": "CAD", "description": "All 14 openings and all 252 off-book replies, every middlegame position, all 24 endgames played out against best defence, and spaced review across the three. $29.99 CAD a year saves 50%. Three-day free trial.", "availability": "https://schema.org/InStock", "url": "https://app.chessforge.org"}]}, {"@type": "FAQPage", "@id": "https://chessforge.org/#faq", "mainEntity": [{"@type": "Question", "name": "What do I actually do in it?", "acceptedAnswer": {"@type": "Answer", "text": "You open it and it tells you the next step. Walk an opening line, play it back from memory, handle the replies that leave the book, read a middlegame position, or play an endgame out against best defence. There is no menu to choose from unless you go looking for one."}}, {"@type": "Question", "name": "How is this different from puzzles?", "acceptedAnswer": {"@type": "Answer", "text": "Puzzles tell you a tactic exists before you look, which is the one thing a real game never does. Most positions contain nothing at all, and the skill that decides those games is knowing what to do when there is nothing to find. That is what the middlegame section trains, on positions verified to hold no tactic."}}, {"@type": "Question", "name": "Is the content actually correct?", "acceptedAnswer": {"@type": "Answer", "text": "Every move, branch, position and endgame result was checked against Stockfish before it shipped, and anything the engine disagreed with was dropped rather than published. 995 moves across the whole library, none of them wrong. The checking refused a lot of our own writing, and that writing is not in the app."}}, {"@type": "Question", "name": "Will I just forget it all again?", "acceptedAnswer": {"@type": "Answer", "text": "That is what the review schedule is for. Everything you finish comes back at one day, three, a week, then longer \u2014 arriving at the point you are about to forget it, which is when practising it is worth anything. Get one wrong and it drops back two steps rather than to zero."}}, {"@type": "Question", "name": "What rating is this for?", "acceptedAnswer": {"@type": "Answer", "text": "Roughly 300 to 1400. It is built for the point where you know how the pieces move but not what to do with them, and where every game ends the same three ways."}}, {"@type": "Question", "name": "Does it work on my phone?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. All three sections, the full board, and your progress follows the account rather than the device."}}, {"@type": "Question", "name": "Can I cancel any time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, from your account, through Stripe's own billing portal. Access continues to the end of the period you have already paid for."}}]}]}</script>
+<meta name="twitter:image:alt" content="ChessForge \u2014 openings, middlegames and endgames, one step at a time">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://chessforge.org/#org", "name": "ChessForge", "url": "https://chessforge.org/", "logo": "https://chessforge.org/favicon.svg", "email": "chessforgesupport@gmail.com", "description": "Chess training that assigns the next step: openings, middlegames and endgames, one at a time, every line checked against Stockfish."}, {"@type": "WebSite", "@id": "https://chessforge.org/#site", "url": "https://chessforge.org/", "name": "ChessForge", "publisher": {"@id": "https://chessforge.org/#org"}, "inLanguage": "en"}, {"@type": "SoftwareApplication", "@id": "https://chessforge.org/#app", "name": "ChessForge", "applicationCategory": "GameApplication", "applicationSubCategory": "Chess training", "operatingSystem": "Web browser", "url": "https://app.chessforge.org", "publisher": {"@id": "https://chessforge.org/#org"}, "description": "Openings, middlegames and endgames, one assigned step at a time. Every line, position and endgame result is verified against Stockfish before it ships, and everything you practise returns on a spaced schedule before you forget it.", "featureList": ["One assigned step at a time — no menu to choose from", "14 opening lines, move by move, with the reason under each move", "252 answers for when your opponent leaves the book", "43 middlegame positions built around five questions you learn to ask", "24 endgames played out against the best defence there is", "Spaced review that returns each item before you forget it", "Every line and result verified against Stockfish", "Sign in with Google"], "offers": [{"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "CAD", "description": "One opening with six off-book replies, five middlegame positions and four endgames, kept forever with no card.", "availability": "https://schema.org/InStock", "url": "https://app.chessforge.org"}, {"@type": "Offer", "name": "Grandmaster", "price": "4.99", "priceCurrency": "CAD", "description": "All 14 openings and all 252 off-book replies, every middlegame position, all 24 endgames played out against best defence, and spaced review across the three. $29.99 CAD a year saves 50%. Three-day free trial.", "availability": "https://schema.org/InStock", "url": "https://app.chessforge.org"}]}, {"@type": "FAQPage", "@id": "https://chessforge.org/#faq", "mainEntity": [{"@type": "Question", "name": "What do I actually do in it?", "acceptedAnswer": {"@type": "Answer", "text": "You open it and it tells you the next step. Walk an opening line, play it back from memory, handle the replies that leave the book, read a middlegame position, or play an endgame out against best defence. There is no menu to choose from unless you go looking for one."}}, {"@type": "Question", "name": "How is this different from puzzles?", "acceptedAnswer": {"@type": "Answer", "text": "Puzzles tell you a tactic exists before you look, which is the one thing a real game never does. Most positions contain nothing at all, and the skill that decides those games is knowing what to do when there is nothing to find. That is what the middlegame section trains, on positions verified to hold no tactic."}}, {"@type": "Question", "name": "Is the content actually correct?", "acceptedAnswer": {"@type": "Answer", "text": "Every move, branch, position and endgame result was checked against Stockfish before it shipped, and anything the engine disagreed with was dropped rather than published. 995 moves across the whole library, none of them wrong. The checking refused a lot of our own writing, and that writing is not in the app."}}, {"@type": "Question", "name": "Will I just forget it all again?", "acceptedAnswer": {"@type": "Answer", "text": "That is what the review schedule is for. Everything you finish comes back at one day, three, a week, then longer — arriving at the point you are about to forget it, which is when practising it is worth anything. Get one wrong and it drops back two steps rather than to zero."}}, {"@type": "Question", "name": "What rating is this for?", "acceptedAnswer": {"@type": "Answer", "text": "Roughly 300 to 1400. It is built for the point where you know how the pieces move but not what to do with them, and where every game ends the same three ways."}}, {"@type": "Question", "name": "Does it work on my phone?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. All three sections, the full board, and your progress follows the account rather than the device."}}, {"@type": "Question", "name": "Can I cancel any time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, from your account, through Stripe's own billing portal. Access continues to the end of the period you have already paid for."}}]}]}</script>
 <link rel="icon" href="logo.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/fonts.css">
 <link rel="stylesheet" href="v4.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- The bar is a contained rectangle that floats, not a full-width strip and
-     not a pill. Three regions on one baseline: the mark, the sections, the way
-     in. The mark is the way back to the top. -->
 <header class="nav" id="nav">
   <div class="nav-in">
     <a class="brand" href="#top" aria-label="ChessForge, back to the top">
-      <img class="mark-img" src="logo.svg" alt="" aria-hidden="true" width="26" height="26">
+      <img class="mark-img" src="logo.svg" alt="" aria-hidden="true" width="34" height="34">
       <span class="brand-word">ChessForge</span>
     </a>
-
     <nav class="links" aria-label="Sections">
-      <a href="#phases">The three phases</a>
-      <a href="#method">How it works</a>
-      <a href="#proof">Why it sticks</a>
+      <a href="#inside">What is in it</a>
+      <a href="#tryit">Try it</a>
       <a href="#pricing">Pricing</a>
+      <a href="#faq">Questions</a>
     </nav>
-
     <a class="nav-cta" href="https://app.chessforge.org">
       Open the app
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
     </a>
-
     <button class="burger" id="burger" aria-expanded="false" aria-controls="menu"
             aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
-
-  <nav class="menu" id="menu" hidden aria-label="Main">
-    <a href="#phases">The three phases</a><a href="#method">How it works</a>
-    <a href="#proof">Why it sticks</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
-    <hr><a class="menu-cta" href="https://app.chessforge.org">Open the app &rarr;</a>
-  </nav>
+  <div class="menu" id="menu" hidden>
+    <a href="#inside">What is in it</a>
+    <a href="#tryit">Try it</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">Questions</a>
+    <a class="menu-cta" href="https://app.chessforge.org">Open the app</a>
+  </div>
 </header>
 
 <main id="main">
-<!-- ═══ HERO ═══════════════════════════════════════════════════════════════
-     Not copy-left / picture-right. The page opens on the thing the product
-     actually is: a game has three phases, and this walks you through them in
-     order. The line IS the argument, so it sits in the middle of the page and
-     everything else arranges around it.
 
-     The animation is one travelling pulse that lights each phase as it passes.
-     It runs on transform and opacity only, and it stops entirely for anyone who
-     has asked their system to stop animating things. -->
-<!-- ═══ HERO ═══════════════════════════════════════════════════════════════
-     A chess site should open on chess. Three real positions out of the app's
-     own library -- an Italian after eight moves, a London middlegame, a king
-     and pawn ending -- set at different sizes and offsets so the eye travels
-     opening to endgame rather than scanning three equal boxes.
+<!-- \u2550\u2550\u2550 THE FOUR QUESTIONS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+     The page opens nearly empty and is built by the reader. These are the SAME
+     four questions the app asks at sign-up -- the same bands, the same
+     openings, filtered by band the same way -- so by the time you reach the
+     end the onboarding is done and the account is only somewhere to keep it.
 
-     No gradient text, no ambient glow, no pulsing anything. The accent is used
-     as ink, on the rule and the small caps, and nowhere as light. -->
-<section class="hero" id="top">
-  <div class="hero-in">
-
-    <div class="hero-lede">
-      <p class="eyebrow-rule"><span>Openings &middot; Middlegames &middot; Endgames</span></p>
-      <h1 class="hero-h">You already know<br>how the pieces move.</h1>
-      <p class="hero-sub">What you do not know is which of the ten thousand things
-        to study next. ChessForge decides that for you, one step at a time, and
-        every line in it was checked against Stockfish before it shipped.</p>
-      <div class="hero-acts">
-        <a class="btn btn-fill" href="https://app.chessforge.org">Open the app</a>
-        <a class="btn btn-ghost" href="#method">How it works</a>
-      </div>
-      <p class="hero-fine">Free, no card. Grandmaster $4.99&hairsp;/&hairsp;month.</p>
-    </div>
-
-    <!-- Three positions, staged. Sizes and offsets are deliberate: the opening
-         is furthest back and smallest, the endgame nearest and largest, so the
-         group reads as a progression through a game rather than as a row. -->
-    <div class="stage3" aria-label="Three positions from the app: an opening, a middlegame and an endgame">
-      <figure class="pos pos-a" data-fen="r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R">
-        <div class="pos-b" aria-hidden="true"></div>
-        <figcaption><b>Opening</b><span>Italian, move 4 &mdash; 14 lines, 252 replies</span></figcaption>
-      </figure>
-      <figure class="pos pos-b2" data-fen="r1bq1rk1/pp3ppp/2n1p3/2bp3n/5B2/2PBPN2/PP1N1PPP/R2Q1RK1">
-        <div class="pos-b" aria-hidden="true"></div>
-        <figcaption><b>Middlegame</b><span>London, move 10 &mdash; nothing hanging, no tactic</span></figcaption>
-      </figure>
-      <figure class="pos pos-c" data-fen="8/8/8/3K4/3P4/3k4/8/8">
-        <div class="pos-b" aria-hidden="true"></div>
-        <figcaption><b>Endgame</b><span>King and pawn &mdash; win it or draw it</span></figcaption>
-      </figure>
-    </div>
-
+     The answers travel to the app in ?ob=band.white.e4.d4 on the final link.
+     A query string rather than storage, because chessforge.org and
+     app.chessforge.org are different origins and localStorage does not cross
+     one. The app validates every part of it against the real library and reads
+     it back before applying anything. -->
+<section class="ask" id="top">
+  <div class="ask-in">
+    <p class="ask-open">Four questions</p>
+    <h1 class="ask-h">Then it tells you what to do first.</h1>
+    <div class="ask-feed" id="askFeed"></div>
   </div>
 </section>
 
-<!-- ═══ THE THREE PHASES ════════════════════════════════════════════════════
-     The hero names them; this is what each one actually is. Concrete counts,
-     because "comprehensive" is what every chess site says and none of them
-     mean anything by it. -->
-<section class="band" id="phases">
+<!-- \u2550\u2550\u2550 WHAT IS IN IT \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 -->
+<section class="band" id="inside">
   <div class="wrap">
-    <div class="bl-head reveal">
-      <p class="eyebrow">What is in it</p>
-      <h2>Three phases,<br><span class="grad">and no filler.</span></h2>
-      <p class="lede">Every line, branch, position and result below was checked against
-        Stockfish before it shipped. Anything the engine disagreed with was dropped
-        rather than published &mdash; 995 moves across the library, none of them wrong.</p>
-    </div>
+    <p class="eyebrow">What is in it</p>
+    <h2>Three phases, <span class="grad">and no filler.</span></h2>
+    <p class="lede">Every line, branch, position and result below was checked against
+      Stockfish before it shipped. Anything the engine disagreed with was dropped
+      rather than published &mdash; 995 moves across the library, none of them wrong.</p>
 
-    <div class="phase-grid">
-      <article class="phase reveal">
-        <header>
-          <span class="ph-tag" data-n="01">Opening</span>
-          <h3>Learn the line, then leave it behind.</h3>
-        </header>
-        <div class="ph-body">
-          <p>Fourteen openings, walked move by move with the reason sitting under
-            each one. Then you play the same line back with no prompts, because
-            recalling it is what makes it yours.</p>
-          <p>Then the part nobody covers: <b>252 replies for when he leaves the
-            book</b>, which is most games by move six. Every one has an answer and
-            a reason for it.</p>
-          <ul class="ph-facts">
-            <li><b>14</b><span>openings</span></li>
-            <li><b>252</b><span>off-book replies</span></li>
-            <li><b>3</b><span>ways to drill each</span></li>
-          </ul>
-        </div>
-        <figure class="ph-fig pos" data-fen="r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/4P3/1BPP1N2/PP3PPP/RNBQR1K1">
-          <div class="pos-b" aria-hidden="true"></div>
-          <figcaption>The Italian, eight moves in &mdash; and 252 ways he leaves it</figcaption>
-        </figure>
+    <div class="trio">
+      <article class="tri reveal">
+        <figure class="tri-fig pos" data-fen="r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R"><div class="pos-b" aria-hidden="true"></div></figure>
+        <h3>Opening</h3>
+        <p>Fourteen openings walked move by move with the reason under each one, then
+          played back from memory. Then the part nobody covers: the replies for when
+          he leaves the book, which is most games by move six.</p>
+        <ul class="ph-facts">
+          <li><b>14</b><span>openings</span></li>
+          <li><b>252</b><span>off-book replies</span></li>
+        </ul>
       </article>
-
-      <article class="phase reveal">
-        <header>
-          <span class="ph-tag" data-n="02">Middlegame</span>
-          <h3>What to do when there is nothing to find.</h3>
-        </header>
-        <div class="ph-body">
-          <p>Puzzles tell you a tactic exists before you look, which is the one
-            thing a real game never does. Most positions contain nothing at all
-            &mdash; and those are the ones that decide your games.</p>
-          <p>Forty-three positions <b>verified to hold no tactic</b>, each asking
-            the same five questions in the same order, until you ask them without
-            being prompted.</p>
-          <ul class="ph-facts">
-            <li><b>43</b><span>quiet positions</span></li>
-            <li><b>5</b><span>questions, every time</span></li>
-            <li><b>14</b><span>plans your openings reach</span></li>
-          </ul>
-        </div>
-        <figure class="ph-fig pos" data-fen="r1bq1rk1/pp3ppp/2n1p3/2bp3n/5B2/2PBPN2/PP1N1PPP/R2Q1RK1">
-          <div class="pos-b" aria-hidden="true"></div>
-          <figcaption>A London middlegame. Nothing is hanging. Now what?</figcaption>
-        </figure>
+      <article class="tri reveal">
+        <figure class="tri-fig pos" data-fen="r1bq1rk1/pp3ppp/2n1p3/2bp3n/5B2/2PBPN2/PP1N1PPP/R2Q1RK1"><div class="pos-b" aria-hidden="true"></div></figure>
+        <h3>Middlegame</h3>
+        <p>Positions verified to hold no tactic at all, because real positions mostly
+          do not. Each asks the same five questions in the same order, until you ask
+          them without being prompted.</p>
+        <ul class="ph-facts">
+          <li><b>43</b><span>quiet positions</span></li>
+          <li><b>5</b><span>questions, every time</span></li>
+        </ul>
       </article>
-
-      <article class="phase reveal">
-        <header>
-          <span class="ph-tag" data-n="03">Endgame</span>
-          <h3>Judge it first. Then prove it.</h3>
-        </header>
-        <div class="ph-body">
-          <p>Before a single move, one question: can this be won at all? Getting
-            that wrong is how won endings get drawn and drawn ones get resigned,
-            and it is the judgement the whole endgame turns on.</p>
-          <p>Then you play it out <b>against the best defence there is</b>, with
-            the method arriving a step at a time as you carry it out.</p>
-          <ul class="ph-facts">
-            <li><b>24</b><span>endings</span></li>
-            <li><b>1</b><span>judgement, first</span></li>
-            <li><b>0</b><span>mercy from the defence</span></li>
-          </ul>
-        </div>
-        <figure class="ph-fig pos" data-fen="8/8/8/3K4/3P4/3k4/8/8">
-          <div class="pos-b" aria-hidden="true"></div>
-          <figcaption>King and pawn. Win or draw &mdash; decide before you move</figcaption>
-        </figure>
+      <article class="tri reveal">
+        <figure class="tri-fig pos" data-fen="8/8/8/8/8/2K5/1p6/1k5R"><div class="pos-b" aria-hidden="true"></div></figure>
+        <h3>Endgame</h3>
+        <p>Every ending opens on a judgement before a move is allowed &mdash; can this
+          be won at all? &mdash; and only then does the method arrive, a step at a time,
+          against a defence that does not cooperate.</p>
+        <ul class="ph-facts">
+          <li><b>24</b><span>endings</span></li>
+          <li><b>0</b><span>results unchecked</span></li>
+        </ul>
       </article>
     </div>
-  </div>
-</section>
 
-<!-- ═══ HOW IT WORKS ════════════════════════════════════════════════════════
-     The actual differentiator, and the hardest thing to say without sounding
-     like every other product: it decides. -->
-<section class="band alt" id="method">
-  <div class="wrap">
-    <div class="bl-head reveal">
-      <p class="eyebrow">How it works</p>
-      <h2>It tells you<br><span class="grad">what to do next.</span></h2>
-      <p class="lede">Choosing what to study well requires knowing what you are missing,
-        which is the thing you do not have yet. So it is not a library you browse.
-        Open any section and one step is already waiting, with one button under it.</p>
-    </div>
-
-    <ol class="steps-3">
-      <li class="reveal">
-        <span class="s3-n">01</span>
-        <b>It picks</b>
-        <p>Walk the line, then play it from memory, then handle him leaving the book.
-          That order is the argument: you cannot recall what you have not seen, and
-          off-book is meaningless until the book is automatic.</p>
-      </li>
-      <li class="reveal">
-        <span class="s3-n">02</span>
-        <b>You do it</b>
-        <p>One step, one filled button. Everything else on the screen is quieter on
-          purpose, so there is never a moment of deciding between six things that
-          all look equally important.</p>
-      </li>
-      <li class="reveal">
-        <span class="s3-n">03</span>
-        <b>The next one appears</b>
-        <p>Finish it and the following step is already there &mdash; and when a tab
-          runs out, it hands you to the one that has not. You are never returned
-          to a menu.</p>
-      </li>
+    <ol class="heat reveal" aria-label="The review schedule: 1, 3, 7, 16, 35 and 90 days">
+      <li><b>1d</b><span>just struck</span></li>
+      <li><b>3d</b><span>still warm</span></li>
+      <li><b>7d</b><span>cooling</span></li>
+      <li><b>16d</b><span>going cold</span></li>
+      <li><b>35d</b><span>nearly lost</span></li>
+      <li><b>90d</b><span>held</span></li>
     </ol>
+    <p class="heat-cap">Everything you finish comes back on this schedule, arriving just
+      before you would have lost it. Get one wrong and it drops back two intervals,
+      not to the start.</p>
   </div>
 </section>
 
-<!-- ═══ TRY IT ══════════════════════════════════════════════════════════════
-     The demo that was here let you play a move and had a coach grade it, which
-     was the old product and is not in the app any more. This is the moment the
-     app actually opens an endgame on: one judgement, made before you are told
-     anything, because getting that judgement wrong is how won endings get drawn
-     and drawn ones get resigned.
-
-     No engine needed at runtime -- the answer is what Stockfish said at depth
-     when this position was built for the app. -->
-<section class="band" id="tryit">
+<!-- \u2550\u2550\u2550 TRY IT \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+     The judgement, playable. It comes AFTER the four questions on purpose: the
+     questions are the thing this page is for, and this is the proof. -->
+<section class="band alt" id="tryit">
   <div class="wrap">
-    <div class="bl-head reveal">
-      <p class="eyebrow">Try it here</p>
-      <h2>Before you move,<br><span class="grad">decide.</span></h2>
-      <p class="lede">This is how every endgame in the app opens. Not &ldquo;find the
-        move&rdquo; &mdash; something harder, and the thing that actually decides
-        these games.</p>
-    </div>
+    <p class="eyebrow">Try it here</p>
+    <h2>Before you move, <span class="grad">decide.</span></h2>
+    <p class="lede">This is how every endgame in the app opens. Not &ldquo;find the
+      move&rdquo; &mdash; something harder, and the thing that actually decides these
+      games.</p>
 
-    <div class="judge reveal" id="judge">
-      <figure class="judge-fig pos" data-fen="8/8/8/3K4/3P4/3k4/8/8">
-        <div class="pos-b" aria-hidden="true"></div>
-      </figure>
+      <div class="judge reveal" id="judge">
+        <figure class="judge-fig pos" data-fen="8/8/8/3K4/3P4/3k4/8/8">
+          <div class="pos-b" aria-hidden="true"></div>
+        </figure>
 
-      <div class="judge-ask" id="judgeAsk">
-        <p class="j-side">You are White. It is your move.</p>
-        <h3 class="j-q">Can this be won?</h3>
-        <p class="j-note">Not &ldquo;can I find a good move&rdquo;. Can this position be
-          won at all, against the best defence there is?</p>
-        <div class="j-acts">
-          <button type="button" class="btn btn-fill" data-judge="win">This is a win</button>
-          <button type="button" class="btn btn-ghost" data-judge="draw">This is only a draw</button>
+        <div class="judge-ask" id="judgeAsk">
+          <p class="j-side">You are White. It is your move.</p>
+          <h3 class="j-q">Can this be won?</h3>
+          <p class="j-note">Not &ldquo;can I find a good move&rdquo;. Can this position be
+            won at all, against the best defence there is?</p>
+          <div class="j-acts">
+            <button type="button" class="btn btn-fill" data-judge="win">This is a win</button>
+            <button type="button" class="btn btn-ghost" data-judge="draw">This is only a draw</button>
+          </div>
+        </div>
+
+        <div class="judge-said" id="judgeSaid" hidden>
+          <p class="j-verdict" id="jVerdict"></p>
+          <p class="j-why" id="jWhy"></p>
+          <p class="j-rule"><b>The method:</b> Your king goes first, in front of the pawn.
+            Push the pawn first and you draw a game you were winning.</p>
+          <ol class="j-steps">
+            <li>Never push the pawn while your king is behind it &mdash; it has nothing
+              to escort it with.</li>
+            <li>Walk the king up until one square separates the kings and it is
+              <i>his</i> move. That is the opposition, and it means he has to give way.</li>
+            <li>He steps aside; you step forward. Repeat.</li>
+            <li>Only now does the pawn move, and it moves with the king in front of it
+              the whole way.</li>
+          </ol>
+          <div class="j-acts">
+            <a class="btn btn-fill" href="https://app.chessforge.org">Play it out in the app</a>
+            <button type="button" class="btn btn-ghost" id="jAgain">Ask me again</button>
+          </div>
         </div>
       </div>
-
-      <div class="judge-said" id="judgeSaid" hidden>
-        <p class="j-verdict" id="jVerdict"></p>
-        <p class="j-why" id="jWhy"></p>
-        <p class="j-rule"><b>The method:</b> Your king goes first, in front of the pawn.
-          Push the pawn first and you draw a game you were winning.</p>
-        <ol class="j-steps">
-          <li>Never push the pawn while your king is behind it &mdash; it has nothing
-            to escort it with.</li>
-          <li>Walk the king up until one square separates the kings and it is
-            <i>his</i> move. That is the opposition, and it means he has to give way.</li>
-          <li>He steps aside; you step forward. Repeat.</li>
-          <li>Only now does the pawn move, and it moves with the king in front of it
-            the whole way.</li>
-        </ol>
-        <div class="j-acts">
-          <a class="btn btn-fill" href="https://app.chessforge.org">Play it out in the app</a>
-          <button type="button" class="btn btn-ghost" id="jAgain">Ask me again</button>
-        </div>
-      </div>
     </div>
-
-    <p class="c-foot">Verified at depth before it shipped: this one is a win in 13.
-      Twenty-four endings in the app, and every result checked the same way.</p>
-  </div>
 </section>
 
-<!-- ═══ WHY IT STICKS ═══════════════════════════════════════════════════════ -->
-<section class="band alt" id="proof">
-  <div class="wrap">
-    <div class="bl-head reveal">
-      <p class="eyebrow">Why it sticks</p>
-      <h2>Everything comes back<br><span class="grad">before you forget it.</span></h2>
-      <p class="lede">The answer to &ldquo;I used it once and then it was redundant&rdquo;.
-        Everything you finish returns on a schedule, and it arrives at the point you
-        are about to lose it &mdash; which is the moment practising it is worth
-        anything at all.</p>
-    </div>
-
-    <div class="proof-grid">
-      <div class="pf reveal">
-        <div class="pf-sched" aria-hidden="true">
-          <span>1d</span><i></i><span>3d</span><i></i><span>7d</span><i></i>
-          <span>16d</span><i></i><span>35d</span><i></i><span>90d</span>
-        </div>
-        <b>Expanding intervals</b>
-        <p>One day, three, a week, then longer. Get one wrong and it drops back two
-          steps, not to zero &mdash; landing on nothing is discouraging, and it is not
-          what the research says either.</p>
-      </div>
-      <div class="pf reveal">
-        <b>The struggle is the mechanism</b>
-        <p>An item is served when it is nearly forgotten, not while it is still fresh.
-          Easy recall builds nothing. That difficulty is not a side effect of the
-          method; it <i>is</i> the method.</p>
-      </div>
-      <div class="pf reveal">
-        <b>Nothing published unchecked</b>
-        <p>Every move, branch, position and endgame result was verified against
-          Stockfish before it shipped. The gate refused a lot of our own content, and
-          that content is not in the app.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- \u2550\u2550\u2550 PRICING \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 -->
 <section class="band" id="pricing">
-  <div class="reveal center">
+  <div class="wrap">
     <p class="eyebrow">Pricing</p>
-    <h2>Free is a real plan.</h2>
-    <p class="lede mid">Grandmaster takes the limits off. Nothing here is a trial-shaped
-       version of the product.</p>
-  </div>
-  <div class="plans reveal">
-    <div class="plan">
-      <div class="pn">Free</div>
-      <div class="bill-static"><span>Always free</span></div>
-      <div class="pp">$0<small>no card, no expiry</small></div>
-      <ul>
-        <li><span class="k">Openings, move by move</span><span class="v">1 of 14</span></li>
-        <li><span class="k">Answers when he leaves the book</span><span class="v">6 of 252</span></li>
-        <li><span class="k">Middlegame positions</span><span class="v">5 of 43</span></li>
-        <li><span class="k">Endgames played out</span><span class="v">4 of 24</span></li>
-        <li class="off"><span class="k">Spaced review</span><span class="v lk">Locked</span></li>
-        <li class="off"><span class="k">New lines as they land</span><span class="v lk">Locked</span></li>
-      </ul>
-      <a class="btn btn-ghost wide" href="https://app.chessforge.org">Start free</a>
-    </div>
-    <div class="plan lit">
-      <div class="pn">Grandmaster</div>
-      <!-- Yearly first, and permanently: it is the better deal and hiding the
-           better deal behind the default is the only reason not to. Both
-           figures are rendered from the app's /plan/pricing, so a price this
-           page advertises is always one Stripe can actually charge. -->
-      <div class="bill-switch" id="billSwitch" role="group" aria-label="Billing period" hidden>
-        <button type="button" class="bs-b on" data-interval="yearly">Yearly</button>
-        <button type="button" class="bs-b" data-interval="monthly">Monthly</button>
+    <h2>Free is <span class="grad">a real plan.</span></h2>
+    <p class="lede">Grandmaster takes the limits off. Nothing here is a trial-shaped
+      version of the product.</p>
+
+      <div class="plans reveal">
+        <div class="plan">
+          <div class="pn">Free</div>
+          <div class="bill-static"><span>Always free</span></div>
+          <div class="pp">$0<small>no card, no expiry</small></div>
+          <ul>
+            <li><span class="k">Openings, move by move</span><span class="v">1 of 14</span></li>
+            <li><span class="k">Answers when he leaves the book</span><span class="v">6 of 252</span></li>
+            <li><span class="k">Middlegame positions</span><span class="v">5 of 43</span></li>
+            <li><span class="k">Endgames played out</span><span class="v">4 of 24</span></li>
+            <li class="off"><span class="k">Spaced review</span><span class="v lk">Locked</span></li>
+            <li class="off"><span class="k">New lines as they land</span><span class="v lk">Locked</span></li>
+          </ul>
+          <a class="btn btn-ghost wide" href="https://app.chessforge.org">Start free</a>
+        </div>
+
+        <div class="plan lit">
+          <div class="pn">Grandmaster</div>
+          <!-- Yearly first, and permanently: it is the better deal, and hiding the
+               better deal behind the default is the only reason not to. Both
+               figures are rendered from the app's /plan/pricing, so a price this
+               page advertises is always one Stripe can actually charge. -->
+          <div class="bill-switch" id="billSwitch" role="group" aria-label="Billing period" hidden>
+            <button type="button" class="bs-b on" data-interval="yearly">Yearly</button>
+            <button type="button" class="bs-b" data-interval="monthly">Monthly</button>
+          </div>
+          <div class="pp" id="planPrice"><s>$9.99</s>$4.99<small>CAD a month</small></div>
+          <ul>
+            <li><span class="k">Openings, move by move</span><span class="v">all 14<em>14&times;</em></span></li>
+            <li><span class="k">Answers when he leaves the book</span><span class="v">all 252<em>42&times;</em></span></li>
+            <li><span class="k">Middlegame positions</span><span class="v">all 43<em>8&times;</em></span></li>
+            <li><span class="k">Endgames played out</span><span class="v">all 24<em>6&times;</em></span></li>
+            <li><span class="k">Spaced review</span><span class="v">Every day<em>unlocked</em></span></li>
+            <li><span class="k">New lines as they land</span><span class="v">Included<em>unlocked</em></span></li>
+          </ul>
+          <p class="offer-note" id="offerNote" hidden></p>
+          <a class="btn btn-fill wide" href="https://app.chessforge.org?upgrade=1">Start the 3-day trial</a>
+          <p class="pf">A card is taken up front. Cancel any time before day three and you are
+            charged nothing.</p>
+        </div>
       </div>
-      <div class="pp" id="planPrice"><s>$9.99</s>$4.99<small>CAD a month</small></div>
-      <ul>
-        <li><span class="k">Openings, move by move</span><span class="v">all 14<em>14&times;</em></span></li>
-        <li><span class="k">Answers when he leaves the book</span><span class="v">all 252<em>42&times;</em></span></li>
-        <li><span class="k">Middlegame positions</span><span class="v">all 43<em>8&times;</em></span></li>
-        <li><span class="k">Endgames played out</span><span class="v">all 24<em>6&times;</em></span></li>
-        <li><span class="k">Spaced review</span><span class="v">Every day<em>unlocked</em></span></li>
-        <li><span class="k">New lines as they land</span><span class="v">Included<em>unlocked</em></span></li>
-      </ul>
-      <p class="offer-note" id="offerNote" hidden></p>
-      <a class="btn btn-fill wide" href="https://app.chessforge.org?upgrade=1">Start the 3-day trial</a>
-      <p class="pf">A card is taken up front. Cancel any time before day three and you are
-        charged nothing.</p>
     </div>
-  </div>
 </section>
 
-<!-- ── FAQ ─────────────────────────────────────────────────────────────────────
-     Restored. The FAQPage structured data was still in the head of this page
-     while the questions themselves were not on it -- which is exactly the case
-     Google's structured-data policy calls out, and it risks a manual action on
-     the whole site rather than just losing the rich result. The seven questions
-     below are the seven in the schema, word for word. -->
-<section class="band" id="faq">
+<!-- \u2550\u2550\u2550 QUESTIONS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+     These seven are the seven in the FAQPage structured data in the head, word
+     for word. Edit one and you must edit the other: a schema describing
+     questions that are not on the page is the case Google's policy calls out,
+     and it risks a manual action on the whole site. -->
+<section class="band alt" id="faq">
   <div class="wrap faq-wrap">
-    <div class="bl-head reveal">
-      <p class="eyebrow">Questions</p>
-      <h2>The ones people<br><span class="grad">actually ask.</span></h2>
-    </div>
-    <div class="faq reveal">
-      <details><summary>What do I actually do in it?</summary>
-        <p>You open it and it tells you the next step. Walk an opening line, play it back
-           from memory, handle the replies that leave the book, read a middlegame position,
-           or play an endgame out against best defence. There is no menu to choose from
-           unless you go looking for one.</p></details>
-      <details><summary>How is this different from puzzles?</summary>
-        <p>Puzzles tell you a tactic exists before you look, which is the one thing a real
-           game never does. Most positions contain nothing at all, and the skill that decides
-           those games is knowing what to do when there is nothing to find. That is what the
-           middlegame section trains, on positions verified to hold no tactic.</p></details>
-      <details><summary>Is the content actually correct?</summary>
-        <p>Every move, branch, position and endgame result was checked against Stockfish
-           before it shipped, and anything the engine disagreed with was dropped rather than
-           published. 995 moves across the whole library, none of them wrong. The checking
-           refused a lot of our own writing, and that writing is not in the app.</p></details>
-      <details><summary>Will I just forget it all again?</summary>
-        <p>That is what the review schedule is for. Everything you finish comes back at one
-           day, three, a week, then longer &mdash; arriving at the point you are about to
-           forget it, which is when practising it is worth anything. Get one wrong and it
-           drops back two steps rather than to zero.</p></details>
-      <details><summary>What rating is this for?</summary>
-        <p>Roughly 300 to 1400. It is built for the point where you know how the pieces move
-           but not what to do with them, and where every game ends the same three ways.</p></details>
-      <details><summary>Does it work on my phone?</summary>
-        <p>Yes. All three sections, the full board, and your progress follows the account
-           rather than the device.</p></details>
-      <details><summary>Can I cancel any time?</summary>
-        <p>Yes, from your account, through Stripe's own billing portal. Access continues to
-           the end of the period you have already paid for.</p></details>
-    </div>
-  </div>
-</section>
+    <p class="eyebrow">Questions</p>
+    <h2>The ones people <span class="grad">actually ask.</span></h2>
 
-<section class="closer">
-  <div class="closer-in reveal">
-    <h2>Your next game could teach you something.</h2>
-    <p>Or it could be another one you forget by Tuesday.</p>
-    <a class="btn btn-fill" href="https://app.chessforge.org">Start training <span>&rarr;</span></a>
+      <div class="faq reveal">
+        <details><summary>What do I actually do in it?</summary>
+          <p>You open it and it tells you the next step. Walk an opening line, play it back
+             from memory, handle the replies that leave the book, read a middlegame position,
+             or play an endgame out against best defence. There is no menu to choose from
+             unless you go looking for one.</p></details>
+        <details><summary>How is this different from puzzles?</summary>
+          <p>Puzzles tell you a tactic exists before you look, which is the one thing a real
+             game never does. Most positions contain nothing at all, and the skill that decides
+             those games is knowing what to do when there is nothing to find. That is what the
+             middlegame section trains, on positions verified to hold no tactic.</p></details>
+        <details><summary>Is the content actually correct?</summary>
+          <p>Every move, branch, position and endgame result was checked against Stockfish
+             before it shipped, and anything the engine disagreed with was dropped rather than
+             published. 995 moves across the whole library, none of them wrong. The checking
+             refused a lot of our own writing, and that writing is not in the app.</p></details>
+        <details><summary>Will I just forget it all again?</summary>
+          <p>That is what the review schedule is for. Everything you finish comes back at one
+             day, three, a week, then longer &mdash; arriving at the point you are about to
+             forget it, which is when practising it is worth anything. Get one wrong and it
+             drops back two steps rather than to zero.</p></details>
+        <details><summary>What rating is this for?</summary>
+          <p>Roughly 300 to 1400. It is built for the point where you know how the pieces move
+             but not what to do with them, and where every game ends the same three ways.</p></details>
+        <details><summary>Does it work on my phone?</summary>
+          <p>Yes. All three sections, the full board, and your progress follows the account
+             rather than the device.</p></details>
+        <details><summary>Can I cancel any time?</summary>
+          <p>Yes, from your account, through Stripe's own billing portal. Access continues to
+             the end of the period you have already paid for.</p></details>
+
   </div>
 </section>
 </main>
@@ -519,8 +352,9 @@
 <div class="modal" id="lg-privacy" hidden><div class="modal-in"><button class="modal-x" data-close aria-label="Close">&times;</button>
   <h2>Privacy Policy</h2><p>We store your account, the games you play here, and the games you
   choose to import. Payments go through Stripe; we never see your card. We do not sell your data.
-  Marketing email is opt-in and every message carries a one-click unsubscribe. Ask for deletion
-  any time. A plain-language summary, not legal advice.</p></div></div>
+  Email is transactional only &mdash; password resets and subscription notices. There is no
+  marketing list and nothing to unsubscribe from. Ask for deletion any time, or export
+  everything we hold, from your account. A plain-language summary, not legal advice.</p></div></div>
 <div class="modal" id="lg-attribution" hidden><div class="modal-in"><button class="modal-x" data-close aria-label="Close">&times;</button>
   <h2>Attribution</h2>
   <h3>Chess pieces</h3><p>The pieces are the work of <b>Colin M.L. Burnett</b>, used under the

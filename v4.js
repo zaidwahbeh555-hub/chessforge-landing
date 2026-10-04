@@ -1,320 +1,305 @@
-/* ChessForge landing v4 — behaviour.
-   The hero is the only thing here with real logic: a board, three cards that
-   land on it, and a line you can play out. Everything else is reveals, the
-   menu, the live player count and the legal modals. */
+/* ChessForge landing — behaviour.
+ *
+ * The page is four questions. They are the SAME four the app asks at sign-up,
+ * with the same bands and the same openings, filtered by band the same way, so
+ * finishing this page finishes the onboarding.
+ *
+ * The answers are handed to the app in ?ob=band.white.e4.d4 on the final link.
+ * A query string and not storage: chessforge.org and app.chessforge.org are
+ * separate origins and localStorage does not cross one. The app validates every
+ * field against its own library and reads the answers back before applying
+ * them, so a hand-edited link cannot quietly configure somebody's account.
+ *
+ * OPENINGS below is generated from the app's local/data.js and must be
+ * regenerated if the library changes. It carries only what this page shows.
+ */
 (function () {
   'use strict';
   var RM = matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
 
   var y = $('#year'); if (y) y.textContent = new Date().getFullYear();
 
-  /* nav gets its border once you have left the top */
+  var OPENINGS = [
+    {
+      "id": "italian",
+      "name": "Italian Game",
+      "slot": "white",
+      "idea": "The oldest opening there is. Fast development, and every piece points at f7.",
+      "min": 0
+    },
+    {
+      "id": "london",
+      "name": "London System",
+      "slot": "white",
+      "idea": "The same setup against almost anything. One system to learn instead of ten.",
+      "min": 0
+    },
+    {
+      "id": "vienna",
+      "name": "Vienna Game",
+      "slot": "white",
+      "idea": "Looks like a quiet e4 opening, then the f-pawn arrives and it is not quiet at all.",
+      "min": 500
+    },
+    {
+      "id": "queens-gambit",
+      "name": "Queen's Gambit",
+      "slot": "white",
+      "idea": "Not really a gambit. You offer a pawn to pull his d-pawn off the centre, and you get it back.",
+      "min": 600
+    },
+    {
+      "id": "scotch",
+      "name": "Scotch Game",
+      "slot": "white",
+      "idea": "Open the centre on move three, before he has finished developing.",
+      "min": 400
+    },
+    {
+      "id": "kings-indian-attack",
+      "name": "King's Indian Attack",
+      "slot": "white",
+      "idea": "A setup, not a line. The same six moves against nearly anything he plays.",
+      "min": 300
+    },
+    {
+      "id": "caro",
+      "name": "Caro-Kann Defence",
+      "slot": "e4",
+      "idea": "Solid as a wall, and unlike the French your light-squared bishop gets out first.",
+      "min": 0
+    },
+    {
+      "id": "scandi",
+      "name": "Scandinavian Defence",
+      "slot": "e4",
+      "idea": "You get to play the same thing every game, and he is out of his book by move two.",
+      "min": 0
+    },
+    {
+      "id": "french",
+      "name": "French Defence",
+      "slot": "e4",
+      "idea": "Give him the centre, then break it with c5 and f6. A counter-punching opening.",
+      "min": 400
+    },
+    {
+      "id": "philidor-defence",
+      "name": "Philidor Defence",
+      "slot": "e4",
+      "idea": "Rock solid and very easy to remember. Nothing sharp can happen to you early.",
+      "min": 0
+    },
+    {
+      "id": "qgd",
+      "name": "Queen’s Gambit Declined",
+      "slot": "d4",
+      "idea": "The most respectable answer to 1.d4 there is. You keep a pawn on d5 and nothing collapses.",
+      "min": 400
+    },
+    {
+      "id": "slav",
+      "name": "Slav Defence",
+      "slot": "d4",
+      "idea": "Like the Queen’s Gambit Declined, but the light-squared bishop is not shut in.",
+      "min": 500
+    },
+    {
+      "id": "kings-indian",
+      "name": "King’s Indian Defence",
+      "slot": "d4",
+      "idea": "Let him have the centre, castle fast, then blow it up with e5 or c5.",
+      "min": 700
+    },
+    {
+      "id": "dutch",
+      "name": "Dutch Defence",
+      "slot": "d4",
+      "idea": "Grab the e4 square on move one and play for an attack from the start.",
+      "min": 600
+    }
+  ];
+
+  /* The same three bands the app offers, in the same words. */
+  var BANDS = [
+    [600,  'Just starting',     'Still learning how the pieces work together'],
+    [900,  'Around 600\u2013900',  'I know the rules and lose to tactics'],
+    [1200, 'Around 900\u20131200', 'I play openings but do not really know them']
+  ];
+
+  var STEPS = [
+    { key:'band',  label:'Rated',
+      q:'Roughly how strong are you?',
+      sub:'This decides which openings you are offered first. The app asks the same thing, in the same three bands.' },
+    { key:'white', label:'As White', slot:'white',
+      q:'What do you want to play as White?',
+      sub:'One opening, learned properly, beats four learned badly. You can add the others later.' },
+    { key:'e4',    label:'Against 1.e4', slot:'e4',
+      q:'And when he opens 1.e4?',
+      sub:'Your answer to the most common first move there is.' },
+    { key:'d4',    label:'Against 1.d4', slot:'d4',
+      q:'And against 1.d4?',
+      sub:'The last one. Then it tells you what to do first.' }
+  ];
+
+  var feed = $('#askFeed');
+  if (!feed) return;
+  var A = {};          /* the four answers */
+  var at = 0;
+
+  function optsFor(step) {
+    if (step.key === 'band') {
+      return BANDS.map(function (b) {
+        return { id:String(b[0]), name:b[1], idea:b[2] };
+      });
+    }
+    /* Filtered by band exactly as the app filters: anything whose range starts
+       at or below the band you gave. If that leaves nothing, show the lot
+       rather than an empty question. */
+    var pool = OPENINGS.filter(function (o) { return o.slot === step.slot; });
+    var show = pool.filter(function (o) { return o.min <= (+A.band || 1200); });
+    return (show.length ? show : pool);
+  }
+
+  function ask(n) {
+    var step = STEPS[n];
+    var blk = document.createElement('section');
+    blk.className = 'q';
+    blk.dataset.step = n;
+    blk.innerHTML = '<h2 class="q-h">' + step.q + '</h2>' +
+                    '<p class="q-sub">' + step.sub + '</p>' +
+                    '<div class="q-opts"></div>';
+    var box = $('.q-opts', blk);
+    optsFor(step).forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'q-opt';
+      b.innerHTML = '<span class="q-dot" aria-hidden="true"></span>' +
+                    '<span class="q-txt"><b></b><i></i></span>';
+      $('b', b).textContent = o.name;
+      $('i', b).textContent = o.idea;
+      b.addEventListener('click', function () { answer(n, o); });
+      box.appendChild(b);
+    });
+    feed.appendChild(blk);
+    if (!RM && n > 0) blk.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+
+  /* An answered question collapses to one line you can click to change, so the
+     page keeps a record of what you said without the questions piling up. */
+  function collapse(n) {
+    var step = STEPS[n], blk = feed.querySelector('[data-step="' + n + '"]');
+    blk.className = 'q done';
+    blk.innerHTML = '<span class="d-k"></span><span class="d-v"></span>' +
+                    '<button type="button" class="d-edit">change</button>';
+    $('.d-k', blk).textContent = step.label;
+    $('.d-v', blk).textContent = A[step.key + '_name'];
+    $('.d-edit', blk).addEventListener('click', function () { rewind(n); });
+  }
+
+  function rewind(n) {
+    $$('[data-step]', feed).forEach(function (el) {
+      if (+el.dataset.step >= n) el.parentNode.removeChild(el);
+    });
+    var out = $('.out', feed); if (out) out.parentNode.removeChild(out);
+    STEPS.slice(n).forEach(function (s) { delete A[s.key]; delete A[s.key + '_name']; });
+    at = n; ask(n);
+  }
+
+  function answer(n, o) {
+    var step = STEPS[n];
+    A[step.key] = o.id;
+    A[step.key + '_name'] = o.name;
+    collapse(n);
+    at = n + 1;
+    if (at < STEPS.length) ask(at); else finish();
+  }
+
+  function finish() {
+    /* band.white.e4.d4 -- the app parses exactly this and validates each part */
+    var payload = [A.band, A.white, A.e4, A.d4].join('.');
+    var href = 'https://app.chessforge.org/?ob=' + encodeURIComponent(payload);
+
+    var out = document.createElement('section');
+    out.className = 'out';
+    out.innerHTML =
+      '<p class="out-k">Your repertoire</p>' +
+      '<h2 class="out-h">That is the setup. Here is what happens next.</h2>' +
+      '<p class="out-w">The app opens on one step with a single button under it. ' +
+        'Finish it and the next appears \u2014 you do not choose the order again.</p>' +
+      '<dl class="out-rows">' +
+        '<div><dt>As White</dt><dd>' + A.white_name + '</dd></div>' +
+        '<div><dt>Against 1.e4</dt><dd>' + A.e4_name + '</dd></div>' +
+        '<div><dt>Against 1.d4</dt><dd>' + A.d4_name + '</dd></div>' +
+        '<div><dt>Starting at</dt><dd>' + A.band_name + '</dd></div>' +
+      '</dl>' +
+      '<p class="out-note">Your answers travel with you. The app reads them back and ' +
+        'asks before it applies anything, and an account is what keeps them off ' +
+        'this browser.</p>' +
+      '<div class="out-acts">' +
+        '<a class="btn btn-fill" id="askGo">Show me my first step</a>' +
+        '<a class="btn btn-ghost" href="#pricing">What it costs</a>' +
+      '</div>' +
+      '<p class="out-fine">Free: one full opening, five middlegame positions and four ' +
+        'endgames \u2014 no card, no expiry.</p>';
+    feed.appendChild(out);
+    $('#askGo', out).href = href;
+    if (!RM) out.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+
+  ask(0);
+
+  /* ── the rest of the page ────────────────────────────────────────────── */
+
   var nav = $('#nav');
   addEventListener('scroll', function () {
     if (nav) nav.classList.toggle('stuck', scrollY > 12);
-  }, { passive: true });
+  }, { passive:true });
 
-  /* menu — phones only, but it closes every way somebody would expect */
   (function () {
     var b = $('#burger'), m = $('#menu');
     if (!b || !m) return;
-    function set(open) {
-      m.hidden = !open;
-      b.setAttribute('aria-expanded', open ? 'true' : 'false');
-      b.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    }
-    b.addEventListener('click', function (e) { e.stopPropagation(); set(m.hidden); });
-    m.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
-    document.addEventListener('click', function (e) {
-      if (!m.hidden && !m.contains(e.target) && e.target !== b) set(false);
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') === 'true';
+      b.setAttribute('aria-expanded', String(!open));
+      m.hidden = open;
     });
-    addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+    $$('a', m).forEach(function (a) {
+      a.addEventListener('click', function () {
+        b.setAttribute('aria-expanded', 'false'); m.hidden = true;
+      });
+    });
   })();
 
-  /* Count a figure up to its data-count once, when it is first seen. */
-  function countUp(el) {
-    /* liveCount hands this whatever querySelector found, which is null once the
-       figure it counted is no longer on the page. A function that takes an
-       element has to survive not being given one -- this threw on the first
-       line and took the rest of the script with it, which is how deleting a
-       section stopped three chessboards from painting. */
-    if (!el || el._ran) return; el._ran = 1;
-    var to = parseInt(el.getAttribute('data-count'), 10) || 0;
-    if (RM) { el.textContent = String(to); return; }
-    var t0 = 0, D = 900;
-    requestAnimationFrame(function step(t) {
-      if (!t0) t0 = t;
-      var k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3);
-      el.textContent = String(Math.round(to * e));
-      if (k < 1) requestAnimationFrame(step);
-    });
-  }
-  function liveCount(done) {
-    var el = document.querySelector('.stat-n[data-live="users"]');
-    if (!el || !window.fetch) { done && done(el); return; }
-    var settled = false;
-    function finish() { if (!settled) { settled = true; done && done(el); } }
-    /* A hanging request must not stop the animation from ever running. */
-    setTimeout(finish, 2500);
-    fetch('https://app.chessforge.org/public/stats', { mode: 'cors' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        var n = d && d.users;
-        if (typeof n === 'number' && n > 0) {
-          el.setAttribute('data-count', String(n));
-          $$('[data-live-users]').forEach(function (t) { t.textContent = String(n); });
-        }
-      })
-      .catch(function () {})
-      .then(finish);
-  }
-  liveCount(countUp);
-
-  /* reveals. The sweep is not optional: without it an anchor jump past a
-     section leaves that section invisible for good, because it never
-     intersects and so never reveals. */
-  /* Reveals. Cards get their own observer with a short stagger, so a row
-     settles instead of six things arriving one at a time over three seconds. */
-  var blocks = $$('.reveal, .shot, .quote, .closer-in');
-  var cards = $$('.fcard, .plan');
-  if (RM || !('IntersectionObserver' in window)) {
-    blocks.concat(cards).forEach(function (el) { el.classList.add('in'); });
-  } else {
-    var pending = new Set(blocks);
+  /* Reveals, with a sweep so anything already on screen is shown even if the
+     observer never fires -- an anchor that jumps past a section used to leave
+     it blank. */
+  (function () {
+    var els = $$('.reveal');
+    if (RM || !('IntersectionObserver' in window)) {
+      els.forEach(function (e) { e.classList.add('in'); });
+      return;
+    }
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (!e.isIntersecting) return;
-        e.target.classList.add('in'); io.unobserve(e.target); pending.delete(e.target);
+        e.target.classList.add('in'); io.unobserve(e.target);
       });
-    }, { threshold: .1, rootMargin: '0px 0px -6% 0px' });
-    blocks.forEach(function (el) { io.observe(el); });
-
-    var cio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var row = $$('.fcard, .plan', e.target.parentNode);
-        var i = row.indexOf(e.target);
-        setTimeout(function () { e.target.classList.add('in'); }, Math.max(0, i) * 55);
-        cio.unobserve(e.target);
+    }, { threshold:.14 });
+    els.forEach(function (e) { io.observe(e); });
+    function sweep() {
+      els.forEach(function (e) {
+        if (e.getBoundingClientRect().top < innerHeight) e.classList.add('in');
       });
-    }, { threshold: .1, rootMargin: '0px 0px -4% 0px' });
-    cards.forEach(function (el) { cio.observe(el); });
-
-    /* The sweep is not optional: an anchor jump past a section leaves it
-       invisible for good, because it never intersects and so never reveals. */
-    var sweep = function () {
-      cards.forEach(function (el) {
-        if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('in'); cio.unobserve(el); }
-      });
-      if (!pending.size) return;
-      Array.from(pending).forEach(function (el) {
-        if (el.getBoundingClientRect().top < innerHeight) {
-          el.classList.add('in'); io.unobserve(el); pending.delete(el);
-        }
-      });
-    };
-    addEventListener('scroll', sweep, { passive: true });
-    addEventListener('resize', sweep);
+    }
+    addEventListener('scroll', sweep, { passive:true });
+    addEventListener('resize', sweep, { passive:true });
     addEventListener('hashchange', sweep);
-    requestAnimationFrame(sweep); setTimeout(sweep, 400);
-  }
-
-  /* the live player count — typed numbers are how the old page claimed 31
-     players for months while the real figure climbed */
-  (function () {
-    if (!window.fetch) return;
-    fetch('https://app.chessforge.org/public/stats', { mode: 'cors' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        var n = d && d.users;
-        if (typeof n === 'number' && n > 0)
-          $$('[data-live-users]').forEach(function (t) { t.textContent = String(n); });
-          /* The hero figure counts up to the live number rather than the one
-             typed into the HTML, so the claim cannot go stale as people join. */
-          var sn = document.querySelector('.stat-n[data-live="users"]');
-          if (sn) { sn.setAttribute('data-count', String(n)); countUp(sn); }
-      }).catch(function () {});
+    sweep();
   })();
 
-  /* ── the endgame judgement ────────────────────────────────────────────────
-     What replaced the coached-play board. That demo let you play a move and had
-     a coach grade it, which was the old product: there is no coach in the app
-     now, and grading a move is not what it does.
-
-     This is the moment every endgame in the app opens on, and the answer is not
-     ours -- it is what Stockfish said at depth when the position was built.
-     Nothing is fetched and no engine runs here; there is one fact and it is
-     already known. */
-  (function () {
-    var wrap = $('#judge');
-    if (!wrap) return;
-    var ask = $('#judgeAsk'), said = $('#judgeSaid');
-    var TRUTH = 'win';           // verified: white wins, mate in 13
-
-    function answer(pick) {
-      var right = pick === TRUTH;
-      $('#jVerdict').textContent = right
-        ? 'Right \u2014 it is a win.'
-        : 'Not quite. It is a win.';
-      $('#jVerdict').className = 'j-verdict ' + (right ? 'good' : 'bad');
-      $('#jWhy').textContent = right
-        ? 'One pawn and the kings, and it is winning for the side to move \u2014 but '
-          + 'only played in the right order. Most players push the pawn here and draw it.'
-        : 'This one IS winnable, and that matters: a player who thinks it is drawn '
-          + 'stops trying and draws it. The pawn is not the problem \u2014 the order is.';
-      ask.hidden = true;
-      said.hidden = false;
-      said.classList.remove('in'); void said.offsetWidth; said.classList.add('in');
-    }
-
-    $$('[data-judge]', wrap).forEach(function (b) {
-      b.addEventListener('click', function () { answer(b.getAttribute('data-judge')); });
-    });
-    var again = $('#jAgain');
-    if (again) again.addEventListener('click', function () {
-      said.hidden = true; ask.hidden = false;
-      ask.classList.remove('in'); void ask.offsetWidth; ask.classList.add('in');
-    });
-  })();
-
-
-  /* modals */
-  var open = null;
-  function shut() { if (open) { open.hidden = true; open = null; document.body.style.overflow = ''; } }
-  document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-legal]');
-    if (t) {
-      var m = document.getElementById('lg-' + t.dataset.legal);
-      if (m) { shut(); m.hidden = false; open = m; document.body.style.overflow = 'hidden'; }
-      return;
-    }
-    if (e.target.closest('[data-close]') || (open && e.target === open)) shut();
-  });
-  addEventListener('keydown', function (e) { if (e.key === 'Escape') shut(); });
-})();
-
-/* ══ Yearly / monthly ═══════════════════════════════════════════════════════
-   $4.99 a month, or $29.99 for the whole year -- half the price, and not a
-   countdown: yearly is a permanent option, so nothing here expires.
-
-   The figures below are only the fallback. If the app answers, its numbers
-   win, which means a price change on Railway reaches this page without
-   touching this file -- and the page can never advertise a price Stripe has
-   not been told about. `ends` is kept because the route still returns it: a
-   future limited offer sets it and the clock comes back on its own. */
-(function () {
-  var API = 'https://app.chessforge.org/plan/pricing';
-  var P = { monthly: 4.99, monthly_was: 9.99, yearly: 29.99, yearly_off_pct: 50,
-            ends: 0, now: Math.floor(Date.now() / 1000),
-            yearly_available: true };
-  var interval = 'yearly', skew = 0, tick = null;
-
-  var sw    = document.getElementById('billSwitch');
-  var price = document.getElementById('planPrice');
-  var note  = document.getElementById('offerNote');
-  if (!sw || !price || !note) return;
-
-  function left() { return P.ends ? (P.ends * 1000) - (Date.now() + skew) : 0; }
-  /* No deadline means no deadline. Yearly is on whenever the app says it is. */
-  function live()  { return !!P.yearly_available && (!P.ends || left() > 0); }
-
-  function fmt(ms) {
-    var s = Math.max(0, Math.floor(ms / 1000)), p = function (n) { return n < 10 ? '0' + n : '' + n; };
-    return Math.floor(s / 86400) + 'd ' + p(Math.floor(s % 86400 / 3600)) + 'h '
-         + p(Math.floor(s % 3600 / 60)) + 'm ' + p(s % 60) + 's';
-  }
-  function weeksLeft() {
-    var w = Math.ceil(left() / (7 * 864e5));
-    return w <= 1 ? 'Last week' : 'Only here for ' + w + ' more weeks';
-  }
-
-  function render() {
-    var on = live();
-    if (!on && interval === 'yearly') interval = 'monthly';
-    sw.hidden = !on;
-    Array.prototype.forEach.call(sw.querySelectorAll('.bs-b'), function (b) {
-      b.classList.toggle('on', b.dataset.interval === interval);
-      b.setAttribute('aria-pressed', b.dataset.interval === interval ? 'true' : 'false');
-    });
-
-    if (interval === 'yearly') {
-      price.innerHTML = '$' + P.yearly.toFixed(2)
-        + '<span class="save">save ' + P.yearly_off_pct + '%</span>'
-        + '<small>CAD for the year &mdash; $' + (P.yearly / 12).toFixed(2)
-        + ' a month, billed once</small>';
-    } else {
-      price.innerHTML = '<s>$' + P.monthly_was.toFixed(2) + '</s>$' + P.monthly.toFixed(2)
-        + '<small>CAD a month</small>';
-    }
-    clock();
-  }
-
-  function clock() {
-    var ms = left();
-    /* The note belongs to the yearly price. On Monthly there is nothing to
-       explain, so anything sitting under $4.99 a month is just an unexplained
-       line. */
-    if (interval !== 'yearly' || !live()) {
-      note.hidden = true;
-      if (tick) { clearInterval(tick); tick = null; }
-      if (P.ends && P.yearly_available && ms <= 0) { P.yearly_available = false; render(); }
-      return;
-    }
-    note.hidden = false;
-    if (!P.ends) {
-      /* The permanent case, which is the one that ships. No clock, because
-         nothing is running out -- just the saving, stated plainly. */
-      note.innerHTML = 'Save <b>' + P.yearly_off_pct + '%</b> against paying monthly. '
-        + 'One payment, cancel any time.';
-      if (tick) { clearInterval(tick); tick = null; }
-      return;
-    }
-    note.innerHTML = weeksLeft() + ' &mdash; ends in <b>' + fmt(ms) + '</b>';
-    if (!tick) tick = setInterval(clock, 1000);
-  }
-
-  sw.addEventListener('click', function (e) {
-    var b = e.target.closest('.bs-b'); if (!b) return;
-    interval = b.dataset.interval; render();
-  });
-
-  render();
-  if (window.fetch) {
-    fetch(API, { mode: 'cors' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (!d || typeof d.monthly !== 'number') return;
-        P = d;
-        skew = (d.now * 1000) - Date.now();
-        if (!d.yearly_available) interval = 'monthly';
-        render();
-      })
-      .catch(function () {});
-  }
-})();
-
-/* ══ Reviews ════════════════════════════════════════════════════════════════
-   What players actually wrote, straight from the app. These are published
-   without anyone reading them first, so every value below goes in as text and
-   never as markup -- a review is a stranger's words, and the one thing that
-   must never happen on a page that also takes card details is a <script> that
-   arrived through a comment box. */
-/* The published-reviews block lived here. It filled a section that has been
-   removed from the page, so it fetched, parsed and rendered into nothing. */
-
-
-/* ── the staged positions ────────────────────────────────────────────────────
-   Three real positions out of the app's library, painted from FEN. Static, and
-   deliberately so: three boards animating themselves while someone is trying to
-   read a headline is decoration fighting the copy.
-
-   They fade and rise once, on entry, staggered, with a spring settle -- and not
-   at all for anyone who has asked their system to stop animating things. */
-(function () {
-  var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+  /* boards, painted from FEN */
   function boardHTML(fen) {
     var rows = fen.split(' ')[0].split('/'), out = '';
     for (var r = 0; r < 8; r++) {
@@ -326,36 +311,94 @@
             out += '<span class="ps ' + (((file + r) % 2) ? 'd' : 'l') + '"></span>';
         } else {
           var p = (ch === ch.toUpperCase() ? 'w' : 'b') + ch.toUpperCase();
-          out += '<span class="ps ' + (((file + r) % 2) ? 'd' : 'l') + '">'
-               + '<img src="pieces/' + p + '.svg" alt="" loading="lazy" decoding="async">'
-               + '</span>';
+          out += '<span class="ps ' + (((file + r) % 2) ? 'd' : 'l') + '">' +
+                 '<img src="pieces/' + p + '.svg" alt="" loading="lazy" decoding="async"></span>';
           file++;
         }
       }
     }
     return out;
   }
-
-  /* Every figure carrying a position, not only the three in the hero -- the
-     phase rows each hold one too, and scoping this to .stage3 left those three
-     boards empty. */
-  var figs = [].slice.call(document.querySelectorAll('[data-fen]'));
-  figs.forEach(function (f) {
-    var host = f.querySelector('.pos-b');
+  $$('[data-fen]').forEach(function (f) {
+    var host = $('.pos-b', f);
     if (host) host.innerHTML = boardHTML(f.getAttribute('data-fen') || '8/8/8/8/8/8/8/8');
+    f.classList.add('in');
   });
 
-  if (RM || !('IntersectionObserver' in window)) {
-    figs.forEach(function (f) { f.classList.add('in'); });
-    return;
-  }
-  var io2 = new IntersectionObserver(function (es) {
-    es.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      var i = figs.indexOf(e.target);
-      setTimeout(function () { e.target.classList.add('in'); }, i * 110);
-      io2.unobserve(e.target);
+  /* the judgement */
+  (function () {
+    var wrap = $('#judge'); if (!wrap) return;
+    var askC = $('#judgeAsk'), said = $('#judgeSaid');
+    var TRUTH = 'win';
+    $$('[data-judge]', wrap).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var right = b.getAttribute('data-judge') === TRUTH;
+        $('#jVerdict').textContent = right ? 'Right \u2014 it is a win.' : 'Not quite. It is a win.';
+        $('#jVerdict').className = 'j-verdict ' + (right ? 'good' : 'bad');
+        $('#jWhy').textContent = right
+          ? 'One pawn and the kings, and it is winning for the side to move \u2014 but only '
+            + 'played in the right order. Most players push the pawn here and draw it.'
+          : 'This one IS winnable, and that matters: a player who thinks it is drawn '
+            + 'stops trying and draws it. The pawn is not the problem \u2014 the order is.';
+        askC.hidden = true; said.hidden = false;
+      });
     });
-  }, { threshold: .18 });
-  figs.forEach(function (f) { io2.observe(f); });
+    var again = $('#jAgain');
+    if (again) again.addEventListener('click', function () {
+      said.hidden = true; askC.hidden = false;
+    });
+  })();
+
+  /* pricing, read from the app so a price here is one Stripe can charge */
+  (function () {
+    var sw = document.getElementById('billSwitch');
+    var pp = document.getElementById('planPrice');
+    var note = document.getElementById('offerNote');
+    if (!pp) return;
+    var P = null;
+    fetch('https://app.chessforge.org/plan/pricing')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        P = d; if (sw) sw.hidden = false;
+        render('yearly');
+      })
+      .catch(function () { /* the markup already carries the real figures */ });
+
+    function render(interval) {
+      if (!P) return;
+      var yearly = interval === 'yearly';
+      var amt = yearly ? (P.yearly || 29.99) : (P.monthly || 4.99);
+      var was = yearly ? (P.yearly_was || 59.88) : (P.was || 9.99);
+      pp.innerHTML = '<s>$' + Number(was).toFixed(2) + '</s>$' + Number(amt).toFixed(2) +
+                     '<small>CAD ' + (yearly ? 'a year' : 'a month') + '</small>';
+      if (note && P.yearly_off_pct) {
+        note.hidden = !yearly;
+        note.innerHTML = yearly ? 'Yearly <span class="save">save ' + P.yearly_off_pct + '%</span>' : '';
+      }
+    }
+    if (sw) $$('.bs-b', sw).forEach(function (b) {
+      b.addEventListener('click', function () {
+        $$('.bs-b', sw).forEach(function (x) { x.classList.toggle('on', x === b); });
+        render(b.dataset.interval);
+      });
+    });
+  })();
+
+  /* legal modals */
+  (function () {
+    var open = null;
+    function shut() {
+      if (open) { open.hidden = true; open = null; document.body.style.overflow = ''; }
+    }
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-legal]');
+      if (t) {
+        var m = document.getElementById('lg-' + t.dataset.legal);
+        if (m) { shut(); m.hidden = false; open = m; document.body.style.overflow = 'hidden'; }
+        return;
+      }
+      if (e.target.closest('[data-close]') || (open && e.target === open)) shut();
+    });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape') shut(); });
+  })();
 })();
