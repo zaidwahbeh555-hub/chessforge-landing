@@ -186,7 +186,23 @@ img{max-width:100%}
   .go-rows span{min-width:96px}
 }
 
+/* ─── the haze ───────────────────────────────────────────────────────────────
+ * A fluid simulation the cursor pushes around (haze.js). It sits OVER the
+ * questionnaire and under the legal modals, so smoke can drift across an
+ * answer but never across the Terms. pointer-events:none means it cannot
+ * swallow a click on anything beneath it, which is the whole risk with a
+ * full-screen overlay. The canvas writes glow and nothing else, so text
+ * underneath can only get brighter -- never dimmer, never hidden.
+ */
+.haze{position:fixed;inset:0;z-index:100;display:block;
+  width:100vw;height:100vh;pointer-events:none;
+  /* Belt and braces: on a touch screen haze.js returns without drawing, so
+     the canvas would be blank anyway -- this stops it even existing. */
+  }
+@media (hover:none),(pointer:coarse){.haze{display:none}}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .go-rows li{opacity:1;transform:none}
+  .haze{display:none}
 }

@@ -53,6 +53,11 @@
      whether anybody is actually signed in over at app.chessforge.org -- they
      are separate origins and the cookie does not cross -- so this is a plain
      link, not a signed-in state, and it never claims to be one. -->
+<!-- The cursor drags smoke across the page. Decorative and nothing else, so
+     it is aria-hidden and pointer-events:none; see haze.js, which refuses to
+     start on a touch screen or under prefers-reduced-motion. -->
+<canvas class="haze" id="haze" aria-hidden="true"></canvas>
+
 <a class="top-login" href="https://app.chessforge.org/?auth=login">
   Log in
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
@@ -139,5 +144,6 @@
   the server.</p></div></div>
 
 <script src="v4.js" defer></script>
+<script src="haze.js?v=1" defer></script>
 </body>
 </html>
