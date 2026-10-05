@@ -41,11 +41,11 @@
   var SIM        = 128,    // velocity grid. 128 is plenty; it is never seen
       DYE        = 1024,   // the dye is what you see, so this one is generous
       ITERS      = 20,     // pressure passes
-      DYE_FADE   = 1.6,    // how fast the smoke goes. seconds-ish
-      VEL_FADE   = 0.3,
-      CURL       = 30,     // higher = more wisps, fewer solid ribbons
-      RADIUS     = 0.0030,
-      FORCE      = 5200,
+      DYE_FADE   = 1.5,    // how fast the smoke goes. seconds-ish
+      VEL_FADE   = 0.34,
+      CURL       = 20,     // higher = more wisps, fewer solid ribbons
+      RADIUS     = 0.0090,  // wide and soft. a small radius draws a line
+      FORCE      = 3600,    // gentler push: it should drift, not be fired
       QUIET      = 2.5;    // seconds of stillness before the loop shuts down
 
   // ─── context, formats, capability ────────────────────────────────────────
@@ -242,11 +242,11 @@
       float dx = length(texture2D(uTex, vR).rgb) - length(texture2D(uTex, vL).rgb);
       float dy = length(texture2D(uTex, vT).rgb) - length(texture2D(uTex, vB).rgb);
       vec3 n = normalize(vec3(dx, dy, length(texelSize)));
-      c *= clamp(dot(n, vec3(0.0, 0.0, 1.0)) + 0.72, 0.72, 1.0);
+      c *= clamp(dot(n, vec3(0.0, 0.0, 1.0)) + 0.88, 0.88, 1.0);
       // Soft shoulder. Without it a fast sweep piles dye on dye and the
       // middle of the stroke clips to a hard white-cyan ribbon, which looks
       // like a laser and not like gas. This rolls the top off instead.
-      c = 1.0 - exp(-c * 1.35);
+      c = 1.0 - exp(-c * 0.80);
       gl_FragColor = vec4(c, max(c.r, max(c.g, c.b)));
     }`;
 
@@ -425,9 +425,9 @@
   // the smoke always looks like it belongs to this page.
   function dyeColour() {
     var t = Math.random();
-    return [ (0.07 + 0.09 * t) * 0.52,
-             (0.52 + 0.30 * t) * 0.52,
-             (0.80 + 0.20 * t) * 0.52 ];
+    return [ (0.07 + 0.09 * t) * 0.30,
+             (0.52 + 0.30 * t) * 0.30,
+             (0.80 + 0.20 * t) * 0.30 ];
   }
 
   var ptr = { x: 0, y: 0, has: false }, pending = [], quiet = 0, running = false;

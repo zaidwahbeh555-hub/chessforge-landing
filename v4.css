@@ -196,6 +196,9 @@ img{max-width:100%}
  */
 .haze{position:fixed;inset:0;z-index:100;display:block;
   width:100vw;height:100vh;pointer-events:none;
+  /* The last word on how loud it is. Everything else -- dye brightness, the
+     tone-map shoulder -- shapes the smoke; this just turns it down. */
+  opacity:.66;
   /* Belt and braces: on a touch screen haze.js returns without drawing, so
      the canvas would be blank anyway -- this stops it even existing. */
   }
