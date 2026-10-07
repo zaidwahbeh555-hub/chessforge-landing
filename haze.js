@@ -41,12 +41,13 @@
   var SIM        = 128,    // velocity grid. 128 is plenty; it is never seen
       DYE        = 1024,   // the dye is what you see, so this one is generous
       ITERS      = 20,     // pressure passes
-      DYE_FADE   = 1.5,    // how fast the smoke goes. seconds-ish
-      VEL_FADE   = 0.34,
-      CURL       = 20,     // higher = more wisps, fewer solid ribbons
-      RADIUS     = 0.0090,  // wide and soft. a small radius draws a line
-      FORCE      = 3600,    // gentler push: it should drift, not be fired
-      QUIET      = 2.5;    // seconds of stillness before the loop shuts down
+      DYE_FADE   = 3.4,    // high: the smoke is gone about a second behind you
+      VEL_FADE   = 0.55,
+      CURL       = 22,     // higher = more wisps, fewer solid ribbons
+      RADIUS     = 0.0032,  // small and soft, close to the cursor
+      FORCE      = 2400,    // gentle push: it should drift, not be fired
+      QUIET      = 1.6,     // seconds of stillness before the loop shuts down
+      STEP       = 0.014;   // splat spacing along the path, in screen widths
 
   // ─── context, formats, capability ────────────────────────────────────────
   var opts = { alpha: true, depth: false, stencil: false, antialias: false,
@@ -425,21 +426,44 @@
   // the smoke always looks like it belongs to this page.
   function dyeColour() {
     var t = Math.random();
-    return [ (0.07 + 0.09 * t) * 0.30,
-             (0.52 + 0.30 * t) * 0.30,
-             (0.80 + 0.20 * t) * 0.30 ];
+    return [ (0.07 + 0.09 * t) * 0.24,
+             (0.52 + 0.30 * t) * 0.24,
+             (0.80 + 0.20 * t) * 0.24 ];
   }
 
   var ptr = { x: 0, y: 0, has: false }, pending = [], quiet = 0, running = false;
 
-  function moved(e) {
-    var r = cv.getBoundingClientRect();
-    var x = (e.clientX - r.left) / r.width, y = 1 - (e.clientY - r.top) / r.height;
+  /* One splat per pointer event leaves a dotted line the moment the mouse
+     moves quickly -- the events are far apart and the dye is not. So walk the
+     segment between the last sample and this one and splat ALONG it, which is
+     what turns a row of blobs into a thread. Coalesced events are used where
+     the browser offers them: on a 120Hz trackpad that is several real samples
+     per frame instead of one averaged guess. */
+  function trail(x, y) {
     if (ptr.has) {
-      var dx = (x - ptr.x) * FORCE, dy = (y - ptr.y) * FORCE;
-      if (dx || dy) pending.push([x, y, dx, dy, dyeColour()]);
+      var dx = x - ptr.x, dy = y - ptr.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > 1e-5) {
+        var n = Math.min(Math.ceil(dist / STEP), 24);
+        var vx = dx / n * FORCE, vy = dy / n * FORCE;
+        for (var i = 1; i <= n; i++)
+          pending.push([ptr.x + dx * i / n, ptr.y + dy * i / n,
+                        vx, vy, dyeColour()]);
+      }
     }
     ptr.x = x; ptr.y = y; ptr.has = true;
+  }
+
+  function moved(e) {
+    var r = cv.getBoundingClientRect();
+    // getCoalescedEvents() returns an EMPTY array for an event that carries no
+    // coalesced history, and [] is truthy -- so `|| [e]` never fires and the
+    // trail silently gets nothing. Check the length, not the value.
+    var list = e.getCoalescedEvents ? e.getCoalescedEvents() : null;
+    if (!list || !list.length) list = [e];
+    for (var i = 0; i < list.length; i++)
+      trail((list[i].clientX - r.left) / r.width,
+            1 - (list[i].clientY - r.top) / r.height);
     quiet = 0;
     start();
   }
@@ -451,10 +475,13 @@
     last = now;
     resize();
 
-    while (pending.length) {
-      var s = pending.shift();
-      splat(s[0], s[1], s[2], s[3], s[4]);
+    // A backlog dumped into a single frame is a visible lurch, and on a slow
+    // machine it is the thing that makes the whole effect feel broken.
+    for (var n = Math.min(pending.length, 40); n > 0; n--) {
+      var sp = pending.shift();
+      splat(sp[0], sp[1], sp[2], sp[3], sp[4]);
     }
+    if (pending.length > 160) pending.length = 160;
     step(dt);
     draw();
 

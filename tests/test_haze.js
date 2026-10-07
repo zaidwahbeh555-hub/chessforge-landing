@@ -62,10 +62,13 @@ const SWEEP = `
     }
     for (var j = 0; j < 20; j++) await rAF();   // let it drift on its own
 
+    // Read 1:1 over the middle of the sweep. Scaling the whole canvas down
+    // averages a thin soft trail into nothing and reports zero for something
+    // plainly visible -- which is a test that fails when the effect improves.
     var s = document.createElement('canvas');
-    s.width = 160; s.height = 100;
+    s.width = 600; s.height = 400;
     var c = s.getContext('2d');
-    c.drawImage(cv, 0, 0, s.width, s.height);
+    c.drawImage(cv, 300, 250, 600, 400, 0, 0, 600, 400);
     var d = c.getImageData(0, 0, s.width, s.height).data;
     var lit = 0, maxA = 0, sumR = 0, sumG = 0, sumB = 0;
     for (var k = 0; k < d.length; k += 4) {
@@ -95,7 +98,7 @@ const SWEEP = `
     const r = await page.eval(SWEEP);
     check('the canvas is there and keeps a GL context', !r.err && r.gl, r.err);
     check('moving the pointer lights pixels up',
-          r.lit > 40,
+          r.lit > 400,
           'lit ' + r.lit + ' of ' + r.of + ' sampled -- the fluid is not drawing');
     check('and the smoke is bright enough to see', r.maxA > 30, 'peak alpha ' + r.maxA);
     check('the dye is the site cyan, not a rainbow',
@@ -112,10 +115,10 @@ const SWEEP = `
     const faded = await page.eval(`
       function rAF(){ return new Promise(r => requestAnimationFrame(r)); }
       return (async function(){
-        for (var i = 0; i < 150; i++) await rAF();
+        for (var i = 0; i < 90; i++) await rAF();
         var cv = document.getElementById('haze');
-        var s = document.createElement('canvas'); s.width = 160; s.height = 100;
-        var c = s.getContext('2d'); c.drawImage(cv, 0, 0, s.width, s.height);
+        var s = document.createElement('canvas'); s.width = 600; s.height = 400;
+        var c = s.getContext('2d'); c.drawImage(cv, 300, 250, 600, 400, 0, 0, 600, 400);
         var d = c.getImageData(0,0,s.width,s.height).data, m = 0;
         for (var k = 0; k < d.length; k += 4) if (d[k+3] > m) m = d[k+3];
         return m;
