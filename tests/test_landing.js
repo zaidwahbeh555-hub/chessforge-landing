@@ -124,8 +124,11 @@ check('reduced motion is not redirected without warning',
 
 console.log('\nSOMEBODY WHO ALREADY HAS AN ACCOUNT CAN GET IN');
 check('there is a way to the app that is not the questionnaire',
-      /class="top-login"/.test(html) && /app\.chessforge\.org/.test(html),
+      /href="https:\/\/app\.chessforge\.org\/\?auth=login"/.test(html),
       'the page is always the questions, so a returning user had no route in');
+check('and every route in lands on the login form, not the sign-up form',
+      (html.match(/\?auth=login/g) || []).length >= 2,
+      'the returning-visitor button and the quiet link both have to say which');
 check('it does not claim to know whether anybody is signed in',
       !/(welcome back|you are signed in|logged in as)/i.test(text),
       'separate origins: this page cannot see the app\u2019s session');

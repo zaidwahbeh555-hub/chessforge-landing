@@ -49,19 +49,10 @@
      that sends people to a paid product, and the modals were already written.
      The chess-piece and Stockfish notices are NOT needed here any more, because
      this page no longer draws a board -- they live in the app, which does. -->
-<!-- A way to the app that is not the questionnaire. chessforge.org cannot tell
-     whether anybody is actually signed in over at app.chessforge.org -- they
-     are separate origins and the cookie does not cross -- so this is a plain
-     link, not a signed-in state, and it never claims to be one. -->
 <!-- The cursor drags smoke across the page. Decorative and nothing else, so
      it is aria-hidden and pointer-events:none; see haze.js, which refuses to
      start on a touch screen or under prefers-reduced-motion. -->
 <canvas class="haze" id="haze" aria-hidden="true"></canvas>
-
-<a class="top-login" href="https://app.chessforge.org/?auth=login">
-  Log in
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-</a>
 
 <main class="ask" id="main">
   <div class="ask-in">
@@ -113,6 +104,14 @@
 <footer class="foot">
   <p>&copy; <span id="year">2026</span> ChessForge</p>
   <nav aria-label="Legal">
+    <!-- The big Log in button in the corner is gone: anybody who has answered
+         these questions before is met by "You have already set this up" and a
+         button straight into the app, so the corner was asking a question the
+         page had already answered. This stays, quietly, because somebody with
+         an account on a NEW browser has nothing remembered here and would
+         otherwise have no route in at all. It is a link, not a signed-in
+         state -- separate origins, the app's cookie does not reach here. -->
+    <a class="foot-login" href="https://app.chessforge.org/?auth=login">Log in</a>
     <button type="button" data-legal="terms">Terms</button>
     <button type="button" data-legal="privacy">Privacy</button>
     <button type="button" data-legal="attribution">Attribution</button>

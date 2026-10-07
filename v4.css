@@ -36,24 +36,6 @@ img{max-width:100%}
 ::selection{background:rgba(47,209,255,.26);color:#fff}
 :focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:6px}
 
-/* ══ THE WAY IN FOR SOMEBODY WHO ALREADY HAS AN ACCOUNT ════════════════════
-   Quiet, in the corner, and always there. It is a link and not a signed-in
-   state: this page cannot see the app's session. */
-.top-login{position:absolute;top:clamp(16px,3vw,26px);right:clamp(16px,4vw,30px);
-  z-index:20;display:inline-flex;align-items:center;gap:7px;
-  padding:9px 14px;border-radius:var(--r2);
-  border:1px solid var(--line-2);background:rgba(10,17,28,.6);
-  font:600 13px/1 Sora,sans-serif;color:var(--ink-3);
-  transition:border-color .2s,color .2s,background .2s,transform .2s var(--strike)}
-.top-login:hover{border-color:var(--a);color:var(--a-2);
-  background:rgba(47,209,255,.08);transform:translateY(-1px)}
-.top-login svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.1;
-  stroke-linecap:round;stroke-linejoin:round;transition:transform .2s var(--strike)}
-.top-login:hover svg{transform:translateX(3px)}
-@media (max-width:480px){
-  .top-login{padding:7px 11px;font-size:12px}
-}
-
 /* ══ THE RETURNING VISITOR ═════════════════════════════════════════════════ */
 .back{animation:q-in .44s var(--strike) both;text-align:center}
 .back-k{font:600 12px/1 Sora,sans-serif;letter-spacing:.14em;text-transform:uppercase;
@@ -161,6 +143,11 @@ img{max-width:100%}
 .foot button,.foot a{border:0;background:none;cursor:pointer;padding:0;
   font:400 12px/1.6 Manrope,sans-serif;color:var(--ink-5);transition:color .2s}
 .foot button:hover,.foot a:hover{color:var(--a-2)}
+/* The only way in for somebody who already has an account and is on a browser
+   that remembers nothing. Deliberately as quiet as the legal links beside it:
+   the page is the questionnaire, and anybody who has answered it already gets
+   a button of their own. */
+.foot-login{color:var(--ink-3)!important}
 
 /* ══ MODALS ════════════════════════════════════════════════════════════════ */
 .modal{position:fixed;inset:0;z-index:300;display:grid;place-items:center;
