@@ -101,9 +101,10 @@ const SWEEP = `
           r.lit > 400,
           'lit ' + r.lit + ' of ' + r.of + ' sampled -- the fluid is not drawing');
     check('and the smoke is bright enough to see', r.maxA > 30, 'peak alpha ' + r.maxA);
-    check('the dye is the site cyan, not a rainbow',
-          r.b >= r.g && r.g > r.r,
-          'mean rgb ' + [r.r|0, r.g|0, r.b|0].join(','));
+    // Like alphanatt: dim colour, never a bright blot. Nothing in the trail is
+    // anywhere near white.
+    check('the trail is dim colour, not a bright blot',
+          r.maxA < 200, 'peak alpha ' + r.maxA);
 
     console.log('\nIT CANNOT GET IN THE WAY');
     check('it never takes a click', r.css === 'none');

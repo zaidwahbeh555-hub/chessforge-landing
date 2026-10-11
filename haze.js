@@ -21,9 +21,9 @@
  *   * It STOPS. Two and a half seconds after the dye has gone the loop ends,
  *     and the next pointer move starts it again. An idle tab costs nothing.
  *   * prefers-reduced-motion: it never starts. The canvas stays empty.
- *   * Dye is the site cyan, never a rainbow, and the canvas composites as
- *     glow -- it can only brighten what is under it, so no answer, question
- *     or button can be made unreadable by it.
+ *   * The colour changes ten times a second, at 15% brightness, as on
+ *     alphanatt.com, and the canvas composites as glow -- it can only
+ *     brighten what is under it, so no answer or button is ever hidden by it.
  *   * If anything is missing (no WebGL, no half-float render target, no
  *     linear filtering of one) it returns and the page is exactly as it was.
  *     There is no second-rate fallback; the page does not need the effect.
@@ -38,16 +38,22 @@
   if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
 
-  var SIM        = 128,    // velocity grid. 128 is plenty; it is never seen
-      DYE        = 1024,   // the dye is what you see, so this one is generous
-      ITERS      = 20,     // pressure passes
-      DYE_FADE   = 3.0,    // the smoke is gone a second or so behind you
-      VEL_FADE   = 1.0,    // the push dies quickly: a drift, not a current
-      CURL       = 12,     // a little swirl, not a whirlpool
-      RADIUS     = 0.0060,  // wider and softer: spread out, not a line
-      FORCE      = 1300,    // a light push: it should drift, not be fired
-      QUIET      = 1.6,     // seconds of stillness before the loop shuts down
-      STEP       = 0.022;   // splat spacing along the path, in screen widths
+  /* These are alphanatt.com's own numbers, read off its shipped bundle in a
+     real browser (2026-10-11) after he asked, twice, for "exactly that one":
+     the same simulation with almost no curl -- smooth ribbons, not billowing
+     smoke -- motion that dies fast, dye that clears in about a second, and a
+     colour that keeps changing. The changing colour is the part that makes it
+     read as an effect and not as smoke. */
+  var SIM        = 128,
+      DYE        = 1440,
+      ITERS      = 20,
+      DYE_FADE   = 3.5,    // DENSITY_DISSIPATION
+      VEL_FADE   = 2.0,    // VELOCITY_DISSIPATION: the push dies almost at once
+      CURL       = 3,      // barely any swirl: ribbons, not a whirlpool
+      RADIUS     = 0.002,  // SPLAT_RADIUS 0.2, in the simulation's units
+      FORCE      = 6000,   // SPLAT_FORCE
+      HUE_SPEED  = 10,     // COLOR_UPDATE_SPEED: a new colour ten times a second
+      QUIET      = 1.6;    // seconds of stillness before the loop shuts down
 
   // ─── context, formats, capability ────────────────────────────────────────
   var opts = { alpha: true, depth: false, stencil: false, antialias: false,
@@ -243,11 +249,9 @@
       float dx = length(texture2D(uTex, vR).rgb) - length(texture2D(uTex, vL).rgb);
       float dy = length(texture2D(uTex, vT).rgb) - length(texture2D(uTex, vB).rgb);
       vec3 n = normalize(vec3(dx, dy, length(texelSize)));
-      c *= clamp(dot(n, vec3(0.0, 0.0, 1.0)) + 0.88, 0.88, 1.0);
-      // Soft shoulder. Without it a fast sweep piles dye on dye and the
-      // middle of the stroke clips to a hard white-cyan ribbon, which looks
-      // like a laser and not like gas. This rolls the top off instead.
-      c = 1.0 - exp(-c * 0.80);
+      // The shading is what draws the soft ring-like edges: the dye's own
+      // gradient used as a surface normal, lit from the front.
+      c *= clamp(dot(n, vec3(0.0, 0.0, 1.0)) + 0.7, 0.7, 1.0);
       gl_FragColor = vec4(c, max(c.r, max(c.g, c.b)));
     }`;
 
@@ -414,7 +418,8 @@
     gl.uniform1f(u.aspect, cv.width / cv.height);
     gl.uniform2f(u.point, x, y);
     gl.uniform3f(u.color, dx, dy, 0);
-    gl.uniform1f(u.radius, RADIUS / 2.0);
+    var ar = cv.width / cv.height;
+    gl.uniform1f(u.radius, RADIUS * (ar > 1 ? ar : 1));
     blit(vel.write); vel.swap();
 
     gl.uniform1i(u.uTarget, dye.read.bind(0));
@@ -422,48 +427,26 @@
     blit(dye.write); dye.swap();
   }
 
-  // Site cyan, wandering between the two accents and never leaving them, so
-  // the smoke always looks like it belongs to this page.
-  function dyeColour() {
-    var t = Math.random();
-    return [ (0.07 + 0.09 * t) * 0.17,
-             (0.52 + 0.30 * t) * 0.17,
-             (0.80 + 0.20 * t) * 0.17 ];
+  function hsv(h) {
+    var i = Math.floor(h * 6), f = h * 6 - i, q = 1 - f;
+    var r = [[1, f, 0], [q, 1, 0], [0, 1, f], [0, q, 1], [f, 0, 1], [1, 0, q]][i % 6];
+    return [r[0] * 0.15, r[1] * 0.15, r[2] * 0.15];
   }
+  var colour = hsv(Math.random()), hueClock = 0;
+  function dyeColour() { return colour; }
 
-  var ptr = { x: 0, y: 0, has: false }, pending = [], quiet = 0, running = false;
-
-  /* One splat per pointer event leaves a dotted line the moment the mouse
-     moves quickly -- the events are far apart and the dye is not. So walk the
-     segment between the last sample and this one and splat ALONG it, which is
-     what turns a row of blobs into a thread. Coalesced events are used where
-     the browser offers them: on a 120Hz trackpad that is several real samples
-     per frame instead of one averaged guess. */
-  function trail(x, y) {
-    if (ptr.has) {
-      var dx = x - ptr.x, dy = y - ptr.y;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist > 1e-5) {
-        var n = Math.min(Math.ceil(dist / STEP), 24);
-        var vx = dx / n * FORCE, vy = dy / n * FORCE;
-        for (var i = 1; i <= n; i++)
-          pending.push([ptr.x + dx * i / n, ptr.y + dy * i / n,
-                        vx, vy, dyeColour()]);
-      }
-    }
-    ptr.x = x; ptr.y = y; ptr.has = true;
-  }
+  /* The pointer as alphanatt reads it: where it is now and where it was at the
+     last frame. Each frame that it moved gets ONE splat, at the pointer, pushed
+     by how far it went. The simulation itself joins the splats into a ribbon --
+     which is why their trail is a smooth continuous wisp rather than beads. */
+  var ptr = { x: 0, y: 0, px: 0, py: 0, has: false, moved: false },
+      quiet = 0, running = false;
 
   function moved(e) {
     var r = cv.getBoundingClientRect();
-    // getCoalescedEvents() returns an EMPTY array for an event that carries no
-    // coalesced history, and [] is truthy -- so `|| [e]` never fires and the
-    // trail silently gets nothing. Check the length, not the value.
-    var list = e.getCoalescedEvents ? e.getCoalescedEvents() : null;
-    if (!list || !list.length) list = [e];
-    for (var i = 0; i < list.length; i++)
-      trail((list[i].clientX - r.left) / r.width,
-            1 - (list[i].clientY - r.top) / r.height);
+    var x = (e.clientX - r.left) / r.width, y = 1 - (e.clientY - r.top) / r.height;
+    if (!ptr.has) { ptr.px = x; ptr.py = y; }
+    ptr.x = x; ptr.y = y; ptr.has = true; ptr.moved = true;
     quiet = 0;
     start();
   }
@@ -475,13 +458,17 @@
     last = now;
     resize();
 
-    // A backlog dumped into a single frame is a visible lurch, and on a slow
-    // machine it is the thing that makes the whole effect feel broken.
-    for (var n = Math.min(pending.length, 40); n > 0; n--) {
-      var sp = pending.shift();
-      splat(sp[0], sp[1], sp[2], sp[3], sp[4]);
+    // a new colour every 1/HUE_SPEED seconds, as on alphanatt
+    hueClock += dt * HUE_SPEED;
+    if (hueClock >= 1) { hueClock %= 1; colour = hsv(Math.random()); }
+    if (ptr.moved) {
+      ptr.moved = false;
+      var ar = cv.width / cv.height;
+      var dx = (ptr.x - ptr.px) * (ar < 1 ? ar : 1);
+      var dy = (ptr.y - ptr.py) / (ar > 1 ? ar : 1);
+      ptr.px = ptr.x; ptr.py = ptr.y;
+      if (dx || dy) splat(ptr.x, ptr.y, dx * FORCE, dy * FORCE, dyeColour());
     }
-    if (pending.length > 160) pending.length = 160;
     step(dt);
     draw();
 
@@ -506,13 +493,10 @@
 
   window.addEventListener('pointermove', moved, { passive: true });
   window.addEventListener('pointerdown', function (e) {
-    // A click puffs, so the effect answers a press as well as a sweep.
     var r = cv.getBoundingClientRect();
-    var x = (e.clientX - r.left) / r.width, y = 1 - (e.clientY - r.top) / r.height;
-    ptr.x = x; ptr.y = y; ptr.has = true;
-    for (var i = 0; i < 3; i++)
-      pending.push([x, y, (Math.random() - 0.5) * 900, (Math.random() - 0.5) * 900, dyeColour()]);
-    quiet = 0; start();
+    ptr.x = ptr.px = (e.clientX - r.left) / r.width;
+    ptr.y = ptr.py = 1 - (e.clientY - r.top) / r.height;
+    ptr.has = true;
   }, { passive: true });
   window.addEventListener('pointerleave', function () { ptr.has = false; });
   window.addEventListener('blur', function () { ptr.has = false; });
