@@ -21,7 +21,7 @@
  *   * It STOPS. Two and a half seconds after the dye has gone the loop ends,
  *     and the next pointer move starts it again. An idle tab costs nothing.
  *   * prefers-reduced-motion: it never starts. The canvas stays empty.
- *   * One steady teal, at 12% brightness, exactly as on alphanatt.com, and the
+ *   * One steady ChessForge cyan, at 12% brightness, as on alphanatt.com, and the
  *     canvas composites as glow -- it can only brighten what is under it, so
  *     no answer or button is ever hidden by it.
  *   * If anything is missing (no WebGL, no half-float render target, no
@@ -435,9 +435,11 @@
     blit(dye.write); dye.swap();
   }
 
-  // their four shades, exactly, at their 12%
-  var SHADES = [[0.306, 0.804, 0.769], [0.584, 0.835, 0.698],
-                [0.106, 0.263, 0.196], [0.298, 0.686, 0.643]];
+  // Their four shades, recoloured to ChessForge cyan with the same pattern --
+  // bright, pale, dark, mid -- so the thread has the same depth in our colour.
+  // At their 12%, as before.
+  var SHADES = [[0.184, 0.820, 1.000], [0.486, 0.878, 1.000],    // #2FD1FF, #7CE0FF
+                [0.071, 0.270, 0.380], [0.130, 0.600, 0.820]];
   function hsv() {
     var c = SHADES[Math.floor(Math.random() * SHADES.length)];
     return [0.12 * c[0], 0.12 * c[1], 0.12 * c[2]];
