@@ -21,9 +21,9 @@
  *   * It STOPS. Two and a half seconds after the dye has gone the loop ends,
  *     and the next pointer move starts it again. An idle tab costs nothing.
  *   * prefers-reduced-motion: it never starts. The canvas stays empty.
- *   * The colour changes ten times a second, at 15% brightness, as on
- *     alphanatt.com, and the canvas composites as glow -- it can only
- *     brighten what is under it, so no answer or button is ever hidden by it.
+ *   * One steady teal, at 12% brightness, exactly as on alphanatt.com, and the
+ *     canvas composites as glow -- it can only brighten what is under it, so
+ *     no answer or button is ever hidden by it.
  *   * If anything is missing (no WebGL, no half-float render target, no
  *     linear filtering of one) it returns and the page is exactly as it was.
  *     There is no second-rate fallback; the page does not need the effect.
@@ -38,21 +38,22 @@
   if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
 
-  /* These are alphanatt.com's own numbers, read off its shipped bundle in a
-     real browser (2026-10-11) after he asked, twice, for "exactly that one":
-     the same simulation with almost no curl -- smooth ribbons, not billowing
-     smoke -- motion that dies fast, dye that clears in about a second, and a
-     colour that keeps changing. The changing colour is the part that makes it
-     read as an effect and not as smoke. */
+  /* alphanatt.com's effect, copied from what their page ACTUALLY runs (read
+     out of their shipped bundle in a real browser, 2026-10-11). The first copy
+     used the component's defaults; the page overrides three of them -- a much
+     smaller splat, less force, a faster fade -- and its colour is not a rainbow
+     but one of four fixed teal shades at 12% brightness, so it reads as a
+     single steady colour. Everything below is their number. */
   var SIM        = 128,
       DYE        = 1440,
       ITERS      = 20,
-      DYE_FADE   = 3.5,    // DENSITY_DISSIPATION
-      VEL_FADE   = 2.0,    // VELOCITY_DISSIPATION: the push dies almost at once
-      CURL       = 3,      // barely any swirl: ribbons, not a whirlpool
-      RADIUS     = 0.002,  // SPLAT_RADIUS 0.2, in the simulation's units
-      FORCE      = 6000,   // SPLAT_FORCE
-      HUE_SPEED  = 10,     // COLOR_UPDATE_SPEED: a new colour ten times a second
+      PRESSURE   = 0.1,    // how much pressure survives each frame
+      DYE_FADE   = 4,      // DENSITY_DISSIPATION (page override)
+      VEL_FADE   = 2,      // VELOCITY_DISSIPATION
+      CURL       = 3,
+      RADIUS     = 0.0008, // SPLAT_RADIUS 0.08 (page override) / 100
+      FORCE      = 4000,   // SPLAT_FORCE (page override)
+      HUE_SPEED  = 10,     // COLOR_UPDATE_SPEED: re-picked from the four shades
       QUIET      = 1.6;    // seconds of stillness before the loop shuts down
 
   // ─── context, formats, capability ────────────────────────────────────────
@@ -339,7 +340,7 @@
   function resize() {
     // Capped at 1.5x: a 3x retina dye grid costs a lot and looks the same
     // once it has been blurred by its own advection.
-    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var dpr = window.devicePixelRatio || 1;
     var w = Math.round(cv.clientWidth * dpr), h = Math.round(cv.clientHeight * dpr);
     if (!w || !h || (w === size.w && h === size.h)) return false;
     size.w = cv.width = w; size.h = cv.height = h;
@@ -372,7 +373,7 @@
 
     u = P.clear.use();
     gl.uniform1i(u.uTex, press.read.bind(0));
-    gl.uniform1f(u.value, 0.8);
+    gl.uniform1f(u.value, PRESSURE);
     blit(press.write); press.swap();
 
     u = P.press.use();
@@ -397,7 +398,13 @@
     gl.uniform1f(u.fade, VEL_FADE);
     blit(vel.write); vel.swap();
 
-    gl.uniform2f(u.texelSize, dye.tx, dye.ty);
+    /* The dye is advected with the VELOCITY grid's texel size, exactly as in
+       alphanatt's (and the original) code. Using the dye grid's own, much
+       smaller texel moved the dye about eleven times less than the flow, so
+       it sat where it was splatted and faded as a soft blob; carried at the
+       flow's rate it is dragged out into the thin curling threads you see on
+       their page. */
+    gl.uniform2f(u.texelSize, vel.tx, vel.ty);
     gl.uniform1i(u.uVelocity, vel.read.bind(0));
     gl.uniform1i(u.uSource, dye.read.bind(1));
     gl.uniform1f(u.fade, DYE_FADE);
@@ -406,7 +413,8 @@
 
   function draw() {
     var u = P.show.use();
-    gl.uniform2f(u.texelSize, dye.tx, dye.ty);
+    // shading is measured per screen pixel, as theirs is
+    gl.uniform2f(u.texelSize, 1 / gl.drawingBufferWidth, 1 / gl.drawingBufferHeight);
     gl.uniform1i(u.uTex, dye.read.bind(0));
     blit(null);
   }
@@ -427,12 +435,14 @@
     blit(dye.write); dye.swap();
   }
 
-  function hsv(h) {
-    var i = Math.floor(h * 6), f = h * 6 - i, q = 1 - f;
-    var r = [[1, f, 0], [q, 1, 0], [0, 1, f], [0, q, 1], [f, 0, 1], [1, 0, q]][i % 6];
-    return [r[0] * 0.15, r[1] * 0.15, r[2] * 0.15];
+  // their four shades, exactly, at their 12%
+  var SHADES = [[0.306, 0.804, 0.769], [0.584, 0.835, 0.698],
+                [0.106, 0.263, 0.196], [0.298, 0.686, 0.643]];
+  function hsv() {
+    var c = SHADES[Math.floor(Math.random() * SHADES.length)];
+    return [0.12 * c[0], 0.12 * c[1], 0.12 * c[2]];
   }
-  var colour = hsv(Math.random()), hueClock = 0;
+  var colour = hsv(), hueClock = 0;
   function dyeColour() { return colour; }
 
   /* The pointer as alphanatt reads it: where it is now and where it was at the
@@ -460,7 +470,7 @@
 
     // a new colour every 1/HUE_SPEED seconds, as on alphanatt
     hueClock += dt * HUE_SPEED;
-    if (hueClock >= 1) { hueClock %= 1; colour = hsv(Math.random()); }
+    if (hueClock >= 1) { hueClock %= 1; colour = hsv(); }
     if (ptr.moved) {
       ptr.moved = false;
       var ar = cv.width / cv.height;

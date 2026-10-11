@@ -100,7 +100,9 @@ const SWEEP = `
     check('moving the pointer lights pixels up',
           r.lit > 400,
           'lit ' + r.lit + ' of ' + r.of + ' sampled -- the fluid is not drawing');
-    check('and the smoke is bright enough to see', r.maxA > 30, 'peak alpha ' + r.maxA);
+    // alphanatt's colour is 12% brightness -- a faint thread, by design.
+    // Visible means clearly above nothing, not bright.
+    check('and the trail is there to see, faintly', r.maxA > 12, 'peak alpha ' + r.maxA);
     // Like alphanatt: dim colour, never a bright blot. Nothing in the trail is
     // anywhere near white.
     check('the trail is dim colour, not a bright blot',
