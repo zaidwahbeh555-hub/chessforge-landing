@@ -41,13 +41,13 @@
   var SIM        = 128,    // velocity grid. 128 is plenty; it is never seen
       DYE        = 1024,   // the dye is what you see, so this one is generous
       ITERS      = 20,     // pressure passes
-      DYE_FADE   = 3.4,    // high: the smoke is gone about a second behind you
-      VEL_FADE   = 0.55,
-      CURL       = 22,     // higher = more wisps, fewer solid ribbons
-      RADIUS     = 0.0032,  // small and soft, close to the cursor
-      FORCE      = 2400,    // gentle push: it should drift, not be fired
+      DYE_FADE   = 3.0,    // the smoke is gone a second or so behind you
+      VEL_FADE   = 1.0,    // the push dies quickly: a drift, not a current
+      CURL       = 12,     // a little swirl, not a whirlpool
+      RADIUS     = 0.0060,  // wider and softer: spread out, not a line
+      FORCE      = 1300,    // a light push: it should drift, not be fired
       QUIET      = 1.6,     // seconds of stillness before the loop shuts down
-      STEP       = 0.014;   // splat spacing along the path, in screen widths
+      STEP       = 0.022;   // splat spacing along the path, in screen widths
 
   // ─── context, formats, capability ────────────────────────────────────────
   var opts = { alpha: true, depth: false, stencil: false, antialias: false,
@@ -426,9 +426,9 @@
   // the smoke always looks like it belongs to this page.
   function dyeColour() {
     var t = Math.random();
-    return [ (0.07 + 0.09 * t) * 0.24,
-             (0.52 + 0.30 * t) * 0.24,
-             (0.80 + 0.20 * t) * 0.24 ];
+    return [ (0.07 + 0.09 * t) * 0.17,
+             (0.52 + 0.30 * t) * 0.17,
+             (0.80 + 0.20 * t) * 0.17 ];
   }
 
   var ptr = { x: 0, y: 0, has: false }, pending = [], quiet = 0, running = false;
