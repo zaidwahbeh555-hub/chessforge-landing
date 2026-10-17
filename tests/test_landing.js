@@ -185,7 +185,7 @@ console.log('\nTHE NUMBERS ARE THE APP’S REAL ONES');
   const branches = ops.reduce((a, o) => a + o.plies.reduce((b, p) => b + (p.branches || []).length, 0), 0);
   const real = {openings: ops.length, branches,
                 positions: J('think.json').think.length,
-                lessons: J('endgames.json').ladder.length,
+                lessons: J('methods.json').ladder.length,
                 traps: J('traps.json').traps.length};
   check('the opening count matches the app', html.includes(real.openings + ' opening'), real.openings);
   check('the off-book count matches the app', html.includes(real.branches + ' answers'), real.branches);
@@ -193,7 +193,7 @@ console.log('\nTHE NUMBERS ARE THE APP’S REAL ONES');
   check('the endgame count matches the app', html.includes(real.lessons + ' endgame lessons'), real.lessons);
   check('the trap count matches the app', html.includes(real.traps + ' opening traps'), real.traps);
   check('and no number from the old library is left',
-        !/\b43 middlegame|\b24 endgames|995 moves/.test(html + js));
+        !/\b43 middlegame|\b24 endgames|995 moves|170 endgame/.test(html + js));
 }
 
 console.log('\nNOTHING LOADS FROM SOMEBODY ELSE');
