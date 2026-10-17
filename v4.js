@@ -148,10 +148,10 @@
   var TROUBLE = [
     { id:'drift',  name:'I drift in the middlegame',
       idea:'Nothing is hanging and I have no idea what to do',
-      line:'You will start in the middlegame: 43 positions verified to hold no tactic, and the same five questions every time.' },
+      line:'You will start in the middlegame: real positions, each from a different game, each asking its own questions that lead you to the move.' },
     { id:'throw',  name:'I throw away endings',
       idea:'Winnable, drawn anyway',
-      line:'You will start in the endgame: judge it first \u2014 can this be won at all? \u2014 and only then the method.' },
+      line:'You will start in the endgame: a ladder of lessons \u2014 the rule, then watch it, then play it against a defence that fights back.' },
     { id:'lost',   name:'I am lost once the book runs out',
       idea:'Fine for six moves, then nothing',
       line:'You will start on the 252 off-book replies \u2014 the part nobody else covers.' },

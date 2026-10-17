@@ -173,6 +173,29 @@ check('Stockfish and python-chess are credited as GPL',
       /Stockfish/.test(html) && /GPL/.test(html));
 check('there is a way to contact a human', /chessforgesupport@gmail\.com/.test(html));
 
+console.log('\nTHE NUMBERS ARE THE APP’S REAL ONES');
+/* The page's structured data quoted "43 middlegame positions" and "24
+   endgames" for a week after the app had 116 and 170, because the numbers were
+   typed in. They are checked against the app's own data files now, so a page
+   that disagrees with the product fails here instead of in front of a buyer. */
+{
+  const DATA = path.join(APP, 'backend', 'data');
+  const J = f => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
+  const ops = J('openings.json').openings;
+  const branches = ops.reduce((a, o) => a + o.plies.reduce((b, p) => b + (p.branches || []).length, 0), 0);
+  const real = {openings: ops.length, branches,
+                positions: J('think.json').think.length,
+                lessons: J('endgames.json').ladder.length,
+                traps: J('traps.json').traps.length};
+  check('the opening count matches the app', html.includes(real.openings + ' opening'), real.openings);
+  check('the off-book count matches the app', html.includes(real.branches + ' answers'), real.branches);
+  check('the middlegame count matches the app', html.includes(real.positions + ' middlegame'), real.positions);
+  check('the endgame count matches the app', html.includes(real.lessons + ' endgame lessons'), real.lessons);
+  check('the trap count matches the app', html.includes(real.traps + ' opening traps'), real.traps);
+  check('and no number from the old library is left',
+        !/\b43 middlegame|\b24 endgames|995 moves/.test(html + js));
+}
+
 console.log('\nNOTHING LOADS FROM SOMEBODY ELSE');
 check('no third-party stylesheet, script or image',
       !/<(?:link|script|img)\b[^>]*?(?:href|src)="(?:https?:)?\/\/(?!chessforge\.org)/.test(html),
